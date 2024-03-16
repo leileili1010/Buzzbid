@@ -30,13 +30,15 @@ VALUES (nextval('category_id_seq'), 'Art'),
 
 CREATE SEQUENCE IF NOT EXISTS item_id_seq;
 
+CREATE TYPE cond AS ENUM ('New', 'Very Good', 'Good', 'Fair', 'Poor');
+
 CREATE TABLE Item (
 	item_id bigint PRIMARY KEY NOT NULL DEFAULT nextval('item_id_seq'),
 	username varchar(16) NOT NULL REFERENCES "User" (username),
 	item_name varchar(32) NOT NULL,
 	description varchar(250) NOT NULL,
 	is_returnable boolean NOT NULL DEFAULT FALSE,
-	condition varchar(16) NOT NULL,
+	condition cond NOT NULL,
 	category_id bigint NOT NULL REFERENCES Category (category_id)
 );
 
