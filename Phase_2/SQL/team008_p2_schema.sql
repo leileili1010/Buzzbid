@@ -56,8 +56,7 @@ CREATE TABLE Auction (
 	min_sale_price numeric(7, 2) NOT NULL,
 	starting_bid numeric(7, 2) NOT NULL,
 	cancel_reason varchar(250),
-	cancelled_by varchar(16) REFERENCES "User" (username),
-	winner varchar(16) REFERENCES "User" (username)
+	cancelled_by varchar(16) REFERENCES "User" (username)
 );
 
 ALTER TABLE Auction
