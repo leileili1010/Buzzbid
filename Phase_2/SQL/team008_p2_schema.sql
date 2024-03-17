@@ -71,7 +71,7 @@ CREATE TABLE Bid (
 	auction_id bigint NOT NULL REFERENCES Auction (auction_id),
 	username varchar(16) NOT NULL REFERENCES "User" (username),
 	bid_amount numeric(7, 2) NOT NULL,
-	bid_time timestamp with time zone
+	bid_time timestamp with time zone NOT NULL
 );
 
 ALTER TABLE Bid
