@@ -1,3 +1,5 @@
+-- PostgreSQL script
+
 CREATE TABLE "User" (
 	username varchar(16) PRIMARY KEY NOT NULL,
 	password varchar(60) NOT NULL,
@@ -52,7 +54,7 @@ CREATE TABLE Auction (
 	item_id bigint NOT NULL REFERENCES Item (item_id),
 	auction_end_time timestamp with time zone NOT NULL,
 	auction_length bigint NOT NULL,
-	get_it_now_price numeric(7, 2) NOT NULL,
+	get_it_now_price numeric(7, 2),
 	min_sale_price numeric(7, 2) NOT NULL,
 	starting_bid numeric(7, 2) NOT NULL,
 	cancel_reason varchar(250),
@@ -80,10 +82,10 @@ CREATE SEQUENCE IF NOT EXISTS rating_id_seq;
 CREATE TABLE Rating (
 	rating_id bigint PRIMARY KEY NOT NULL DEFAULT nextval('rating_id_seq'),
 	item_id bigint NOT NULL REFERENCES Item (item_id),
-    username varchar(16) NOT NULL REFERENCES "User" (username),
+	username varchar(16) NOT NULL REFERENCES "User" (username),
 	number_of_stars bigint NOT NULL,
 	comment varchar(250),
-    rating_time timestamp with time zone NOT NULL
+	rating_time timestamp with time zone NOT NULL
 );
 
 ALTER TABLE Rating
