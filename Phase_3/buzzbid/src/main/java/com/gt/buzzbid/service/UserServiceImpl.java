@@ -23,29 +23,20 @@ public class UserServiceImpl implements UserService {
     public UserDetails getUserByUsername(String username) {
         User user = null;
         String query = "SELECT * FROM \"User\" WHERE username = ?";
-        List<Object> params = new ArrayList<>();
-        params.add(username);
-
         Connection conn = null;
         ResultSet rs = null;
 
         try {
             conn = DatabaseService.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
-            int i = 1;
 
-            for (Object param : params) {
-                stmt.setObject(i, param);
-                i++;
-            }
-
+            stmt.setString(1, username);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
                 user = new User(rs.getString("username"), rs.getString("password"),
                         rs.getString("first_name"), rs.getString("last_name"), rs.getString("position"));
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -86,7 +77,6 @@ public class UserServiceImpl implements UserService {
         try {
             conn = DatabaseService.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
-
             int i = 1;
 
             for (Object param : params) {
