@@ -23,7 +23,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + 86400000))
-                .claim("email", auth.getName())
+                .claim("username", auth.getName())
                 .claim("authorities", roles)
                 .signWith(key)
                 .compact();
@@ -39,13 +39,13 @@ public class JwtProvider {
         return String.join(",", auths);
     }
 
-    public static String getEmailFromJwtToken(String jwt) {
+    public static String getUsernameFromJwtToken(String jwt) {
         jwt = jwt.substring(7);
 
         try {
             Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
 
-            return String.valueOf(claims.get("email"));
+            return String.valueOf(claims.get("username"));
         } catch (Exception e) {
             return null;
         }

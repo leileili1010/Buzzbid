@@ -23,7 +23,7 @@ function Register() {
                    username, password, firstName, lastName
                 });
 
-                nav('/dashboard');
+                nav('/dashboard', {state : {username: username}});
             }
         } catch (error) {
             setError(error.response ? error.response.data : error.message);

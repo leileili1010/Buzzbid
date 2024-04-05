@@ -10,5 +10,7 @@ import lombok.*;
 public class AuthResponse {
     private String token;
     private String message;
+    private String userRole;
     private boolean success;
+    private boolean isAdmin;
 }

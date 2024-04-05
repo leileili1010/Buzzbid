@@ -4,11 +4,13 @@ import com.gt.buzzbid.entity.User;
 import com.gt.buzzbid.response.AuthResponse;
 import com.gt.buzzbid.security.config.JwtProvider;
 import com.gt.buzzbid.service.UserServiceImpl;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/auth")
@@ -72,8 +76,14 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authModel);
 
         response.setMessage("Logged in successfully");
+        Collection<? extends GrantedAuthority> authorities = authModel.getAuthorities();
+        GrantedAuthority authority = authorities != null ? authorities.stream().findFirst().orElse(null) : null;
+
+        response.setUserRole(authority != null ? authority.getAuthority() : null);
         response.setToken(JwtProvider.generateToken(authModel));
         response.setSuccess(true);
+        response.setAdmin(authModel.getAuthorities() != null
+                && authModel.getAuthorities().stream().anyMatch(a -> StringUtils.isNotEmpty( a.getAuthority())));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -89,6 +99,6 @@ public class UserController {
             return new UsernamePasswordAuthenticationToken(null, null, null);
         }
 
-        return new UsernamePasswordAuthenticationToken(userDetails, null, null);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
