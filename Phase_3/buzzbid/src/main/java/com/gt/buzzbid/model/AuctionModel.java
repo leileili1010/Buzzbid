@@ -17,6 +17,6 @@ public class AuctionModel {
     private String minSalePrice;
     private Integer auctionLength;
     private String getItNowPrice;
-    private boolean isReturnable;
+    private String isReturnable;
     private String username;
 }

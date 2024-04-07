@@ -8,13 +8,13 @@ function ListItem() {
     const[inputs, setInputs] = useState({
         itemName: '',
         description: '',
-        categoryId: '',
-        condition: '',
+        categoryId: 1,
+        condition: 'NEW',
         startingBid: '',
         minSalePrice: '',
         getItNowPrice: '',
-        auctionLength: '',
-        isReturnable: ''
+        auctionLength: 1,
+        isReturnable: 'false'
     });
     const[categories, setCategories] = useState([]);
     const[errors, setErrors] = useState({});
@@ -51,16 +51,22 @@ function ListItem() {
           errors.description = 'Description is required';
       }
 
-      if (inputs.startingBid === '' || isNaN(inputs.startingBid) || parseFloat(inputs.startingBid) <= 0) {
+      if (inputs.startingBid === '' || isNaN(inputs.startingBid)) {
+          errors.startingBid = 'Starting bid amount must be an amount';
+      } else if (parseFloat(inputs.startingBid) <= 0) {
           errors.startingBid = 'Starting bid must be greater than 0';
       }
 
-      if (inputs.minSalePrice === '' || isNaN(inputs.minSalePrice)  || parseFloat(inputs.minSalePrice) <= 0) {
+      if (inputs.minSalePrice === '' || isNaN(inputs.minSalePrice)) {
+          errors.minSalePrice = 'Min sale price must be an amount';
+      } else if (parseFloat(inputs.minSalePrice) <= 0) {
           errors.minSalePrice = 'Min sale price must be greater than 0';
       }
 
-      if (inputs.getItNowPrice !== '' &&  (isNaN(inputs.getItNowPrice)
-          || (inputs.getItNowPrice <= inputs.minSalePrice && inputs.getItNowPrice <= inputs.startingBid))) {
+      if (inputs.getItNowPrice !== '' && (isNaN(inputs.getItNowPrice))) {
+          errors.getItNowPrice = 'Get It Now price must be an amount';
+      } else if (inputs.getItNowPrice !== '' && parseFloat(inputs.getItNowPrice) <= parseFloat(inputs.minSalePrice)
+          && parseFloat(inputs.getItNowPrice) <= parseFloat(inputs.startingBid)) {
           errors.getItNowPrice = 'Get It Now price must be greater than the minimum sale price and the starting bid'
       }
 
@@ -94,7 +100,7 @@ function ListItem() {
 
         axios.post('http://localhost:8081/auction/listAuction', data)
             .then((response) => {
-                nav('/viewItem', {state: {auctionId: response.data, username: username} });
+                nav('/viewItem', {state: {auctionId: response.data, username: username}});
             }).catch(function(error) {
 
         });
@@ -111,7 +117,7 @@ function ListItem() {
                             </MDBCol>
                             <MDBCol md="8">
                                 <MDBInput wrapperClass='mb-4' placeholder='Item Name' id='item-name' name="itemName" value={inputs.itemName} type='text'
-                                          onChange={updateValue}/>
+                                          onChange={updateValue} style={{ border: errors.itemName ? "2px solid red" : null }} />
                                 {errors.itemName ? <p className="has-error">{errors.itemName}</p> : null}
                             </MDBCol>
                         </MDBRow>
@@ -120,9 +126,10 @@ function ListItem() {
                                 <label>Description</label>
                             </MDBCol>
                             <MDBCol md="8">
-                                <MDBInput wrapperClass='mb-4' placeholder='Descriptipn' id='description' name="description" value={inputs.description}
+                                <MDBInput wrapperClass='mb-4' placeholder='Description' id='description' name="description" value={inputs.description}
                                           type='text'
-                                          onChange={updateValue}/>
+                                          onChange={updateValue}
+                                          style={{ border: errors.description ? "2px solid red" : null }} />
                                 {errors.description ? <p className="error">{errors.description}</p> : null}
                             </MDBCol>
                         </MDBRow>
@@ -163,7 +170,8 @@ function ListItem() {
                             <MDBCol md="8">
                                 <MDBInput wrapperClass='mb-4' placeholder='$0.00' id="starting-bid" name="startingBid"
                                           value={inputs.startingBid} type='text'
-                                          onChange={updateValue}/>
+                                          onChange={updateValue}
+                                          style={{ border: errors.startingBid ? "2px solid red" : null }} />
                                 {errors.startingBid ? <p className="error">{errors.startingBid}</p> : null}
                             </MDBCol>
                         </MDBRow>
@@ -174,7 +182,8 @@ function ListItem() {
                             <MDBCol md="8">
                                 <MDBInput wrapperClass='mb-4' placeholder='$0.00' id='min-sale-price' name="minSalePrice" value={inputs.minSalePrice}
                                           type='text'
-                                          onChange={updateValue}/>
+                                          onChange={updateValue}
+                                          style={{ border: errors.minSalePrice ? "2px solid red" : null }} />
                                 {errors.minSalePrice ? <p className="error">{errors.minSalePrice}</p> : null}
                             </MDBCol>
                         </MDBRow>
@@ -201,18 +210,24 @@ function ListItem() {
                             <MDBCol md="8">
                                 <MDBInput wrapperClass='mb-4' placeholder='$0.00' id="get-it-now-price" name="getItNowPrice" value={inputs.getItNowPrice}
                                           type='text'
-                                          onChange={updateValue}/>
+                                          onChange={updateValue}
+                                          style={{ border: errors.getItNowPrice ? "2px solid red" : null }} />
                                 {errors.getItNowPrice ? <p className="error">{errors.getItNowPrice}</p> : null}
                             </MDBCol>
                         </MDBRow>
                         <MDBRow>
-                            <MDBCol md="5">
+                            <MDBCol md="4">
                                 <label>Returns accepted?</label>
                             </MDBCol>
-                            <MDBCol md="7">
-                                <MDBCheckbox wrapperClass='mb-4' id='returnable' name="isReturnable" value={inputs.isReturnable} onChange={updateValue} />
+                            <MDBCol md="8">
+                                <select className="form-select" id="is-returnable" name="isReturnable" value={inputs.isReturnable}
+                                        onChange={updateValue}>
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </select>
                             </MDBCol>
                         </MDBRow>
+                        <br/>
                         <MDBRow>
                             <MDBCol md="6">
                                 <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}>
@@ -220,8 +235,9 @@ function ListItem() {
                                 </button>
                             </MDBCol>
                             <MDBCol md="6">
-                                <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}} onClick={cancel}>
-                                    Cancel
+                                <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
+                                        onClick={e => cancel(e)}>
+                                Cancel
                                 </button>
                             </MDBCol>
                         </MDBRow>

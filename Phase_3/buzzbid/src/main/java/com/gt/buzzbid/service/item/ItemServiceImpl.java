@@ -21,7 +21,7 @@ public class ItemServiceImpl implements ItemService {
             stmt.setString(1, auctionModel.getUsername());
             stmt.setString(2, auctionModel.getItemName());
             stmt.setString(3, auctionModel.getDescription());
-            stmt.setBoolean(4, auctionModel.isReturnable());
+            stmt.setBoolean(4, Boolean.parseBoolean(auctionModel.getIsReturnable()));
             stmt.setObject(5, auctionModel.getCondition().getLabel(), Types.OTHER);
             stmt.setInt(6, auctionModel.getCategoryId());
             stmt.executeUpdate();
