@@ -6,9 +6,9 @@ import {MDBContainer, MDBInput, MDBBtn} from 'mdb-react-ui-kit';
 function Login() {
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
-    const[error, setError] = useState('');
-    const[isAdmin, setIsAdmin] = useState('');
+    const[isAdmin, setIsAdmin] = useState(false);
     const[userRole, setUserRole] = useState('');
+    const[error, setError] = useState('');
     const nav = useNavigate();
 
     const handleLogin = async() => {
@@ -20,8 +20,8 @@ function Login() {
                   username, password
               });
 
-              const adminResponse = response.data.admin;
-              const roleResponse = response.data.userRole;
+              let adminResponse = response.data.admin;
+              let roleResponse = response.data.userRole;
               setIsAdmin(adminResponse);
               setUserRole(roleResponse);
               nav('/dashboard', {state : {username: username, isAdmin : adminResponse, userRole: roleResponse}});

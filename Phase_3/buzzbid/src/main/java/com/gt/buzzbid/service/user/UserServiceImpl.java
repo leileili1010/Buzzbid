@@ -1,4 +1,4 @@
-package com.gt.buzzbid.service;
+package com.gt.buzzbid.service.user;
 
 import com.gt.buzzbid.db.DatabaseService;
 import com.gt.buzzbid.entity.User;

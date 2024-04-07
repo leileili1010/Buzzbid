@@ -1,5 +1,5 @@
 import React from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {MDBCol, MDBContainer} from "mdb-react-ui-kit";
 
 function Dashboard() {
@@ -20,9 +20,9 @@ function Dashboard() {
                 <div className="d-flex bg-body-tertiary mb-3 text-center" style={{height: "300px"}}>
                     <MDBCol>
                         <h3>Auction Options</h3>
-                        <a href="/search">Search for Items</a><br/>
-                        <a href="/listItem">List Item</a><br/>
-                        <a href="/viewResults">View Auction Results</a>
+                        <Link to="/search" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Search for Items</Link><br/>
+                        <Link to="/listItem" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>List Item</Link><br/>
+                        <Link to="/viewResults" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>View Auction Results</Link>
                     </MDBCol>
                     {isAdmin && <MDBCol>
                         <h3>Reports</h3>

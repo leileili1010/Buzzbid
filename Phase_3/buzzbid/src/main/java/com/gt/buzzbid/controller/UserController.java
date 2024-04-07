@@ -3,7 +3,7 @@ package com.gt.buzzbid.controller;
 import com.gt.buzzbid.entity.User;
 import com.gt.buzzbid.response.AuthResponse;
 import com.gt.buzzbid.security.config.JwtProvider;
-import com.gt.buzzbid.service.UserServiceImpl;
+import com.gt.buzzbid.service.user.UserServiceImpl;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
