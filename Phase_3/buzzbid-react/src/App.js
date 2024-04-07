@@ -6,6 +6,7 @@ import Dashboard from "./components/dashboard";
 import ListItem from "./components/listItem";
 import SearchItem from "./components/SearchItem/SearchItem";
 import ItemForSale from "./components/ItemForSale/ItemForSale";
+import ItemRating from "./components/ItemRating/ItemRating";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/listItem" element={<ListItem/>}/>
             <Route path="/searchitem" element={<SearchItem/>}/>
-            <Route path="/itemForSale" element={<ItemForSale />} />
+            <Route path="/itemforsale" element={<ItemForSale />} />
+            <Route path="/itemrating" element={<ItemRating />}/>
           </Routes>
         </Router>
       </div>

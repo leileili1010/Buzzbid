@@ -67,15 +67,19 @@
 .user-bid-price {
     display: flex;
     flex-direction: column;
+    margin-left: 8px;
 }
 
 .dollar-sign {
     margin-left: 10px;
+    font-weight: bold;
 }
 
-.user-bid p {
+.user-bid p:first-child {
     display: inline;
     margin-right: 5px;
+    font-weight: bold;
+    padding-left: 8px;
 }
 
 .item-for-sale-details button {
