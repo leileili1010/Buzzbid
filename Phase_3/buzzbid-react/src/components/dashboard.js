@@ -59,12 +59,10 @@ function Dashboard() {
                             </div>
                         </MDBCol>
                     </MDBRow>
-
-        </MDBContainer>
+                </MDBContainer>
             </div>
-</div>
-)
-    ;
+        </div>
+    );
 }
 
 export default Dashboard;
