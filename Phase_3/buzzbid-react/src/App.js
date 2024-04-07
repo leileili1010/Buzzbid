@@ -4,6 +4,7 @@ import Login from './components/login';
 import Register from './components/register';
 import Dashboard from "./components/dashboard";
 import ListItem from "./components/listItem";
+import SearchItem from "./components/SearchItem/SearchItem";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route path="/register" element={<Register/>}/>
             <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/listItem" element={<ListItem/>}/>
+            <Route path="/searchitem" element={<SearchItem/>}/>
           </Routes>
         </Router>
       </div>
