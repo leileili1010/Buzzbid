@@ -5,6 +5,7 @@ import com.gt.buzzbid.model.AuctionModel;
 import com.gt.buzzbid.service.auction.AuctionServiceImpl;
 import com.gt.buzzbid.service.item.ItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,4 +29,12 @@ public class AuctionController {
 
         return auctionService.createAuction(itemId, auctionModel);
     }
+
+    @GetMapping("/{auctionId}")
+    public ResponseEntity<AuctionModel> getAuction(@PathVariable Integer auctionId) {
+        AuctionModel model = auctionService.getAuction(auctionId);
+
+        return ResponseEntity.ok(model);
+    }
+
 }

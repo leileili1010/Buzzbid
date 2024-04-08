@@ -1,6 +1,8 @@
 package com.gt.buzzbid.service.item;
 
+import com.gt.buzzbid.Condition;
 import com.gt.buzzbid.db.DatabaseService;
+import com.gt.buzzbid.entity.Item;
 import com.gt.buzzbid.model.AuctionModel;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +59,49 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void updateItem(AuctionModel auctionModel) {
 
+    }
+
+    @Override
+    public Item getItem(Integer itemId) {
+        Item item = new Item();
+        Connection conn = null;
+        ResultSet rs = null;
+        String query = "SELECT item_name, description, category_id, condition::text, is_returnable FROM Item WHERE item_id = ?";
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, itemId);
+
+            rs = stmt.executeQuery();
+
+            if (rs != null && rs.next()) {
+                item.setItemName(rs.getString("item_name"));
+                item.setDescription(rs.getString("description"));
+                item.setCategoryId(rs.getInt("category_id"));
+                item.setCondition(Condition.getByLabel(rs.getString("condition")));
+                item.setReturnable(rs.getBoolean("is_returnable"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return item;
     }
 }

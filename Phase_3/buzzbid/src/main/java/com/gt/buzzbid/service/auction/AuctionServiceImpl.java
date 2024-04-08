@@ -2,18 +2,24 @@ package com.gt.buzzbid.service.auction;
 
 import com.gt.buzzbid.db.DatabaseService;
 import com.gt.buzzbid.entity.Category;
+import com.gt.buzzbid.entity.Item;
 import com.gt.buzzbid.model.AuctionModel;
+import com.gt.buzzbid.service.item.ItemServiceImpl;
 import io.micrometer.common.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AuctionServiceImpl implements AuctionService {
+    @Autowired
+    private ItemServiceImpl itemService;
 
     @Override
     public List<Category> getCategories() {
@@ -48,6 +54,47 @@ public class AuctionServiceImpl implements AuctionService {
         }
 
         return categories;
+    }
+
+    @Override
+    public Category getCategoryById(Integer categoryId) {
+        Category category = new Category();
+        String query = "SELECT category_id, category FROM category WHERE category_id = ?";
+        Connection conn = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, categoryId);
+
+            rs = stmt.executeQuery();
+
+            if (rs != null && rs.next()) {
+                category.setCategoryId(rs.getInt("category_id"));
+                category.setCategory(rs.getString("category"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if (rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+
+        return category;
     }
 
     @Override
@@ -98,5 +145,65 @@ public class AuctionServiceImpl implements AuctionService {
         }
 
         return auctionId;
+    }
+
+    @Override
+    public AuctionModel getAuction(Integer auctionId) {
+        AuctionModel model = new AuctionModel();
+        Connection conn = null;
+        ResultSet rs = null;
+        String query = "SELECT item_id, auction_end_time, get_it_now_price, starting_bid FROM Auction WHERE auction_id = ?";
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, auctionId);
+
+            rs = stmt.executeQuery();
+
+            if (rs != null && rs.next()) {
+                model.setItemId(rs.getInt("item_id"));
+
+                SimpleDateFormat fmt = new SimpleDateFormat("M/d/yyyy HH:mm a");
+                model.setAuctionEndTime(fmt.format(rs.getTimestamp("auction_end_time")));
+
+                if (rs.getObject("get_it_now_price") != null) {
+                    model.setGetItNowPrice("$" + rs.getBigDecimal("get_it_now_price").toPlainString());
+                }
+
+                model.setStartingBid("$" + rs.getBigDecimal("starting_bid").toPlainString());
+            }
+
+            // get item
+            Item item = itemService.getItem(model.getItemId());
+            model.setItemName(item.getItemName());
+            model.setDescription(item.getDescription());
+
+            Category category = getCategoryById(item.getCategoryId());
+
+            model.setCategory(category.getCategory());
+            model.setConditionLabel(item.getCondition().getLabel());
+            model.setIsReturnable(String.valueOf(item.isReturnable()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return model;
     }
 }

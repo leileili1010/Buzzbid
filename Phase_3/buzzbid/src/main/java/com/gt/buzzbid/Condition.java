@@ -1,5 +1,7 @@
 package com.gt.buzzbid;
 
+import java.util.Arrays;
+
 public enum Condition {
     NEW("New"),
     VERY_GOOD("Very Good"),
@@ -15,5 +17,9 @@ public enum Condition {
 
     public String getLabel() {
         return label;
+    }
+
+    public static Condition getByLabel(String label) {
+        return Arrays.asList(Condition.values()).stream().filter(c -> c.getLabel().equals(label)).findAny().orElse(Condition.NEW);
     }
 }

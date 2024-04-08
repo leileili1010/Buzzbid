@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface AuctionService {
     public List<Category> getCategories();
+    public Category getCategoryById(Integer categoryId);
     public Integer createAuction(Integer itemId, AuctionModel auctionModel);
+    public AuctionModel getAuction(Integer auctionId);
 }

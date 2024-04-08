@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {MDBCol, MDBContainer, MDBInput, MDBRow} from "mdb-react-ui-kit";
+import {MDBCol, MDBContainer, MDBInput, MDBRow, MDBTextArea} from "mdb-react-ui-kit";
 import axios from "axios";
 
 function ListItem() {
@@ -100,7 +100,7 @@ function ListItem() {
 
         axios.post('http://localhost:8081/auction/listAuction', data)
             .then((response) => {
-                nav('/viewItem', {state: {auctionId: response.data, username: username}});
+                nav('/viewItem', {state: {auctionId: response.data, username: username, isAdmin: isAdmin, userRole: userRole}});
             }).catch(function(error) {
 
         });
@@ -108,7 +108,7 @@ function ListItem() {
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="border rounded-lg p-4" style={{width: '500px', height: 'auto'}}>
+            <div className="border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
                 <form onSubmit={submitForm}>
                     <MDBContainer className="p-3">
                         <MDBRow>
@@ -126,7 +126,7 @@ function ListItem() {
                                 <label>Description</label>
                             </MDBCol>
                             <MDBCol md="8">
-                                <MDBInput wrapperClass='mb-4' placeholder='Description' id='description' name="description" value={inputs.description}
+                                <MDBTextArea wrapperClass='mb-4' placeholder='Description' id='description' name="description" value={inputs.description}
                                           type='text'
                                           onChange={updateValue}
                                           style={{ border: errors.description ? "2px solid red" : null }} />
