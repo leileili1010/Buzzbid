@@ -7,12 +7,14 @@ import ListItem from "./components/listItem";
 import SearchItem from "./components/SearchItem/SearchItem";
 import ItemForSale from "./components/ItemForSale/ItemForSale";
 import ItemRating from "./components/ItemRating/ItemRating";
+import ViewItem from "./components/viewItem";
 
 function App() {
   return (
       <div className="App">
         <Router>
           <Routes>
+
             <Route path="/" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/dashboard" element={<Dashboard/>}/>
@@ -20,6 +22,12 @@ function App() {
             <Route path="/searchitem" element={<SearchItem/>}/>
             <Route path="/itemforsale" element={<ItemForSale />} />
             <Route path="/itemrating" element={<ItemRating />}/>
+            <Route path='/' element={<Login/>}/>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/register' element={<Register/>}/>
+            <Route path='/dashboard' element={<Dashboard/>}/>
+            <Route path='/listItem' element={<ListItem/>}/>
+            <Route path='/viewItem' element={<ViewItem/>}/>
           </Routes>
         </Router>
       </div>

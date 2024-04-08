@@ -1,4 +1,4 @@
-package com.gt.buzzbid.service;
+package com.gt.buzzbid.service.user;
 
 import com.gt.buzzbid.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;

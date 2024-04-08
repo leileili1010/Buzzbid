@@ -30,6 +30,10 @@ function Register() {
         }
     };
 
+    const returnToLogin = () => {
+        nav('/login');
+    };
+
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
             <div className="border rounded-lg p-4" style={{width: '500px', height: 'auto'}}>
@@ -48,14 +52,18 @@ function Register() {
                     <MDBInput wrapperClass='mb-4' placeholder='Password' id='password' type='password' value={password}
                               onChange={(e) => setPassword(e.target.value)}/>
                     <label>Confirm Password</label>
-                    <MDBInput wrapperClass='mb-4' placeholder='Confirm password' id='confirm-password' type='password' value={confirmPassword}
+                    <MDBInput wrapperClass='mb-4' placeholder='Confirm password' id='confirm-password' type='password'
+                              value={confirmPassword}
                               onChange={(e) => setConfirmPassword(e.target.value)}/>
                     {error && <p className="text-danger">{error}</p>}
                     <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
                             onClick={handleRegistration}>Register
                     </button>
+                    <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
+                            onClick={returnToLogin}>Cancel
+                    </button>
                     <div className="text-center">
-                        <p>Already Registered? <a href="/">Log in</a></p>
+                        <p>Already Registered? <a href="/login">Log in</a></p>
                     </div>
                 </MDBContainer>
             </div>
