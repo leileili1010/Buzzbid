@@ -28,7 +28,6 @@ const ItemForSale = () => {
                     <td></td>
                     <td> <NavLink>Edit Description</NavLink></td>
                 </tr>
-
                 <tr>
                     <td>Category</td>
                     <td>Very Good</td>
