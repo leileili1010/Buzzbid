@@ -1,6 +1,8 @@
 package com.gt.buzzbid.service.auction;
 
-import com.gt.buzzbid.db.DatabaseService;
+import com.gt.buzzbid.model.BidModel;
+import com.gt.buzzbid.service.bid.BidServiceImpl;
+import com.gt.buzzbid.service.db.DatabaseService;
 import com.gt.buzzbid.entity.Category;
 import com.gt.buzzbid.entity.Item;
 import com.gt.buzzbid.model.AuctionModel;
@@ -20,6 +22,9 @@ import java.util.List;
 public class AuctionServiceImpl implements AuctionService {
     @Autowired
     private ItemServiceImpl itemService;
+    @Autowired
+    private BidServiceImpl bidService;
+    private final SimpleDateFormat FMT =  new SimpleDateFormat("M/d/yyyy HH:mm a");
 
     @Override
     public List<Category> getCategories() {
@@ -77,20 +82,16 @@ public class AuctionServiceImpl implements AuctionService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            if (conn != null) {
-                try {
+            try {
+                if (conn != null) {
                     conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
                 }
 
                 if (rs != null) {
-                    try {
-                        rs.close();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+                    rs.close();
                 }
+            } catch (SQLException e) {
+
             }
         }
 
@@ -127,20 +128,16 @@ public class AuctionServiceImpl implements AuctionService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            if (conn != null) {
-                try {
+            try {
+                if (conn != null) {
                     conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
                 }
-            }
 
-            if (rs != null) {
-                try {
+                if (rs != null) {
                     rs.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
                 }
+            } catch (SQLException e) {
+
             }
         }
 
@@ -163,9 +160,8 @@ public class AuctionServiceImpl implements AuctionService {
 
             if (rs != null && rs.next()) {
                 model.setItemId(rs.getInt("item_id"));
-
-                SimpleDateFormat fmt = new SimpleDateFormat("M/d/yyyy HH:mm a");
-                model.setAuctionEndTime(fmt.format(rs.getTimestamp("auction_end_time")));
+                model.setAuctionEndTime(FMT.format(rs.getTimestamp("auction_end_time")));
+                model.setAuctionEnded(rs.getTimestamp("auction_end_time").toLocalDateTime().isBefore(LocalDateTime.now()));
 
                 if (rs.getObject("get_it_now_price") != null) {
                     model.setGetItNowPrice("$" + rs.getBigDecimal("get_it_now_price").toPlainString());
@@ -184,26 +180,55 @@ public class AuctionServiceImpl implements AuctionService {
             model.setCategory(category.getCategory());
             model.setConditionLabel(item.getCondition().getLabel());
             model.setIsReturnable(String.valueOf(item.isReturnable()));
+            model.setUsername(item.getUsername());
+            model.setBids(bidService.getBids(auctionId));
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            if (conn != null) {
-                try {
+            try {
+                if (conn != null) {
                     conn.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
                 }
-            }
 
-            if (rs != null) {
-                try {
+                if (rs != null) {
                     rs.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
                 }
+            } catch (SQLException e) {
+
             }
         }
 
         return model;
+    }
+
+    @Override
+    public void getItNow(Integer auctionId, BidModel bidModel) {
+        Connection conn = null;
+        ResultSet rs = null;
+        String query = "UPDATE Auction SET auction_end_time = ? WHERE auction_id = ?";
+        Integer bidId = bidService.createBid(auctionId, bidModel);
+        BidModel bid = bidService.getBidById(bidId);
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setTimestamp(1, Timestamp.valueOf(bid.getBidTime()));
+            stmt.setInt(2, auctionId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
     }
 }

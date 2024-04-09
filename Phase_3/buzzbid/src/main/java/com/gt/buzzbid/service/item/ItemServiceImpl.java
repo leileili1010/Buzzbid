@@ -1,7 +1,7 @@
 package com.gt.buzzbid.service.item;
 
 import com.gt.buzzbid.Condition;
-import com.gt.buzzbid.db.DatabaseService;
+import com.gt.buzzbid.service.db.DatabaseService;
 import com.gt.buzzbid.entity.Item;
 import com.gt.buzzbid.model.AuctionModel;
 import org.springframework.stereotype.Service;
@@ -66,7 +66,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = new Item();
         Connection conn = null;
         ResultSet rs = null;
-        String query = "SELECT item_name, description, category_id, condition::text, is_returnable FROM Item WHERE item_id = ?";
+        String query = "SELECT username, item_name, description, category_id, condition::text, is_returnable FROM Item WHERE item_id = ?";
 
         try {
             conn = DatabaseService.getConnection();
@@ -76,6 +76,7 @@ public class ItemServiceImpl implements ItemService {
             rs = stmt.executeQuery();
 
             if (rs != null && rs.next()) {
+                item.setUsername(rs.getString("username"));
                 item.setItemName(rs.getString("item_name"));
                 item.setDescription(rs.getString("description"));
                 item.setCategoryId(rs.getInt("category_id"));

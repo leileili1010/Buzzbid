@@ -2,7 +2,10 @@ package com.gt.buzzbid.controller;
 
 import com.gt.buzzbid.entity.Category;
 import com.gt.buzzbid.model.AuctionModel;
+import com.gt.buzzbid.model.BidModel;
+import com.gt.buzzbid.response.ApiResponse;
 import com.gt.buzzbid.service.auction.AuctionServiceImpl;
+import com.gt.buzzbid.service.bid.BidServiceImpl;
 import com.gt.buzzbid.service.item.ItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,8 @@ public class AuctionController {
     private AuctionServiceImpl auctionService;
     @Autowired
     private ItemServiceImpl itemService;
+    @Autowired
+    private BidServiceImpl bidService;
 
     @GetMapping("/categories")
     public List<Category> getCategories() {
@@ -37,4 +42,23 @@ public class AuctionController {
         return ResponseEntity.ok(model);
     }
 
+    @PostMapping("/{auctionId}/bid")
+    public ResponseEntity<ApiResponse> bidAuction(@PathVariable Integer auctionId, @RequestBody BidModel bidModel) {
+        bidService.createBid(auctionId, bidModel);
+
+        return ResponseEntity.ok(new ApiResponse());
+    }
+
+    @PostMapping("/{auctionId}/getItNow")
+    public ResponseEntity<ApiResponse> getItNow(@PathVariable Integer auctionId, @RequestBody BidModel bidModel) {
+        auctionService.getItNow(auctionId, bidModel);
+
+        return ResponseEntity.ok(new ApiResponse());
+    }
+
+    @PostMapping("/{auctionId}/cancel")
+    public ResponseEntity<ApiResponse> cancelAuction(@PathVariable Integer auctionId, @RequestBody AuctionModel auctionModel) {
+
+        return ResponseEntity.ok(new ApiResponse());
+    }
 }

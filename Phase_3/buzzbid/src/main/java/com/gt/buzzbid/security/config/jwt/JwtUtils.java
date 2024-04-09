@@ -1,4 +1,4 @@
-package com.gt.buzzbid.security.config;
+package com.gt.buzzbid.security.config.jwt;
 
 public class JwtUtils {
     private final static String SECRET = "OdHZYLR1pH7zAo54nKD1PmRAwzEw6M6z";

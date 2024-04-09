@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {MDBCol, MDBContainer, MDBInput, MDBRow, MDBTextArea} from "mdb-react-ui-kit";
+import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow, MDBTextArea} from "mdb-react-ui-kit";
 import axios from "axios";
 
 function ListItem() {
@@ -14,7 +14,7 @@ function ListItem() {
         minSalePrice: '',
         getItNowPrice: '',
         auctionLength: 1,
-        isReturnable: 'false'
+        isReturnable: 'false',
     });
     const[categories, setCategories] = useState([]);
     const[errors, setErrors] = useState({});
@@ -230,15 +230,15 @@ function ListItem() {
                         <br/>
                         <MDBRow>
                             <MDBCol md="6">
-                                <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}>
+                                <MDBBtn className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}>
                                     List My Item
-                                </button>
+                                </MDBBtn>
                             </MDBCol>
                             <MDBCol md="6">
-                                <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
+                                <MDBBtn type="button" className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
                                         onClick={e => cancel(e)}>
                                 Cancel
-                                </button>
+                                </MDBBtn>
                             </MDBCol>
                         </MDBRow>
                     </MDBContainer>

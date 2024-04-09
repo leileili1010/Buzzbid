@@ -1,6 +1,6 @@
 package com.gt.buzzbid.service.user;
 
-import com.gt.buzzbid.db.DatabaseService;
+import com.gt.buzzbid.service.db.DatabaseService;
 import com.gt.buzzbid.entity.User;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

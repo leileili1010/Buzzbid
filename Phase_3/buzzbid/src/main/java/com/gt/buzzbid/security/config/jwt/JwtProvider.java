@@ -1,4 +1,4 @@
-package com.gt.buzzbid.security.config;
+package com.gt.buzzbid.security.config.jwt;
 
 import org.springframework.security.core.Authentication;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
-import {MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
+import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import buzzLogo from "../images/buzz.png";
 
 function Dashboard() {
@@ -54,8 +54,7 @@ function Dashboard() {
                     <MDBRow>
                         <MDBCol md="12">
                             <div className="text-center">
-                                <button type="button" className="btn btn-primary mt-3" onClick={handleLogout}>Log Out
-                                </button>
+                                <MDBBtn type="button" className="btn btn-primary mt-3" onClick={handleLogout}>Log Out</MDBBtn>
                             </div>
                         </MDBCol>
                     </MDBRow>

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,4 +25,6 @@ public class AuctionModel {
     private String isReturnable;
     private String username;
     private String auctionEndTime;
+    private List<BidModel> bids;
+    private boolean auctionEnded;
 }

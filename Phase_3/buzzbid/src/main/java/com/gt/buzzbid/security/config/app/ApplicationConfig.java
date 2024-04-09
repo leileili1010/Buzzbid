@@ -1,5 +1,6 @@
-package com.gt.buzzbid.security.config;
+package com.gt.buzzbid.security.config.app;
 
+import com.gt.buzzbid.security.config.jwt.JwtTokenValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

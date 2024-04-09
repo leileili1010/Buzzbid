@@ -1,7 +1,7 @@
 package com.gt.buzzbid.service;
 
 import com.gt.buzzbid.Condition;
-import com.gt.buzzbid.db.DatabaseService;
+import com.gt.buzzbid.service.db.DatabaseService;
 import com.gt.buzzbid.entity.Auction;
 import com.gt.buzzbid.entity.Category;
 import com.gt.buzzbid.entity.Item;

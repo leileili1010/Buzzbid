@@ -57,9 +57,9 @@ function Login() {
                     </MDBRow>
                     <MDBRow>
                         <MDBCol md="12">
-                            <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
+                            <MDBBtn type="button" className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
                                     onClick={handleLogin}>Log In
-                            </button>
+                            </MDBBtn>
                             <div className="text-center">
                                 <p>Not registered? <a href="/register">Register</a></p>
                             </div>

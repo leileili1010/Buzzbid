@@ -1,4 +1,4 @@
-package com.gt.buzzbid.security.config;
+package com.gt.buzzbid.security.config.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
