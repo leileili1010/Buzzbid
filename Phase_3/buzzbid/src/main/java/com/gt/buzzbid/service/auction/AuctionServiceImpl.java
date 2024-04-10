@@ -231,4 +231,68 @@ public class AuctionServiceImpl implements AuctionService {
             }
         }
     }
+
+    @Override
+    public void cancelAuction(Integer auctionId, AuctionModel auctionModel) {
+        Connection conn = null;
+        ResultSet rs = null;
+        String query = "UPDATE Auction SET auction_end_time = ?, cancelled_by = ?, cancel_reason = ? WHERE auction_id = ?";
+
+        try {
+             conn = DatabaseService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             stmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+             stmt.setString(2, auctionModel.getUsername());
+             stmt.setString(3, auctionModel.getCancelReason());
+             stmt.setInt(4, auctionId);
+             stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+    }
+
+    @Override
+    public void editAuction(Integer auctionId, AuctionModel auctionModel) {
+        Connection conn = null;
+        ResultSet rs = null;
+        String query = "SELECT item_id FROM Auction WHERE auction_id = ?";
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, auctionId);
+
+            rs = stmt.executeQuery();
+
+            if (rs != null && rs.next()) {
+                itemService.editItemDescription(rs.getInt("item_id"), auctionModel.getDescription());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+    }
 }

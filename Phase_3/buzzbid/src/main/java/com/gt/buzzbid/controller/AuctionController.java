@@ -58,6 +58,14 @@ public class AuctionController {
 
     @PostMapping("/{auctionId}/cancel")
     public ResponseEntity<ApiResponse> cancelAuction(@PathVariable Integer auctionId, @RequestBody AuctionModel auctionModel) {
+        auctionService.cancelAuction(auctionId, auctionModel);
+
+        return ResponseEntity.ok(new ApiResponse());
+    }
+
+    @PostMapping("/{auctionId}/edit")
+    public ResponseEntity<ApiResponse> editItemDescription(@PathVariable Integer auctionId, @RequestBody AuctionModel auctionModel) {
+        auctionService.editAuction(auctionId, auctionModel);
 
         return ResponseEntity.ok(new ApiResponse());
     }
