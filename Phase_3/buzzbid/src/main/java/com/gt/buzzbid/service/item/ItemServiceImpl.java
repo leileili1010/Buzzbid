@@ -63,7 +63,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item getItem(Integer itemId) {
-        Item item = new Item();
+        Item item = null;
         Connection conn = null;
         ResultSet rs = null;
         String query = "SELECT username, item_name, description, category_id, condition::text, is_returnable FROM Item WHERE item_id = ?";
@@ -76,6 +76,7 @@ public class ItemServiceImpl implements ItemService {
             rs = stmt.executeQuery();
 
             if (rs != null && rs.next()) {
+                item = new Item();
                 item.setUsername(rs.getString("username"));
                 item.setItemName(rs.getString("item_name"));
                 item.setDescription(rs.getString("description"));
