@@ -5,6 +5,8 @@ import com.gt.buzzbid.entity.Rating;
 import java.util.List;
 
 public interface RatingService {
+    Rating getRatingById(Integer ratingId);
+
     List<Rating> getAllRatingsForItem(Integer itemId);
 
     void deleteRating(Integer ratingId);

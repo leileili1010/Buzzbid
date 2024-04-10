@@ -12,6 +12,31 @@ import java.util.List;
 public class RatingServiceImpl implements RatingService {
 
     @Override
+    public Rating getRatingById(Integer ratingId) {
+        Rating rating = null;
+        String query = "SELECT rating_id, item_id, username, number_of_stars, comment, rating_time FROM Rating WHERE rating_id = ?";
+        try (Connection conn = DatabaseService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, ratingId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    rating = new Rating();
+                    rating.setRatingId(rs.getInt("rating_id"));
+                    rating.setItemId(rs.getInt("item_id"));
+                    rating.setUsername(rs.getString("username"));
+                    rating.setNumberOfStars(rs.getInt("number_of_stars"));
+                    rating.setComment(rs.getString("comment"));
+                    rating.setRatingTime(rs.getTimestamp("rating_time"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving rating by ID: " + ratingId, e);
+        }
+        return rating;
+    }
+
+    @Override
     public List<Rating> getAllRatingsForItem(Integer itemId) {
         List<Rating> ratings = new ArrayList<>();
         Connection conn = null;
