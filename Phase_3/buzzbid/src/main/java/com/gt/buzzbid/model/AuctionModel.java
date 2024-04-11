@@ -27,4 +27,5 @@ public class AuctionModel {
     private String auctionEndTime;
     private List<BidModel> bids;
     private boolean auctionEnded;
+    private String cancelReason;
 }

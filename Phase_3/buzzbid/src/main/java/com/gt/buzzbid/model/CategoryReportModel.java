@@ -15,4 +15,12 @@ public class CategoryReportModel {
     private String minPrice;
     private String maxPrice;
     private String avgPrice;
+
+    public CategoryReportModel(String category, Integer totalItems, String minPrice, String maxPrice, String avgPrice) {
+        this.category = category;
+        this.totalItems = totalItems;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
+        this.avgPrice = avgPrice;
+    }
 }

@@ -44,11 +44,11 @@ function Dashboard() {
                         </MDBCol>
                         {isAdmin && <MDBCol md="6">
                             <h3>Reports</h3>
-                            <a href="/categoryReport">Category Report</a><br/>
-                            <a href="/userReport">User Report</a><br/>
-                            <a href="/topRatedItemReport">Top Rated Items Report</a><br/>
-                            <a href="/auctionStatistics">Auction Statistics</a><br/>
-                            <a href="/cancelledAuctionDetails">Cancelled Auction Details</a>
+                            <Link to="/categoryreport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Category Report</Link><br/>
+                            <Link to="/userReport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>User Report</Link><br/>
+                            <a href="/topRatedItemReport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Top Rated Items Report</a><br/>
+                            <a href="/auctionStatistics"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Auction Statistics</a><br/>
+                            <a href="/cancelledAuctionDetails"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Cancelled Auction Details</a>
                         </MDBCol>}
                     </MDBRow>
                     <MDBRow>
