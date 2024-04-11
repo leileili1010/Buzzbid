@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {useParams, useLocation} from "react-router-dom";
 import {thunkGetRatings} from "../../redux/rating";
 import {thunkGetItemWithAvgRating} from "../../redux/item";
-import {thunkAuthenticate} from "../../redux/session";
 import "./ItemRating.css";
 import {generateStars, formatDate} from "../helperFunctions/helperFunctions";
 
@@ -14,7 +13,8 @@ const ItemRating = () => {
     const item = useSelector(state => state.item[itemId])
     const ratingsObj = useSelector(state => state.rating)
     const ratings = Object.values(ratingsObj);
-
+    const jsonString = localStorage.getItem('user');
+    const currentUser = JSON.parse(jsonString);
 
     let averageRating;
     if (parseInt(item?.avgRating) > 1) {
@@ -32,10 +32,6 @@ const ItemRating = () => {
     useEffect(() => {
         dispatch(thunkGetItemWithAvgRating(itemId));
     }, [dispatch, itemId]);
-
-    useEffect(() => {
-        dispatch(thunkAuthenticate())
-    }, [dispatch])
 
 
     return (
@@ -67,9 +63,10 @@ const ItemRating = () => {
                         {generateStars(rating)}
                         <p>{formatDate(rating?.ratingTime)}</p>
                         <p>{rating?.comment}</p>
+                        {rating?.username == currentUser.username &&  <button>Delete</button>}
                     </div>
                 )}
-                <button>Delete</button>
+
             </div>
         </div>
     )
