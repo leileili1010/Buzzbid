@@ -28,7 +28,6 @@ function Login() {
               setIsAdmin(adminResponse);
               setUserRole(roleResponse);
 
-              dispatch(setUser({ username, isAdmin, userRole }));
               nav('/dashboard', {state : {username: username, isAdmin : adminResponse, userRole: roleResponse}});
           }
       } catch (error) {

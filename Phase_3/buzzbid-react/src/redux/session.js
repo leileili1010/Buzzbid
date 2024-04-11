@@ -14,7 +14,7 @@ export const removeUser = () => ({
 
 // thunk
 export const thunkAuthenticate = () => async (dispatch) => {
-    const response = await fetch("/api/auth/");
+    const response = await fetch("http://localhost:8081/auth/current-user");
     if (response.ok) {
         const data = await response.json();
         if (data.errors) {

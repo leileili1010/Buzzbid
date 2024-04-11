@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {useParams, useLocation} from "react-router-dom";
 import {thunkGetRatings} from "../../redux/rating";
 import {thunkGetItemWithAvgRating} from "../../redux/item";
+import {thunkAuthenticate} from "../../redux/session";
 import "./ItemRating.css";
 import {generateStars, formatDate} from "../helperFunctions/helperFunctions";
 
@@ -31,6 +32,11 @@ const ItemRating = () => {
     useEffect(() => {
         dispatch(thunkGetItemWithAvgRating(itemId));
     }, [dispatch, itemId]);
+
+    useEffect(() => {
+        dispatch(thunkAuthenticate())
+    }, [dispatch])
+
 
     return (
         <div className="item-rating-container">

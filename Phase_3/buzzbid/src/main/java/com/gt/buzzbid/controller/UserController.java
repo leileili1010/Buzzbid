@@ -94,18 +94,18 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = authentication.getName(); // Get the username directly from authentication
 
-        User user = userServiceImpl.getUserByUsername(userDetails.getUsername());
+        User user = userServiceImpl.getUserByName(username);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         AuthUserModel authUserModel = new AuthUserModel();
-        authUserModel.setUsername(userDetails.getUsername());
-        authUserModel.setFirstName(userDetails.getFirstName());
-        authUserModel.setLastName(userDetails.getLastName());
-        authUserModel.setPosition(userDetails.get());
+        authUserModel.setUsername(user.getUsername());
+        authUserModel.setFirstName(user.getFirstName());
+        authUserModel.setLastName(user.getLastName());
+        authUserModel.setPosition(user.getPosition());
 
         return new ResponseEntity<>(authUserModel, HttpStatus.OK);
     }
