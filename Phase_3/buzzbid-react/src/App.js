@@ -10,32 +10,35 @@ import ItemRating from "./components/ItemRating/ItemRating";
 import ViewItem from "./components/viewItem";
 import CategoryReport from './components/Reports/categoryreport';
 import UserReport from './components/Reports/userreport';
+import {ModalProvider, Modal} from "./context/Modal";
 
 
 function App() {
   return (
+      <ModalProvider>
       <div className="App">
         <Router>
           <Routes>
-
-            <Route path="/" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
-            <Route path="/dashboard" element={<Dashboard/>}/>
-            <Route path="/listItem" element={<ListItem/>}/>
-            <Route path="/searchitem" element={<SearchItem/>}/>
-            <Route path="/itemforsale" element={<ItemForSale />} />
-            <Route path="/itemrating/:itemId" element={<ItemRating />}/>
-            <Route path='/' element={<Login/>}/>
-            <Route path='/login' element={<Login/>}/>
-            <Route path='/register' element={<Register/>}/>
-            <Route path='/dashboard' element={<Dashboard/>}/>
-            <Route path='/listItem' element={<ListItem/>}/>
-            <Route path='/viewItem' element={<ViewItem/>}/>
-            <Route path='/categoryreport' element={<CategoryReport/>}/>
-            <Route path='/userreport' element={<UserReport/>}/>
+              <Route path="/" element={<Login/>}/>
+              <Route path="/register" element={<Register/>}/>
+              <Route path="/dashboard" element={<Dashboard/>}/>
+              <Route path="/listItem" element={<ListItem/>}/>
+              <Route path="/searchitem" element={<SearchItem/>}/>
+              <Route path="/itemforsale" element={<ItemForSale />} />
+              <Route path="/itemrating/:itemId" element={<ItemRating />}/>
+              <Route path='/' element={<Login/>}/>
+              <Route path='/login' element={<Login/>}/>
+              <Route path='/register' element={<Register/>}/>
+              <Route path='/dashboard' element={<Dashboard/>}/>
+              <Route path='/listItem' element={<ListItem/>}/>
+              <Route path='/viewItem' element={<ViewItem/>}/>
+              <Route path='/categoryreport' element={<CategoryReport/>}/>
+              <Route path='/userreport' element={<UserReport/>}/>
           </Routes>
         </Router>
       </div>
+          <Modal />
+      </ModalProvider>
   );
 }
 
