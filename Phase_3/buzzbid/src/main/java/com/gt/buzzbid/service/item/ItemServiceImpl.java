@@ -66,7 +66,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = null;
         Connection conn = null;
         ResultSet rs = null;
-        String query = "SELECT username, item_name, description, category_id, condition::text, is_returnable FROM Item WHERE item_id = ?";
+        String query = "SELECT item_id, username, item_name, description, category_id, condition::text, is_returnable FROM Item WHERE item_id = ?";
 
         try {
             conn = DatabaseService.getConnection();
@@ -77,6 +77,7 @@ public class ItemServiceImpl implements ItemService {
 
             if (rs != null && rs.next()) {
                 item = new Item();
+                item.setItemId(rs.getInt("item_id"));
                 item.setUsername(rs.getString("username"));
                 item.setItemName(rs.getString("item_name"));
                 item.setDescription(rs.getString("description"));
