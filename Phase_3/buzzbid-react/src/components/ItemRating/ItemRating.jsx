@@ -1,16 +1,23 @@
 import {NavLink} from "react-router-dom";
 import { useEffect, useState } from "react";
-import {thunkGetRatings} from "../../redux/rating";
 import { useSelector, useDispatch } from "react-redux";
 import {useParams} from "react-router-dom";
+import {thunkGetRatings} from "../../redux/rating";
+import {thunkGetItemWithAvgRating} from "../../redux/item";
 
 const ItemRating = () => {
     const dispatch = useDispatch();
     const {itemId} = useParams();
+    const item = useSelector(state => state.item[itemId])
+    const ratingsObj = useSelector(state => state.rating)
+    const ratings = Object.values(ratingsObj);
 
     useEffect(() => {
-        console.log("Iam here")
         dispatch(thunkGetRatings(itemId));
+    }, [dispatch, itemId]);
+
+    useEffect(() => {
+        dispatch(thunkGetItemWithAvgRating(itemId));
     }, [dispatch, itemId]);
 
     return (
@@ -20,15 +27,15 @@ const ItemRating = () => {
                 <tbody>
                 <tr>
                     <td>Item ID</td>
-                    <td>1001</td>
+                    <td>{item?.itemId}</td>
                 </tr>
                 <tr>
                     <td>Item Name</td>
-                    <td>Gamin GPS 255W</td>
+                    <td>{item?.itemName}</td>
                 </tr>
                 <tr>
                     <td>Average Rating</td>
-                    <td>3.5 stars</td>
+                    <td>{item?.avgRating}</td>
                 </tr>
                 </tbody>
             </table>

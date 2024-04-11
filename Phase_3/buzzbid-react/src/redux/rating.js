@@ -16,7 +16,6 @@ const getRatings = (ratings) => ({
 // thunk - get ratings for an item
 export const thunkGetRatings = (itemId) => async (dispatch)=> {
     const res = await fetch (`http://localhost:8081/rating/item/${itemId}`);
-    console.log("inside thunk get ratings")
     if (res.ok) {
         const ratings = await res.json();
         console.log(ratings)

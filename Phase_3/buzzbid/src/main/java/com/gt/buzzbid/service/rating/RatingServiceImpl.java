@@ -97,7 +97,10 @@ public class RatingServiceImpl implements RatingService {
             stmt.setInt(1, itemId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    avgRating = rs.getDouble("avg_rating");
+                    double value = rs.getDouble("avg_rating");
+                    if (!rs.wasNull()) {
+                        avgRating = value;
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -105,6 +108,7 @@ public class RatingServiceImpl implements RatingService {
         }
         return avgRating;
     }
+
 
     @Override
     public void deleteRating(Integer ratingId) {

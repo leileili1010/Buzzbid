@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rating")
@@ -50,23 +52,25 @@ public class RatingController {
     }
 
     @GetMapping("/avg/{itemId}")
-    public ResponseEntity<?> getAverageRating(@PathVariable Integer itemId) {
+    public ResponseEntity<Map<String, String>> getAverageRating(@PathVariable Integer itemId) {
         Item item = itemService.getItem(itemId);
-        ApiResponse response = new ApiResponse();
         if (item == null) {
-            response.setMessage("Item with ID " + itemId + " does not exist.");
-            response.setSuccess(false);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("avgRating", "Item with ID " + itemId + " does not exist."), HttpStatus.BAD_REQUEST);
         }
 
         Double avgRating = ratingService.getAvgRating(itemId);
+        Map<String, String> response = new HashMap<>();
+
+        // Check if avgRating is null, meaning there are no ratings
         if (avgRating == null) {
-            response.setMessage("No ratings found for item with ID " + itemId);
-            response.setSuccess(false);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            response.put("avgRating", "No ratings yet");
+        } else {
+            response.put("avgRating", String.format("%.1f", avgRating));
         }
-        return ResponseEntity.ok(avgRating);
+
+        return ResponseEntity.ok(response);
     }
+
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createRating(@RequestBody Rating rating) {

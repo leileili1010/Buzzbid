@@ -3,7 +3,6 @@ package com.gt.buzzbid.controller;
 import com.gt.buzzbid.entity.Item;
 import com.gt.buzzbid.response.ApiResponse;
 import com.gt.buzzbid.service.item.ItemServiceImpl;
-import com.gt.buzzbid.service.rating.RatingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

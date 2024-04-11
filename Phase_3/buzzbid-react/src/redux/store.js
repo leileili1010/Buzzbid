@@ -2,9 +2,11 @@ import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import {thunk} from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import ratingReducer from "./rating";
+import itemReducer from "./item";
 
 const rootReducer = combineReducers({
     rating: ratingReducer,
+    item: itemReducer,
 });
 
 const initialState = {};
