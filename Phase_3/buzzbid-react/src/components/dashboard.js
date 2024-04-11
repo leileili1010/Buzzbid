@@ -2,11 +2,15 @@ import React from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import buzzLogo from "../images/buzz.png";
+import {removeUser} from "../redux/session";
+import { useDispatch } from "react-redux";
 
 function Dashboard() {
     const nav = useNavigate();
     const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
+    const dispatch = useDispatch();
     const handleLogout = () => {
+        dispatch(removeUser());
         nav('/');
     };
 
@@ -34,7 +38,7 @@ function Dashboard() {
                     <MDBRow>
                         <MDBCol md={isAdmin ? "6" : "12"}>
                             <h3>Auction Options</h3>
-                            <Link to="/search" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Search
+                            <Link to="/searchitem" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Search
                                 for
                                 Items</Link><br/>
                             <Link to="/listItem" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>List

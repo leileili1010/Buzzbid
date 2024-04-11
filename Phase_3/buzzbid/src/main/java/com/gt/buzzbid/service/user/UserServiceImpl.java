@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+
     @Override
     public void saveUser(User user) {
         String query = "INSERT INTO \"User\" VALUES (?, ?, ?, ?, null)";

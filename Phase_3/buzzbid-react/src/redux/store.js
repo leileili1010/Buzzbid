@@ -3,10 +3,12 @@ import {thunk} from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import ratingReducer from "./rating";
 import itemReducer from "./item";
+import sessionReducer from "./session";
 
 const rootReducer = combineReducers({
     rating: ratingReducer,
     item: itemReducer,
+    session: sessionReducer,
 });
 
 const initialState = {};
