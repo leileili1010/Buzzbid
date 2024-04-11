@@ -12,6 +12,15 @@ const ItemRating = () => {
     const ratingsObj = useSelector(state => state.rating)
     const ratings = Object.values(ratingsObj);
 
+    let averageRating;
+    if (parseInt(item?.avgRating) > 1) {
+        averageRating = `${item?.avgRating} stars`;
+    } else if (parseInt(item?.avgRating) <= 1) {
+        averageRating = `${item?.avgRating} star`;
+    } else {
+        averageRating = item?.avgRating;
+    }
+
     useEffect(() => {
         dispatch(thunkGetRatings(itemId));
     }, [dispatch, itemId]);
@@ -35,19 +44,20 @@ const ItemRating = () => {
                 </tr>
                 <tr>
                     <td>Average Rating</td>
-                    <td>{item?.avgRating}</td>
+                    <td>{averageRating}</td>
                 </tr>
                 </tbody>
             </table>
             <div className="comment-rating-container">
-                <div>
-                    <p>thinkmcfly </p>
-                    <p>2/2/2024 12:22PM</p>
-                    <p>This product is great for getting aroundtwon but the battery life is extremely limited. It's out of juice when I really need it the most.</p>
+                    {ratings.map(rating =>
+                        <div key={rating?.ratingId}>
+                            <p>{rating?.username}</p>*
+                            <p>{rating?.ratingTime}</p>
+                            <p>{rating?.comment}</p>
+                        </div>
+                    )}
                     <button>Delete</button>
                 </div>
-
-            </div>
         </div>
     )
 }
