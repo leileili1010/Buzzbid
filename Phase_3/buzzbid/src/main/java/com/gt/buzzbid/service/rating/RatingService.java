@@ -9,6 +9,8 @@ public interface RatingService {
 
     List<Rating> getAllRatingsForItem(Integer itemId);
 
+    Double getAvgRating(Integer itemId);
+
     void deleteRating(Integer ratingId);
 
     Integer createRating(Rating rating);

@@ -49,6 +49,25 @@ public class RatingController {
         return ResponseEntity.ok(ratings);
     }
 
+    @GetMapping("/avg/{itemId}")
+    public ResponseEntity<?> getAverageRating(@PathVariable Integer itemId) {
+        Item item = itemService.getItem(itemId);
+        ApiResponse response = new ApiResponse();
+        if (item == null) {
+            response.setMessage("Item with ID " + itemId + " does not exist.");
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        Double avgRating = ratingService.getAvgRating(itemId);
+        if (avgRating == null) {
+            response.setMessage("No ratings found for item with ID " + itemId);
+            response.setSuccess(false);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(avgRating);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createRating(@RequestBody Rating rating) {
         Integer ratingId = ratingService.createRating(rating);

@@ -88,6 +88,25 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
+    public Double getAvgRating(Integer itemId) {
+        Double avgRating = null;
+        String query = "SELECT ROUND(AVG(number_of_stars),2) as avg_rating FROM Rating WHERE item_id = ?";
+        try (Connection conn = DatabaseService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, itemId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    avgRating = rs.getDouble("avg_rating");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving average rating for item ID: " + itemId, e);
+        }
+        return avgRating;
+    }
+
+    @Override
     public void deleteRating(Integer ratingId) {
         Connection conn = null;
         String query = "DELETE FROM Rating WHERE rating_id = ?";
