@@ -1,6 +1,8 @@
 package com.gt.buzzbid.service.auction;
 
+import com.gt.buzzbid.entity.Bid;
 import com.gt.buzzbid.model.BidModel;
+import com.gt.buzzbid.model.SearchModel;
 import com.gt.buzzbid.service.bid.BidServiceImpl;
 import com.gt.buzzbid.service.db.DatabaseService;
 import com.gt.buzzbid.entity.Category;
@@ -142,6 +144,66 @@ public class AuctionServiceImpl implements AuctionService {
         }
 
         return auctionId;
+    }
+
+    @Override
+    public List<AuctionModel> searchForAuction(SearchModel searchModel) {
+        List<AuctionModel> models = new ArrayList<>();
+        Connection conn = null;
+        ResultSet rs = null;
+        String query = "SELECT item_id, auction_end_time, get_it_now_price FROM Auction WHERE auction_end_time > now() AND min_sale_price >= ?";
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, searchModel.getMinPrice());
+
+            rs = stmt.executeQuery();
+
+            if (rs != null) { //iterate through the result sets and if getItem()!=null, push a new AuctionModel to the return list
+                while (rs.next()){
+                    AuctionModel model = new AuctionModel();
+                    model.setItemId(rs.getInt("item_id"));
+                    model.setAuctionEndTime(FMT.format(rs.getTimestamp("auction_end_time")));
+                    if (rs.getObject("get_it_now_price") != null) {
+                        model.setGetItNowPrice("$" + rs.getBigDecimal("get_it_now_price").toPlainString());
+                    }
+                    // get the attributes from item
+                    Item item = itemService.getItem(model.getItemId(), searchModel);
+                    //check if  minPrice <= current high bid <= maxPrice
+                    if (item != null && !bidService.getBids(model.getItemId(), searchModel).isEmpty()) {
+                        model.setItemName(item.getItemName());
+                        model.setDescription(item.getDescription());
+
+                        Category category = getCategoryById(item.getCategoryId());
+
+                        model.setCategory(category.getCategory());
+                        model.setConditionLabel(item.getCondition().getLabel());
+                        model.setIsReturnable(String.valueOf(item.isReturnable()));
+                        model.setUsername(item.getUsername());
+                        model.setBids(bidService.getBids(model.getItemId()));
+
+                        models.add(model);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+
+        return models;
     }
 
     @Override
