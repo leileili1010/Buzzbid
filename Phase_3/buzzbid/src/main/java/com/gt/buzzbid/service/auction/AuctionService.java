@@ -12,4 +12,6 @@ public interface AuctionService {
     public Integer createAuction(Integer itemId, AuctionModel auctionModel);
     public AuctionModel getAuction(Integer auctionId);
     public void getItNow(Integer auctionId, BidModel bidModel);
+    public void cancelAuction(Integer auctionId, AuctionModel auctionModel);
+    public void editAuction(Integer auctionId, AuctionModel auctionModel);
 }

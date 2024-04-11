@@ -8,6 +8,9 @@ import SearchItem from "./components/SearchItem/SearchItem";
 import ItemForSale from "./components/ItemForSale/ItemForSale";
 import ItemRating from "./components/ItemRating/ItemRating";
 import ViewItem from "./components/viewItem";
+import CategoryReport from './components/Reports/categoryreport';
+import UserReport from './components/Reports/userreport';
+
 
 function App() {
   return (
@@ -28,6 +31,8 @@ function App() {
             <Route path='/dashboard' element={<Dashboard/>}/>
             <Route path='/listItem' element={<ListItem/>}/>
             <Route path='/viewItem' element={<ViewItem/>}/>
+            <Route path='/categoryreport' element={<CategoryReport/>}/>
+            <Route path='/userreport' element={<UserReport/>}/>
           </Routes>
         </Router>
       </div>

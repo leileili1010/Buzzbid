@@ -106,4 +106,33 @@ public class ItemServiceImpl implements ItemService {
 
         return item;
     }
+
+    @Override
+    public void editItemDescription(Integer itemId, String description) {
+        Connection conn = null;
+        ResultSet rs = null;
+        String query = "UPDATE Item SET description = ? WHERE item_id = ?";
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, description);
+            stmt.setInt(2, itemId);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+    }
 }

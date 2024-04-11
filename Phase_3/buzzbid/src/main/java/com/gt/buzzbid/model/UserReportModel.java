@@ -16,5 +16,15 @@ public class UserReportModel {
     private Integer sold;
     private Integer won;
     private Integer rated;
+
+    public UserReportModel(String userName, Integer listed, Integer sold, Integer won, Integer rated, Condition mostFreCondition) {
+        this.userName = userName;
+        this.listed = listed;
+        this.sold = sold;
+        this.won = won;
+        this.rated = rated;
+        this.mostFreCondition = mostFreCondition;
+    }
+
     private Condition mostFreCondition;
 }

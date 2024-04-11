@@ -6,4 +6,5 @@ public interface ItemService {
     public Integer createItem(AuctionModel auctionModel);
     public void updateItem(AuctionModel auctionModel);
     public Item getItem(Integer itemId);
+    public void editItemDescription(Integer itemId, String description);
 }
