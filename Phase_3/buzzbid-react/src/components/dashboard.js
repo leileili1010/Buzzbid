@@ -10,7 +10,7 @@ function Dashboard() {
     const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
     const dispatch = useDispatch();
     const handleLogout = () => {
-        dispatch(removeUser());
+        localStorage.clear();
         nav('/');
     };
 
