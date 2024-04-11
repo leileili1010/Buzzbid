@@ -1,6 +1,13 @@
+const RETURN_INITIAL_RATING = "rating/RETURN_INITIAL_RATING";
 const GET_RATINGS = "rating/GET_RATINGS";
 
 // action creator
+
+export const returnInitialRating = () => {
+    return {
+        type: RETURN_INITIAL_RATING,
+    };
+};
 const getRatings = (ratings) => ({
     type: GET_RATINGS,
     ratings
@@ -33,6 +40,9 @@ function ratingReducer(state = initialState, action) {
                 });
             }
             return newState;
+        }
+        case RETURN_INITIAL_RATING: {
+            return initialState;
         }
         default:
             return state;
