@@ -24,7 +24,7 @@ function App() {
             <Route path="/listItem" element={<ListItem/>}/>
             <Route path="/searchitem" element={<SearchItem/>}/>
             <Route path="/itemforsale" element={<ItemForSale />} />
-            <Route path="/itemrating" element={<ItemRating />}/>
+            <Route path="/itemrating/:itemId" element={<ItemRating />}/>
             <Route path='/' element={<Login/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>

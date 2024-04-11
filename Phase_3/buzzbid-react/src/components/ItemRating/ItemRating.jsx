@@ -1,7 +1,18 @@
 import {NavLink} from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import {thunkGetRatings} from "../../redux/rating";
+import { useSelector, useDispatch } from "react-redux";
+import {useParams} from "react-router-dom";
 
 const ItemRating = () => {
+    const dispatch = useDispatch();
+    const {itemId} = useParams();
+
+    useEffect(() => {
+        console.log("Iam here")
+        dispatch(thunkGetRatings(itemId));
+    }, [dispatch, itemId]);
+
     return (
         <div className="item-rating-container">
             <h2>Item Rating</h2>
