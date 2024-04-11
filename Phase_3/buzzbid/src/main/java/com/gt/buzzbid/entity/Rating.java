@@ -2,6 +2,7 @@ package com.gt.buzzbid.entity;
 
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter
@@ -14,5 +15,5 @@ public class Rating {
     private String username;
     private Integer numberOfStars;
     private String comment;
-    private Date ratingTime;
+    private Timestamp ratingTime;
 }
