@@ -1,9 +1,12 @@
 import {NavLink} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {useParams} from "react-router-dom";
+import {useParams, useLocation} from "react-router-dom";
 import {thunkGetRatings} from "../../redux/rating";
 import {thunkGetItemWithAvgRating} from "../../redux/item";
+import {thunkAuthenticate} from "../../redux/session";
+import "./ItemRating.css";
+import {generateStars, formatDate} from "../helperFunctions/helperFunctions";
 
 const ItemRating = () => {
     const dispatch = useDispatch();
@@ -11,6 +14,7 @@ const ItemRating = () => {
     const item = useSelector(state => state.item[itemId])
     const ratingsObj = useSelector(state => state.rating)
     const ratings = Object.values(ratingsObj);
+
 
     let averageRating;
     if (parseInt(item?.avgRating) > 1) {
@@ -28,6 +32,11 @@ const ItemRating = () => {
     useEffect(() => {
         dispatch(thunkGetItemWithAvgRating(itemId));
     }, [dispatch, itemId]);
+
+    useEffect(() => {
+        dispatch(thunkAuthenticate())
+    }, [dispatch])
+
 
     return (
         <div className="item-rating-container">
@@ -49,15 +58,19 @@ const ItemRating = () => {
                 </tbody>
             </table>
             <div className="comment-rating-container">
-                    {ratings.map(rating =>
-                        <div key={rating?.ratingId}>
-                            <p>{rating?.username}</p>*
-                            <p>{rating?.ratingTime}</p>
-                            <p>{rating?.comment}</p>
+                {ratings.map((rating, index) =>
+                    <div key={index}>
+                        <div>
+                            <div><i className="fa-solid fa-user" id="user-icon"></i></div>
+                            <p>{rating?.username}</p>
                         </div>
-                    )}
-                    <button>Delete</button>
-                </div>
+                        {generateStars(rating)}
+                        <p>{formatDate(rating?.ratingTime)}</p>
+                        <p>{rating?.comment}</p>
+                    </div>
+                )}
+                <button>Delete</button>
+            </div>
         </div>
     )
 }

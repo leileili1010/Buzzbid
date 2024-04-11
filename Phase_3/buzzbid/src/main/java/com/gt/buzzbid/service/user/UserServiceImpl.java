@@ -73,6 +73,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByName(String username) {
+        String query = "SELECT * FROM \"User\" WHERE username = ?";
+        Connection conn = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new User(rs.getString("username"), rs.getString("password"),
+                        rs.getString("first_name"), rs.getString("last_name"), rs.getString("position"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+
+            }
+        }
+
+        return null;
+    }
+    @Override
     public void saveUser(User user) {
         String query = "INSERT INTO \"User\" VALUES (?, ?, ?, ?, null)";
         List<Object> params = new ArrayList<>();
