@@ -13,6 +13,7 @@ import SearchResults from "./components/searchResults";
 import TopRatedReport from './components/Reports/topratedreport';
 import AuctionStaticsReport from './components/Reports/auctionstaticsreport';
 import CancelledReport from './components/Reports/cancelledreport';
+import {Modal, ModalProvider} from "./context/Modal";
 
 
 function App() {
