@@ -418,6 +418,7 @@ public class AuctionServiceImpl implements AuctionService {
                 + "ORDER BY 1, 2 DESC) "
                 + "SELECT i.item_id, "
                 + "i.item_name, "
+                + "a.auction_id, "
                 + "wb.bid_amount AS sale_price, "
                 + "(CASE "
                 + "WHEN a.cancelled_timestamp IS NOT NULL "
@@ -440,6 +441,7 @@ public class AuctionServiceImpl implements AuctionService {
             if (rs != null) {
                 while (rs.next()) {
                     AuctionResultModel auctionResult = new AuctionResultModel();
+                    auctionResult.setAuctionId(rs.getInt("auction_id"));
                     auctionResult.setItemId(rs.getInt("item_id"));
                     auctionResult.setItemName(rs.getString("item_name"));
                     if (rs.getObject("sale_price") != null) {

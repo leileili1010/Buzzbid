@@ -1,6 +1,7 @@
 .auction-result-container {
     padding: 10px 50px;
     margin-bottom: 80px;
+    max-width: max-content;
 }
 
 table {
@@ -26,7 +27,28 @@ tr:hover {
     background-color: #f5f5f5;
 }
 
-#item-name,
-.auction-end-time {
-    width: auto;
+.item-name{
+    max-width: 350px;
+}
+.item-name button:hover{
+    text-decoration: underline;
+}
+
+.item-name button{
+   background-color:transparent;
+    padding: 0;
+    text-align: start;
+}
+
+.item-name button {
+    color: black;
+    margin-top: 0px;
+}
+
+.item-name button:hover {
+    color: blue;
+}
+
+.winner {
+    min-width: 100px;
 }

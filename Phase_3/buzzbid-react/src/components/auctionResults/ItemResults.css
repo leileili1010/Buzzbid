@@ -1,0 +1,12 @@
+.item-result {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.view-rating-link a {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.view-rating-link a:hover {
+    color: purple;
+}
