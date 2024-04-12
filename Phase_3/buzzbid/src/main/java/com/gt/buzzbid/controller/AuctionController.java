@@ -1,7 +1,6 @@
 package com.gt.buzzbid.controller;
 
 import com.gt.buzzbid.entity.Category;
-import com.gt.buzzbid.entity.User;
 import com.gt.buzzbid.model.AuctionModel;
 import com.gt.buzzbid.model.BidModel;
 import com.gt.buzzbid.model.SearchModel;
@@ -37,9 +36,9 @@ public class AuctionController {
         return auctionService.createAuction(itemId, auctionModel);
     }
 
-    @GetMapping("/searchForItem") // will return list of AuctionModel
+    @PostMapping("/searchForItem") // will return list of AuctionModel
     public ResponseEntity<List<AuctionModel>> searchForAuction(@RequestBody SearchModel searchModel) {
-        List<AuctionModel> models = auctionService.searchForAuction(searchModel);
+        List<AuctionModel> models = auctionService.searchItems(searchModel);
 
         return ResponseEntity.ok(models);
     }

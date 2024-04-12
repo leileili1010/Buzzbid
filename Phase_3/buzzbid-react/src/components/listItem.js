@@ -83,7 +83,13 @@ function ListItem() {
 
     const submitForm = (e) => {
         e.preventDefault();
-        setErrors(validator(inputs));
+
+        let errors = validator(inputs);
+        setErrors(errors);
+
+        if (Object.keys(errors).length !== 0) {
+            return;
+        }
 
         const data = {
             itemName : inputs.itemName,

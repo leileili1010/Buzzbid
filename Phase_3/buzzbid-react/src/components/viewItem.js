@@ -186,7 +186,7 @@ function ViewItem() {
                         <MDBCol md="4">
                             <strong>{auctionData.getItNowPrice}</strong>
                         </MDBCol>
-                        {auctionData.getItNowPrice && !auctionData.auctionEnded && <MDBCol md="4">
+                        {username !== auctionData.username && auctionData.getItNowPrice && !auctionData.auctionEnded && <MDBCol md="4">
                             <MDBBtn type="button" className="mb-4 d-block btn btn-primary mt-3" style={{width: '100%'}}
                                     onClick={getItNow}>
                                 Get It Now!
@@ -238,7 +238,7 @@ function ViewItem() {
                         </MDBCol>
                     </MDBRow>
                     <br/>
-                    {!auctionData.auctionEnded && <MDBRow>
+                    {username !== auctionData.username && !auctionData.auctionEnded && <MDBRow>
                         <MDBCol md="4">
                             <strong>Your Bid</strong>
                         </MDBCol>
@@ -263,7 +263,7 @@ function ViewItem() {
                                     onClick={toggleCancelModal}>Cancel This Auction
                             </MDBBtn>
                         </MDBCol>}
-                        {!auctionData.auctionEnded && <MDBCol md="4">
+                        {username !== auctionData.username && !auctionData.auctionEnded && <MDBCol md="4">
                             <MDBBtn type="button" className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
                                     onClick={bid}>Bid On This Item
                             </MDBBtn>
