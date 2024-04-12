@@ -41,8 +41,8 @@ const AuctionResults = () => {
                     <tr key={auctionResult.itemId}>
                         <td>{auctionResult.itemId}</td>
                         <td className="item-name">{auctionResult.itemName}</td>
-                        <td>{auctionResult.salePrice || "-"}</td>
-                        <td>{auctionResult.winner || "-"}</td>
+                        <td>{Number(auctionResult.salePrice).toFixed(2) || "-"}</td>
+                        <td className="winner">{auctionResult.winner || "-"}</td>
                         <td className="auction-end-time">{formatDate(auctionResult.auctionEnded)}</td>
                     </tr>
                 ))}
