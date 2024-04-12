@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AuctionModel {
     private Integer itemId;
+    private Integer auctionId;
     private String itemName;
     private String description;
     private Integer categoryId;
@@ -28,4 +29,6 @@ public class AuctionModel {
     private List<BidModel> bids;
     private boolean auctionEnded;
     private String cancelReason;
+    private String highBidder;
+    private String currentBid;
 }

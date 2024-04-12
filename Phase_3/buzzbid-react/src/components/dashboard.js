@@ -38,7 +38,7 @@ function Dashboard() {
                     <MDBRow>
                         <MDBCol md={isAdmin ? "6" : "12"}>
                             <h3>Auction Options</h3>
-                            <Link to="/searchitem" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Search
+                            <Link to="/searchItem" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Search
                                 for
                                 Items</Link><br/>
                             <Link to="/listItem" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>List
