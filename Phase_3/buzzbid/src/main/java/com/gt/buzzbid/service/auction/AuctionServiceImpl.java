@@ -399,7 +399,11 @@ public class AuctionServiceImpl implements AuctionService {
                 while (rs.next()) {
                     AuctionResultModel auctionResult = new AuctionResultModel();
                     auctionResult.setItemId(rs.getInt("item_id"));
-                    auctionResult.setItemName(rs.getString("item_name"));
+                    if (rs.getObject("sale_price") != null) {
+                        auctionResult.setSalePrice(rs.getDouble("sale_price"));
+                    } else {
+                        auctionResult.setSalePrice(null);
+                    }
                     auctionResult.setSalePrice(rs.getDouble("sale_price"));
                     auctionResult.setWinner(rs.getString("winner"));
                     auctionResult.setAuctionEnded(rs.getTimestamp("auction_ended"));
