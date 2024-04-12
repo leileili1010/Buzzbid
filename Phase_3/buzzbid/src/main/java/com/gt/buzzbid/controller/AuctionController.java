@@ -3,6 +3,7 @@ package com.gt.buzzbid.controller;
 import com.gt.buzzbid.entity.Category;
 import com.gt.buzzbid.entity.User;
 import com.gt.buzzbid.model.AuctionModel;
+import com.gt.buzzbid.model.AuctionResultModel;
 import com.gt.buzzbid.model.BidModel;
 import com.gt.buzzbid.model.SearchModel;
 import com.gt.buzzbid.response.ApiResponse;
@@ -77,5 +78,10 @@ public class AuctionController {
         auctionService.editAuction(auctionId, auctionModel);
 
         return ResponseEntity.ok(new ApiResponse());
+    }
+
+    @GetMapping("/auction-results")
+    public List<AuctionResultModel> getAuctionResults() {
+        return auctionService.getAuctionResults();
     }
 }
