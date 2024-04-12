@@ -10,6 +10,9 @@ import ItemRating from "./components/ItemRating/ItemRating";
 import ViewItem from "./components/viewItem";
 import CategoryReport from './components/Reports/categoryreport';
 import UserReport from './components/Reports/userreport';
+import TopRatedReport from './components/Reports/topratedreport';
+import AuctionStaticsReport from './components/Reports/auctionstaticsreport';
+import CancelledReport from './components/Reports/cancelledreport';
 
 
 function App() {
@@ -34,6 +37,9 @@ function App() {
             <Route path='/viewItem' element={<ViewItem/>}/>
             <Route path='/categoryreport' element={<CategoryReport/>}/>
             <Route path='/userreport' element={<UserReport/>}/>
+            <Route path='/topratedreport' element={<TopRatedReport/>}/>
+            <Route path='/auctionstaticsreport' element={<AuctionStaticsReport/>}/>
+            <Route path='/cancelledreport' element={<CancelledReport/>}/>
           </Routes>
         </Router>
       </div>
