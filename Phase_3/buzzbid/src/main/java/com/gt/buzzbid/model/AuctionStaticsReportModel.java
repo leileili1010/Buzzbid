@@ -12,11 +12,19 @@ import lombok.Setter;
 
 public class AuctionStaticsReportModel {
 
-    private Integer activeAuction;
-    private Integer finishedAuction;
-    private Integer wonAuction;
-    private Integer cancelledAuction;
-    private Integer ratedItems;
-    private Integer notRatedItems;
+    public Integer activeAuction;
+    public Integer finishedAuction;
+    public Integer wonAuction;
+    public Integer cancelledAuction;
+    public Integer ratedItems;
+    public Integer notRatedItems;
 
+    public AuctionStaticsReportModel(Integer activeAuction, Integer finishedAuction, Integer wonAuction, Integer cancelledAuction, Integer ratedItems, Integer notRatedItems) {
+        this.activeAuction = activeAuction;
+        this.finishedAuction = finishedAuction;
+        this.wonAuction = wonAuction;
+        this.cancelledAuction = cancelledAuction;
+        this.ratedItems = ratedItems;
+        this.notRatedItems = notRatedItems;
+    }
 }

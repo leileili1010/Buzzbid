@@ -3,9 +3,9 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow} from "mdb-react-ui-kit";
 import axios from "axios";
 
-function UserReport(){
+function CancelledReport(){
   const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
-  const [userReport, setUserReport] = useState(null);
+  const [cancelledReport, setCancelledReport] = useState(null);
   const nav = useNavigate();
   const done = () => {
     nav('/dashboard', {state : {username: username, isAdmin : isAdmin, userRole: userRole}});
@@ -15,9 +15,9 @@ function UserReport(){
   useEffect(() => {
     const fetchData = async () => {
       try {
-          const response = await axios.get('http://localhost:8081/report/user_report');
+          const response = await axios.get('http://localhost:8081/report/cancelled_report');
           const data = response.data;
-          setUserReport(data);
+          setCancelledReport(data);
       } catch (error) {
           console.error('Error fetching user report:', error);
       }
@@ -27,7 +27,7 @@ function UserReport(){
   }, []); 
   
   
-  if (!userReport) {
+  if (!cancelledReport) {
   return <div>Loading...</div>;
   }
 
@@ -41,47 +41,37 @@ function UserReport(){
      
        <MDBContainer className="border rounded-lg"style={{width: '2000px', height: "auto"}}>
        <fieldset>
-       <legend>User Report</legend>
+       <legend>Cancelled Auction Details</legend>
        <MDBRow className="justify-content-center">
-           <MDBCol md="2">
-             <strong>User name</strong>
+           <MDBCol md="3">
+             <strong>ID</strong>
            </MDBCol>
-            <MDBCol md="2">
-              <strong>Listed</strong>
+            <MDBCol md="3">
+              <strong>Listed by</strong>
             </MDBCol>
-           <MDBCol md="2">
-              <strong>Sold</strong>
+           <MDBCol md="3">
+              <strong>Cancelled Date</strong>
             </MDBCol>
-            <MDBCol md="2">
-              <strong>Won</strong>
+            <MDBCol md="3">
+              <strong>Reason</strong>
             </MDBCol>
-            <MDBCol md="2">
-              <strong>Rated</strong>
-            </MDBCol>
-            <MDBCol md="2">
-              <strong style={{fontSize:16}}>Most Frequent Condition</strong>
-            </MDBCol>
+
          </MDBRow  >
-         {userReport && userReport.map(b => (
+         {cancelledReport && cancelledReport.map(b => (
            <MDBRow className="justify-content-center">
-             <MDBCol md="2">
-                {b.userName}
+             <MDBCol md="3">
+                {b.itemID}
              </MDBCol>
-             <MDBCol md="2">
-                 {b.listed}
+             <MDBCol md="3">
+                 {b.listedBy}
              </MDBCol>
-             <MDBCol md="2">
-                 {b.sold}
+             <MDBCol md="3">
+                 {b.cancelledDate}
              </MDBCol>
-             <MDBCol md="2">
-                 {b.won}
+             <MDBCol md="3">
+                 {b.reason}
              </MDBCol>
-             <MDBCol md="2">
-                 {b.rated}
-             </MDBCol>
-             <MDBCol md="2">
-                 {b.mostFreCondition}
-             </MDBCol>
+             
            </MDBRow>
          ))}
          <MDBRow className="justify-content-end p-3" >
@@ -101,4 +91,4 @@ function UserReport(){
 
 
 
-export default UserReport;
+export default CancelledReport;

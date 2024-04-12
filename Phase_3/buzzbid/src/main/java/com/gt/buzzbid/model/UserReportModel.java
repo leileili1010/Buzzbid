@@ -17,7 +17,7 @@ public class UserReportModel {
     private Integer won;
     private Integer rated;
 
-    public UserReportModel(String userName, Integer listed, Integer sold, Integer won, Integer rated, Condition mostFreCondition) {
+    public UserReportModel(String userName, Integer listed, Integer sold, Integer won, Integer rated, String mostFreCondition) {
         this.userName = userName;
         this.listed = listed;
         this.sold = sold;
@@ -26,5 +26,5 @@ public class UserReportModel {
         this.mostFreCondition = mostFreCondition;
     }
 
-    private Condition mostFreCondition;
+    private String mostFreCondition;
 }

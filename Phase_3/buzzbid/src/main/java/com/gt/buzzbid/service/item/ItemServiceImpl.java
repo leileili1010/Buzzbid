@@ -1,12 +1,15 @@
 package com.gt.buzzbid.service.item;
 
 import com.gt.buzzbid.Condition;
+import com.gt.buzzbid.model.SearchModel;
 import com.gt.buzzbid.service.db.DatabaseService;
 import com.gt.buzzbid.entity.Item;
 import com.gt.buzzbid.model.AuctionModel;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -72,6 +75,57 @@ public class ItemServiceImpl implements ItemService {
             conn = DatabaseService.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, itemId);
+
+            rs = stmt.executeQuery();
+
+            if (rs != null && rs.next()) {
+                item = new Item();
+                item.setItemId(rs.getInt("item_id"));
+                item.setUsername(rs.getString("username"));
+                item.setItemName(rs.getString("item_name"));
+                item.setDescription(rs.getString("description"));
+                item.setCategoryId(rs.getInt("category_id"));
+                item.setCondition(Condition.getByLabel(rs.getString("condition")));
+                item.setReturnable(rs.getBoolean("is_returnable"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return item;
+    }
+
+    @Override
+    public Item getItem(Integer itemId, SearchModel searchModel) {
+        Item item = null;
+        Connection conn = null;
+        ResultSet rs = null;
+        String query = "SELECT item_id, username, item_name, description, category_id, condition::text, is_returnable FROM Item WHERE item_id = ? AND (item_name ~ ? OR description ~ ?) AND category_id = ? AND condition <= ?";
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, itemId);
+            stmt.setString(2, searchModel.getKeyword());
+            stmt.setString(3, searchModel.getKeyword());
+            stmt.setInt(4, searchModel.getCategoryId());
+            stmt.setInt(5, searchModel.getCondition().ordinal());
 
             rs = stmt.executeQuery();
 
