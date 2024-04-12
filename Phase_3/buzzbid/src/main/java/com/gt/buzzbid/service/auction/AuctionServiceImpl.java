@@ -405,9 +405,9 @@ public class AuctionServiceImpl implements AuctionService {
         List<AuctionResultModel> auctionResults = new ArrayList<>();
         Connection conn = null;
         ResultSet rs = null;
-        String query = "WITH winning_bids AS (SELECT DISTINCT ON (b.auction_id)"
-                + "b.auction_id,"
-                + "b.bid_amount,"
+        String query = "WITH winning_bids AS (SELECT DISTINCT ON (b.auction_id) "
+                + "b.auction_id, "
+                + "b.bid_amount, "
                 + "b.username "
                 + "FROM Bid b "
                 + "JOIN Auction a ON b.auction_id = a.auction_id "
@@ -416,19 +416,20 @@ public class AuctionServiceImpl implements AuctionService {
                 + "OR b.bid_amount = a.get_it_now_price) "
                 + "AND a.cancelled_by IS NULL "
                 + "ORDER BY 1, 2 DESC) "
-                + "SELECT i.item_id,"
-                + "i.item_name,"
-                + "wb.bid_amount AS sale_price,"
+                + "SELECT i.item_id, "
+                + "i.item_name, "
+                + "wb.bid_amount AS sale_price, "
                 + "(CASE "
                 + "WHEN a.cancelled_timestamp IS NOT NULL "
                 + "THEN 'Cancelled' "
                 + "ELSE wb.username "
-                + "END) AS winner,"
+                + "END) AS winner, "
                 + "a.auction_end_time AS auction_ended "
                 + "FROM Item i "
                 + "JOIN Auction a ON i.item_id = a.item_id "
                 + "LEFT JOIN winning_bids wb ON a.auction_id = wb.auction_id "
-                + "WHERE a.auction_end_time < now();";
+                + "WHERE a.auction_end_time < now() "
+                + "ORDER BY a.auction_end_time DESC;";
 
         try {
             conn = DatabaseService.getConnection();
@@ -440,12 +441,12 @@ public class AuctionServiceImpl implements AuctionService {
                 while (rs.next()) {
                     AuctionResultModel auctionResult = new AuctionResultModel();
                     auctionResult.setItemId(rs.getInt("item_id"));
+                    auctionResult.setItemName(rs.getString("item_name"));
                     if (rs.getObject("sale_price") != null) {
                         auctionResult.setSalePrice(rs.getDouble("sale_price"));
                     } else {
                         auctionResult.setSalePrice(null);
                     }
-                    auctionResult.setSalePrice(rs.getDouble("sale_price"));
                     auctionResult.setWinner(rs.getString("winner"));
                     auctionResult.setAuctionEnded(rs.getTimestamp("auction_ended"));
                     auctionResults.add(auctionResult);

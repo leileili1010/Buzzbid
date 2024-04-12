@@ -43,7 +43,7 @@ function Dashboard() {
                                 Items</Link><br/>
                             <Link to="/listItem" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>List
                                 Item</Link><br/>
-                            <Link to="/viewResults" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>View
+                            <Link to="/auctionresults" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>View
                                 Auction Results</Link>
                         </MDBCol>
                         {isAdmin && <MDBCol md="6">

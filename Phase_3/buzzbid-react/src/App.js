@@ -13,8 +13,8 @@ import SearchResults from "./components/searchResults";
 import TopRatedReport from './components/Reports/topratedreport';
 import AuctionStaticsReport from './components/Reports/auctionstaticsreport';
 import CancelledReport from './components/Reports/cancelledreport';
-import {Modal, ModalProvider} from "./context/Modal";
-
+import {ModalProvider, Modal} from "./context/Modal";
+import AuctionResults from "./components/auctionResults/AuctionResults";
 
 function App() {
   return (
@@ -36,6 +36,7 @@ function App() {
             <Route path='/topratedreport' element={<TopRatedReport/>}/>
             <Route path='/auctionstaticsreport' element={<AuctionStaticsReport/>}/>
             <Route path='/cancelledreport' element={<CancelledReport/>}/>
+            <Route path='/auctionresults' element={<AuctionResults/>}/>
           </Routes>
         </Router>
       </div>
