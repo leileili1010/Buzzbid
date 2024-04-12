@@ -19,7 +19,6 @@ public interface AuctionService {
 
 
 
-
-
-    List<AuctionResultModel> getAuctionResults();
+    public List<AuctionModel> searchForAuction(SearchModel searchModel);
+    public List<AuctionResultModel> getAuctionResults();
 }
