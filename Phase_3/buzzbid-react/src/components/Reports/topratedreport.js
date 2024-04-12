@@ -3,9 +3,9 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow} from "mdb-react-ui-kit";
 import axios from "axios";
 
-function UserReport(){
+function TopRatedReport(){
   const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
-  const [userReport, setUserReport] = useState(null);
+  const [topRatedReport, setRatedReport] = useState(null);
   const nav = useNavigate();
   const done = () => {
     nav('/dashboard', {state : {username: username, isAdmin : isAdmin, userRole: userRole}});
@@ -15,9 +15,9 @@ function UserReport(){
   useEffect(() => {
     const fetchData = async () => {
       try {
-          const response = await axios.get('http://localhost:8081/report/user_report');
+          const response = await axios.get('http://localhost:8081/report/toprate_report');
           const data = response.data;
-          setUserReport(data);
+          setRatedReport(data);
       } catch (error) {
           console.error('Error fetching user report:', error);
       }
@@ -27,7 +27,7 @@ function UserReport(){
   }, []); 
   
   
-  if (!userReport) {
+  if (!topRatedReport) {
   return <div>Loading...</div>;
   }
 
@@ -39,48 +39,30 @@ function UserReport(){
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
      
-       <MDBContainer className="border rounded-lg"style={{width: '2000px', height: "auto"}}>
+       <MDBContainer className="border rounded-lg">
        <fieldset>
-       <legend>User Report</legend>
+       <legend>Top Rated Items</legend>
        <MDBRow className="justify-content-center">
-           <MDBCol md="2">
-             <strong>User name</strong>
+           <MDBCol md="3">
+             <strong>Item Name</strong>
            </MDBCol>
-            <MDBCol md="2">
-              <strong>Listed</strong>
+            <MDBCol md="3">
+              <strong>Average Rating</strong>
             </MDBCol>
-           <MDBCol md="2">
-              <strong>Sold</strong>
-            </MDBCol>
-            <MDBCol md="2">
-              <strong>Won</strong>
-            </MDBCol>
-            <MDBCol md="2">
-              <strong>Rated</strong>
-            </MDBCol>
-            <MDBCol md="2">
-              <strong style={{fontSize:16}}>Most Frequent Condition</strong>
+           <MDBCol md="3">
+              <strong>Rating Count</strong>
             </MDBCol>
          </MDBRow  >
-         {userReport && userReport.map(b => (
+         {topRatedReport && topRatedReport.map(b => (
            <MDBRow className="justify-content-center">
-             <MDBCol md="2">
-                {b.userName}
+             <MDBCol md="3">
+                {b.itemName}
              </MDBCol>
-             <MDBCol md="2">
-                 {b.listed}
+             <MDBCol md="3">
+                 {b.avgRating}
              </MDBCol>
-             <MDBCol md="2">
-                 {b.sold}
-             </MDBCol>
-             <MDBCol md="2">
-                 {b.won}
-             </MDBCol>
-             <MDBCol md="2">
-                 {b.rated}
-             </MDBCol>
-             <MDBCol md="2">
-                 {b.mostFreCondition}
+             <MDBCol md="3">
+                 {b.ratingCount}
              </MDBCol>
            </MDBRow>
          ))}
@@ -101,4 +83,4 @@ function UserReport(){
 
 
 
-export default UserReport;
+export default TopRatedReport;

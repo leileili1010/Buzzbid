@@ -15,4 +15,9 @@ public class TopRatedReportModel {
     private Double avgRating;
     private Integer ratingCount;
 
+    public TopRatedReportModel(String itemName, Double avgRating, Integer ratingCount) {
+        this.itemName = itemName;
+        this.avgRating = avgRating;
+        this.ratingCount = ratingCount;
+    }
 }
