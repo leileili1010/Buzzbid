@@ -26,7 +26,7 @@ function Register() {
                 nav('/dashboard', {state : {username: username}});
             }
         } catch (error) {
-            setError(error.response ? error.response.data : error.message);
+            setError(error.response ? error.response.data.message : error.message);
         }
     };
 
