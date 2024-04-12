@@ -16,9 +16,5 @@ public interface AuctionService {
     public void cancelAuction(Integer auctionId, AuctionModel auctionModel);
     public void editAuction(Integer auctionId, AuctionModel auctionModel);
 
-
-
-
-    public List<AuctionModel> searchForAuction(SearchModel searchModel);
     public List<AuctionResultModel> getAuctionResults();
 }
