@@ -2,6 +2,7 @@ package com.gt.buzzbid.service.auction;
 
 import com.gt.buzzbid.entity.Category;
 import com.gt.buzzbid.model.AuctionModel;
+import com.gt.buzzbid.model.AuctionResultModel;
 import com.gt.buzzbid.model.BidModel;
 import com.gt.buzzbid.model.SearchModel;
 
@@ -16,4 +17,5 @@ public interface AuctionService {
     public void cancelAuction(Integer auctionId, AuctionModel auctionModel);
     public void editAuction(Integer auctionId, AuctionModel auctionModel);
     public List<AuctionModel> searchItems(SearchModel searchModel); //all search criteria are passed in by searchModel
+    public List<AuctionResultModel> getAuctionResults();
 }

@@ -10,7 +10,7 @@ function Dashboard() {
     const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
     const dispatch = useDispatch();
     const handleLogout = () => {
-        dispatch(removeUser());
+        localStorage.clear();
         nav('/');
     };
 
@@ -50,9 +50,9 @@ function Dashboard() {
                             <h3>Reports</h3>
                             <Link to="/categoryreport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Category Report</Link><br/>
                             <Link to="/userReport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>User Report</Link><br/>
-                            <a href="/topRatedItemReport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Top Rated Items Report</a><br/>
-                            <a href="/auctionStatistics"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Auction Statistics</a><br/>
-                            <a href="/cancelledAuctionDetails"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Cancelled Auction Details</a>
+                            <Link to="/topratedreport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Top Rated Items Report</Link><br/>
+                            <Link to="/auctionstaticsreport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Auction Statistics</Link><br/>
+                            <Link to="/cancelledreport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Cancelled Auction Details</Link><br/>
                         </MDBCol>}
                     </MDBRow>
                     <MDBRow>

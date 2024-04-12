@@ -17,4 +17,10 @@ public class CancelledReportModel {
     private String cancelledDate;
     private String reason;
 
+    public CancelledReportModel(Integer itemID, String listedBy, String cancelledDate, String reason) {
+        this.itemID = itemID;
+        this.listedBy = listedBy;
+        this.cancelledDate = cancelledDate;
+        this.reason = reason;
+    }
 }

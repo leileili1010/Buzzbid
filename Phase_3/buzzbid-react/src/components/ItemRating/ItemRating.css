@@ -3,3 +3,79 @@
     padding: 6px;
     border-radius: 50%;
 }
+
+.item-rating-container {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.item-rating-item {
+    border-collapse: collapse;
+}
+
+.table-title {
+    font-weight: bold;
+}
+
+.item-rating-item td {
+    padding: 8px;
+}
+
+.comment-rating-container {
+    margin-top: 20px;
+}
+
+.ratings {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.user-star {
+    display: flex;
+    align-items: center;
+}
+
+.user-details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.user-details p {
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+#user-icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.stars {
+    margin-right: 10px;
+}
+
+.rating-time {
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.rating-comment {
+    margin-top: 5px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

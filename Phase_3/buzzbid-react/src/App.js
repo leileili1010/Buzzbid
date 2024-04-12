@@ -10,10 +10,14 @@ import ViewItem from "./components/viewItem";
 import CategoryReport from './components/Reports/categoryReport';
 import UserReport from './components/Reports/userReport';
 import SearchResults from "./components/searchResults";
+import TopRatedReport from './components/Reports/topratedreport';
+import AuctionStaticsReport from './components/Reports/auctionstaticsreport';
+import CancelledReport from './components/Reports/cancelledreport';
 
 
 function App() {
   return (
+      <ModalProvider>
       <div className="App">
         <Router>
           <Routes>
@@ -28,9 +32,14 @@ function App() {
             <Route path="/itemrating/:itemId" element={<ItemRating />}/>
             <Route path='/categoryReport' element={<CategoryReport/>}/>
             <Route path='/userReport' element={<UserReport/>}/>
+            <Route path='/topratedreport' element={<TopRatedReport/>}/>
+            <Route path='/auctionstaticsreport' element={<AuctionStaticsReport/>}/>
+            <Route path='/cancelledreport' element={<CancelledReport/>}/>
           </Routes>
         </Router>
       </div>
+          <Modal />
+      </ModalProvider>
   );
 }
 

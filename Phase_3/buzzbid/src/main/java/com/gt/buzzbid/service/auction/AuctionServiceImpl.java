@@ -1,5 +1,7 @@
 package com.gt.buzzbid.service.auction;
 
+import com.gt.buzzbid.model.AuctionResultModel;
+import com.gt.buzzbid.entity.Bid;
 import com.gt.buzzbid.Condition;
 import com.gt.buzzbid.model.BidModel;
 import com.gt.buzzbid.model.SearchModel;
@@ -396,5 +398,74 @@ public class AuctionServiceImpl implements AuctionService {
 
             }
         }
+    }
+
+    @Override
+    public List<AuctionResultModel> getAuctionResults() {
+        List<AuctionResultModel> auctionResults = new ArrayList<>();
+        Connection conn = null;
+        ResultSet rs = null;
+        String query = "WITH winning_bids AS (SELECT DISTINCT ON (b.auction_id)"
+                + "b.auction_id,"
+                + "b.bid_amount,"
+                + "b.username "
+                + "FROM Bid b "
+                + "JOIN Auction a ON b.auction_id = a.auction_id "
+                + "WHERE a.auction_end_time < now() "
+                + "AND (b.bid_amount >= a.min_sale_price "
+                + "OR b.bid_amount = a.get_it_now_price) "
+                + "AND a.cancelled_by IS NULL "
+                + "ORDER BY 1, 2 DESC) "
+                + "SELECT i.item_id,"
+                + "i.item_name,"
+                + "wb.bid_amount AS sale_price,"
+                + "(CASE "
+                + "WHEN a.cancelled_timestamp IS NOT NULL "
+                + "THEN 'Cancelled' "
+                + "ELSE wb.username "
+                + "END) AS winner,"
+                + "a.auction_end_time AS auction_ended "
+                + "FROM Item i "
+                + "JOIN Auction a ON i.item_id = a.item_id "
+                + "LEFT JOIN winning_bids wb ON a.auction_id = wb.auction_id "
+                + "WHERE a.auction_end_time < now();";
+
+        try {
+            conn = DatabaseService.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            rs = stmt.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    AuctionResultModel auctionResult = new AuctionResultModel();
+                    auctionResult.setItemId(rs.getInt("item_id"));
+                    if (rs.getObject("sale_price") != null) {
+                        auctionResult.setSalePrice(rs.getDouble("sale_price"));
+                    } else {
+                        auctionResult.setSalePrice(null);
+                    }
+                    auctionResult.setSalePrice(rs.getDouble("sale_price"));
+                    auctionResult.setWinner(rs.getString("winner"));
+                    auctionResult.setAuctionEnded(rs.getTimestamp("auction_ended"));
+                    auctionResults.add(auctionResult);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return auctionResults;
     }
 }

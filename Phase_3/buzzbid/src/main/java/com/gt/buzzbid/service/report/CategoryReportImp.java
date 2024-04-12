@@ -53,10 +53,6 @@ public class CategoryReportImp implements CategoryReportService{
         }
 
 
-//        categoryReport.add(new CategoryReportModel("Books", 10, "$100", "$1000", "$500"));
-//        categoryReport.add(new CategoryReportModel("TV", 10, "$100", "$1000", "$500"));
-//        categoryReport.add(new CategoryReportModel("AC", 10, "$100", "$1000", "$500"));
-//        categoryReport.add(new CategoryReportModel("Video", 10, "$100", "$1000", "$500"));
 
         return categoryReport;
     }

@@ -28,6 +28,8 @@ function Login() {
               setIsAdmin(adminResponse);
               setUserRole(roleResponse);
 
+              localStorage.setItem('token', JSON.stringify(response.data.token))
+              localStorage.setItem('user', JSON.stringify({username: username, isAdmin : adminResponse, userRole: roleResponse}));
               nav('/dashboard', {state : {username: username, isAdmin : adminResponse, userRole: roleResponse}});
           }
       } catch (error) {
