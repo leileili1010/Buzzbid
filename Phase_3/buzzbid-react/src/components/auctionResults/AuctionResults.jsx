@@ -1,12 +1,17 @@
 import { useEffect, useState} from "react";
+import {NavLink, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {formatDate} from "../helperFunctions/helperFunctions";
 import "./AuctionResults.css"
-import {Link, useLocation} from "react-router-dom";
+import OpenModalButton from "../OpenModalButton";
+import DeleteRatingModal from "../ItemRating/DeleteRatingModal";
+import ItemResults from "./ItemResults";
 
 const AuctionResults = () => {
+    const navigate = useNavigate();
     const [auctionResults, setAuctionResults] = useState([]);
-    const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
+    const userJsonString = localStorage.getItem('user');
+    const currentUser = JSON.parse(userJsonString);
 
     useEffect(() => {
        const fetchData = async ()=> {
@@ -20,6 +25,10 @@ const AuctionResults = () => {
         }
         fetchData();
     }, [])
+
+    useEffect(() => {
+        if (!userJsonString) navigate("/login");
+    }, [userJsonString, navigate]);
 
     useEffect(() => {
         console.log("Auction results changed:", auctionResults);
@@ -43,12 +52,18 @@ const AuctionResults = () => {
                     <tr key={auctionResult.itemId}>
                         <td>{auctionResult.itemId}</td>
                         <td className="item-name">
-                            <Link to="/viewItem" state={{auctionId: auctionResult.auctionId, username: username, isAdmin: isAdmin, userRole : userRole}}>
-                                {auctionResult.itemName}
-                            </Link>
+                            <OpenModalButton
+                            buttonText={auctionResult.itemName}
+                            modalComponent={<ItemResults
+                                auctionId={auctionResult.auctionId}
+                                username={currentUser.username}
+                                isAdmin={currentUser.isAdmin}
+                                userRole={currentUser.userRole}
+                                itemId={auctionResult.itemId}
+                            />}/>
                         </td>
-                        <td>{auctionResult.salePrice || "-"}</td>
-                        <td>{auctionResult.winner || "-"}</td>
+                        <td>{( auctionResult.salePrice > 0 && Number(auctionResult.salePrice).toFixed(2)) || "-"}</td>
+                        <td className="winner">{auctionResult.winner || "-"}</td>
                         <td className="auction-end-time">{formatDate(auctionResult.auctionEnded)}</td>
                     </tr>
                 ))}

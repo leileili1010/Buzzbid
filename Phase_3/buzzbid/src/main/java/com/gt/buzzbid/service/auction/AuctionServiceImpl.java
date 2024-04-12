@@ -459,7 +459,6 @@ public class AuctionServiceImpl implements AuctionService {
                     auctionResult.setAuctionId(rs.getInt("auction_id"));
                     auctionResult.setItemId(rs.getInt("item_id"));
                     auctionResult.setItemName(rs.getString("item_name"));
-
                     if (rs.getObject("sale_price") != null) {
                         auctionResult.setSalePrice("$" + rs.getBigDecimal("sale_price").toPlainString());
                     }
