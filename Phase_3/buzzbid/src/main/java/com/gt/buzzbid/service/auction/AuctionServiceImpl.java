@@ -317,7 +317,7 @@ public class AuctionServiceImpl implements AuctionService {
                 + "i.item_name,"
                 + "wb.bid_amount AS sale_price,"
                 + "(CASE "
-                + "WHEN a.cancelled_by IS NOT NULL "
+                + "WHEN a.cancelled_timestamp IS NOT NULL "
                 + "THEN 'Cancelled' "
                 + "ELSE wb.username "
                 + "END) AS winner,"
@@ -338,7 +338,11 @@ public class AuctionServiceImpl implements AuctionService {
                     AuctionResultModel auctionResult = new AuctionResultModel();
                     auctionResult.setItemId(rs.getInt("item_id"));
                     auctionResult.setItemName(rs.getString("item_name"));
-                    auctionResult.setSalePrice(rs.getDouble("sale_price"));
+                    if (rs.getObject("sale_price") != null) {
+                        auctionResult.setSalePrice(rs.getDouble("sale_price"));
+                    } else {
+                        auctionResult.setSalePrice(null);
+                    }
                     auctionResult.setWinner(rs.getString("winner"));
                     auctionResult.setAuctionEnded(rs.getTimestamp("auction_ended"));
                     auctionResults.add(auctionResult);
