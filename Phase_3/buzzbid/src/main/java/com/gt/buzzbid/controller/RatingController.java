@@ -75,7 +75,6 @@ public class RatingController {
         return ResponseEntity.ok(response);
     }
 
-
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createRating(@RequestBody Rating rating) {
         Integer ratingId = ratingService.createRating(rating);
