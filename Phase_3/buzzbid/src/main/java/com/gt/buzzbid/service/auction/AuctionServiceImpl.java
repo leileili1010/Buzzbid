@@ -253,7 +253,13 @@ public class AuctionServiceImpl implements AuctionService {
         AuctionModel model = new AuctionModel();
         Connection conn = null;
         ResultSet rs = null;
-        String query = "SELECT item_id, auction_end_time, get_it_now_price, starting_bid FROM Auction WHERE auction_id = ?";
+        String query = "SELECT item_id, " + //
+                "auction_end_time, " + //
+                "get_it_now_price, " + //
+                "starting_bid, " + //
+                "min_sale_price " + //
+                "FROM Auction " + //
+                "WHERE auction_id = ?";
 
         try {
             conn = DatabaseService.getConnection();
@@ -272,6 +278,7 @@ public class AuctionServiceImpl implements AuctionService {
                 }
 
                 model.setStartingBid("$" + rs.getBigDecimal("starting_bid").toPlainString());
+                model.setMinSalePrice(rs.getString("min_sale_price"));
             }
 
             // get item
@@ -406,25 +413,34 @@ public class AuctionServiceImpl implements AuctionService {
         Connection conn = null;
         ResultSet rs = null;
         String query = "WITH winning_bids AS (SELECT DISTINCT ON (b.auction_id) "
-                + "b.auction_id, "
-                + "b.bid_amount, "
-                + "b.username "
-                + "FROM Bid b "
-                + "JOIN Auction a ON b.auction_id = a.auction_id "
-                + "WHERE a.auction_end_time < now() "
-                + "AND (b.bid_amount >= a.min_sale_price "
-                + "OR b.bid_amount = a.get_it_now_price) "
-                + "AND a.cancelled_by IS NULL "
-                + "ORDER BY 1, 2 DESC) "
-                + "SELECT i.item_id, "
-                + "i.item_name, "
-                + "wb.bid_amount AS sale_price, "
-                + "(CASE "
-                + "WHEN a.cancelled_timestamp IS NOT NULL "
-                + "THEN 'Cancelled' "
-                + "ELSE wb.username "
-                + "END) AS winner, "
-                + "a.auction_end_time AS auction_ended "
+                + "                                  b.auction_id, "
+                + "                                  b.bid_amount, "
+                + "                                  b.username "
+                + "                           FROM Bid b "
+                + "                           JOIN Auction a ON b.auction_id = a.auction_id "
+                + "                           WHERE a.auction_end_time < now() "
+                + "                           AND (b.bid_amount >= a.min_sale_price "
+                + "                                 OR b.bid_amount = a.get_it_now_price) "
+                + "                           AND a.cancelled_by IS NULL "
+                + "                           ORDER BY 1, 2 DESC) "
+                + "SELECT a.auction_id, "
+                + "         i.item_id, "
+                + "       i.item_name, "
+                + "       (CASE "
+                + "           WHEN a.cancelled_by IS NOT NULL "
+                + "               THEN null "
+                + "           WHEN wb.bid_amount <= a.min_sale_price"
+                + "               THEN null "
+                + "           ELSE wb.bid_amount "
+                + "        END) AS sale_price, "
+                + "       (CASE "
+                + "         WHEN a.cancelled_by IS NOT NULL "
+                + "             THEN 'Cancelled' "
+                + "         WHEN wb.bid_amount < a.min_sale_price "
+                + "             THEN null "
+                + "         ELSE wb.username "
+                + "        END) AS winner, "
+                + "       a.auction_end_time AS auction_ended "
                 + "FROM Item i "
                 + "JOIN Auction a ON i.item_id = a.item_id "
                 + "LEFT JOIN winning_bids wb ON a.auction_id = wb.auction_id "
@@ -440,13 +456,14 @@ public class AuctionServiceImpl implements AuctionService {
             if (rs != null) {
                 while (rs.next()) {
                     AuctionResultModel auctionResult = new AuctionResultModel();
+                    auctionResult.setAuctionId(rs.getInt("auction_id"));
                     auctionResult.setItemId(rs.getInt("item_id"));
                     auctionResult.setItemName(rs.getString("item_name"));
+
                     if (rs.getObject("sale_price") != null) {
-                        auctionResult.setSalePrice(rs.getDouble("sale_price"));
-                    } else {
-                        auctionResult.setSalePrice(null);
+                        auctionResult.setSalePrice("$" + rs.getBigDecimal("sale_price").toPlainString());
                     }
+
                     auctionResult.setWinner(rs.getString("winner"));
                     auctionResult.setAuctionEnded(rs.getTimestamp("auction_ended"));
                     auctionResults.add(auctionResult);

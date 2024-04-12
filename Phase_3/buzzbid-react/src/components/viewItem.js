@@ -221,19 +221,59 @@ function ViewItem() {
                                         <strong>Username</strong>
                                     </MDBCol>
                                 </MDBRow>
-                                {auctionData.bids && auctionData.bids.map(b => (
-                                    <MDBRow>
-                                        <MDBCol md="4">
-                                            {b.bidAmount}
-                                        </MDBCol>
-                                        <MDBCol md="4">
-                                            {b.bidTime}
-                                        </MDBCol>
-                                        <MDBCol md="4">
-                                            {b.username}
-                                        </MDBCol>
-                                    </MDBRow>
-                                ))}
+                                {auctionData.bids && auctionData.bids.map((b, i) => {
+                                    if (i == 0 && auctionData.auctionEnded) {
+                                        if (parseFloat(b.bidAmount.substring(1)) >= parseFloat(auctionData.minSalePrice)) {
+                                            return  <MDBRow style={{ background: 'green' }}>
+                                                <MDBCol md="4">
+                                                    {b.bidAmount}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.bidTime}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.username}
+                                                </MDBCol>
+                                            </MDBRow>
+                                        } else if (parseFloat(b.bidAmount.substring(1)) < parseFloat(auctionData.minSalePrice)) {
+                                            return  <MDBRow style={{ background: 'yellow' }}>
+                                                <MDBCol md="4">
+                                                    {b.bidAmount}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.bidTime}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.username}
+                                                </MDBCol>
+                                            </MDBRow>
+                                        } else {
+                                            return  <MDBRow>
+                                                        <MDBCol md="4">
+                                                            {b.bidAmount}
+                                                        </MDBCol>
+                                                        <MDBCol md="4">
+                                                            {b.bidTime}
+                                                        </MDBCol>
+                                                        <MDBCol md="4">
+                                                            {b.username}
+                                                        </MDBCol>
+                                                    </MDBRow>
+                                        }
+                                    } else {
+                                        return  <MDBRow>
+                                                    <MDBCol md="4">
+                                                        {b.bidAmount}
+                                                    </MDBCol>
+                                                    <MDBCol md="4">
+                                                        {b.bidTime}
+                                                    </MDBCol>
+                                                    <MDBCol md="4">
+                                                        {b.username}
+                                                    </MDBCol>
+                                                </MDBRow>
+                                    }
+                                })}
                             </fieldset>
                         </MDBCol>
                     </MDBRow>

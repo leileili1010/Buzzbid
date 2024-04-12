@@ -2,9 +2,11 @@ import { useEffect, useState} from "react";
 import axios from "axios";
 import {formatDate} from "../helperFunctions/helperFunctions";
 import "./AuctionResults.css"
+import {Link, useLocation} from "react-router-dom";
 
 const AuctionResults = () => {
     const [auctionResults, setAuctionResults] = useState([]);
+    const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
 
     useEffect(() => {
        const fetchData = async ()=> {
@@ -40,7 +42,11 @@ const AuctionResults = () => {
                 {auctionResults.map((auctionResult) => (
                     <tr key={auctionResult.itemId}>
                         <td>{auctionResult.itemId}</td>
-                        <td className="item-name">{auctionResult.itemName}</td>
+                        <td className="item-name">
+                            <Link to="/viewItem" state={{auctionId: auctionResult.auctionId, username: username, isAdmin: isAdmin, userRole : userRole}}>
+                                {auctionResult.itemName}
+                            </Link>
+                        </td>
                         <td>{auctionResult.salePrice || "-"}</td>
                         <td>{auctionResult.winner || "-"}</td>
                         <td className="auction-end-time">{formatDate(auctionResult.auctionEnded)}</td>
@@ -49,8 +55,6 @@ const AuctionResults = () => {
                 </tbody>
             </table>
         </div>
-
-
     )
 }
 

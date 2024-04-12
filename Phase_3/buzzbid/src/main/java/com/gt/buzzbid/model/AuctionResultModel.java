@@ -10,9 +10,10 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 public class AuctionResultModel {
+    private Integer auctionId;
     private Integer itemId;
     private String itemName;
-    private Double salePrice;
+    private String salePrice;
     private String winner;
     private Timestamp auctionEnded;
 }

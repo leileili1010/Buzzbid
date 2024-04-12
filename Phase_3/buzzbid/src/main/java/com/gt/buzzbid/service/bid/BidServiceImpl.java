@@ -61,7 +61,13 @@ public class BidServiceImpl implements BidService {
         List<BidModel> bidModels = new ArrayList<>();
         Connection conn = null;
         ResultSet rs = null;
-        String query = "SELECT username, bid_amount, bid_time FROM Bid WHERE auction_id = ? ORDER BY 3 DESC LIMIT 4";
+        String query = "SELECT username, " + //
+                "              bid_amount, " + //
+                "              bid_time " + //
+                "FROM Bid " + //
+                "WHERE auction_id = ? " + //
+                "ORDER BY 2 DESC, 3 DESC " + //
+                "LIMIT 4";
 
         try {
             conn = DatabaseService.getConnection();
