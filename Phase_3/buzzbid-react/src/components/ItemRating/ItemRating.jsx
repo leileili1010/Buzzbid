@@ -40,7 +40,6 @@ const ItemRating = () => {
         dispatch(thunkGetItemWithAvgRating(itemId));
     }, [dispatch, itemId]);
 
-
     return (
         <div className="item-rating-container">
             <h2>Item Rating</h2>
@@ -74,7 +73,7 @@ const ItemRating = () => {
                         </div>
                         <p className="rating-time">{formatDate(rating?.ratingTime)}</p>
                         <p className="rating-comment">{rating?.comment}</p>
-                        {rating?.username == currentUser.username &&
+                        {(rating?.username == currentUser.username || currentUser.isAdmin) &&
                             < OpenModalButton
                                 buttonText="Delete"
                                 modalComponent={<DeleteRatingModal ratingId={rating?.ratingId} />}

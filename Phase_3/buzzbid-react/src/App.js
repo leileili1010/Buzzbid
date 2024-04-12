@@ -41,5 +41,4 @@ function App() {
       </ModalProvider>
   );
 }
-
 export default App;

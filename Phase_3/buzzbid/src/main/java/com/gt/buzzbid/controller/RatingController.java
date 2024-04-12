@@ -2,9 +2,11 @@ package com.gt.buzzbid.controller;
 
 import com.gt.buzzbid.entity.Item;
 import com.gt.buzzbid.entity.Rating;
+import com.gt.buzzbid.entity.User;
 import com.gt.buzzbid.response.ApiResponse;
 import com.gt.buzzbid.service.rating.RatingServiceImpl;
 import com.gt.buzzbid.service.item.ItemServiceImpl;
+import com.gt.buzzbid.service.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ public class RatingController {
     private RatingServiceImpl ratingService;
     @Autowired
     private ItemServiceImpl itemService;
+    @Autowired
+    private UserServiceImpl userService;
 
     @GetMapping("/{ratingId}")
     public ResponseEntity<?> getRatingById(@PathVariable Integer ratingId) {
@@ -103,10 +107,11 @@ public class RatingController {
             response.setSuccess(false);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-
-        // check if current user is the author of the rating
+        // check if current user is admin user and if current user is the author of the rating
         String currentUsername = principal.getName();
-        if (!rating.getUsername().equals(currentUsername)) {
+        User user = userService.getUserByName(currentUsername);
+
+        if (!rating.getUsername().equals(currentUsername) && user.getPosition() == null) {
             response.setMessage("You do not have permission to delete this rating.");
             response.setSuccess(false);
             return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
@@ -118,5 +123,6 @@ public class RatingController {
         response.setSuccess(true);
         return ResponseEntity.ok(response);
     }
+
 }
 
