@@ -1,6 +1,7 @@
 package com.gt.buzzbid.controller;
 
 import com.gt.buzzbid.entity.User;
+import com.gt.buzzbid.model.AuthUserModel;
 import com.gt.buzzbid.response.AuthResponse;
 import com.gt.buzzbid.security.config.jwt.JwtProvider;
 import com.gt.buzzbid.service.user.UserServiceImpl;
@@ -14,10 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -88,6 +86,29 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/current-user")
+    public ResponseEntity<AuthUserModel> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        String username = authentication.getName(); // Get the username directly from authentication
+
+        User user = userServiceImpl.getUserByName(username);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        AuthUserModel authUserModel = new AuthUserModel();
+        authUserModel.setUsername(user.getUsername());
+        authUserModel.setFirstName(user.getFirstName());
+        authUserModel.setLastName(user.getLastName());
+        authUserModel.setPosition(user.getPosition());
+
+        return new ResponseEntity<>(authUserModel, HttpStatus.OK);
+    }
     private Authentication authenticate(String username, String password) {
         UserDetails userDetails = userServiceImpl.getUserByUsername(username);
 
