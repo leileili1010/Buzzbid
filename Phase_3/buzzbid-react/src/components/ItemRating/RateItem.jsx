@@ -51,7 +51,7 @@ const RateItem = ({username,itemId, setAddRating}) => {
         <div>
             <form onSubmit={handleSubmit} className='rating-form'>
                 <h2>How do you like the item?</h2>
-                {"stars" in errors && <p>{errors.stars}</p>}
+                {"stars" in errors && <p className="rating-error">{errors.stars}</p>}
                 <textarea
                     placeholder="Leave your comment here (optional)..."
                     type="text"
