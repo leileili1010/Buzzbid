@@ -13,12 +13,10 @@ import SearchResults from "./components/searchResults";
 import TopRatedReport from './components/Reports/topRatedReport';
 import AuctionStaticsReport from './components/Reports/auctionStaticsReport';
 import CancelledReport from './components/Reports/cancelledReport';
-import {ModalProvider, Modal} from "./context/Modal";
 import AuctionResults from "./components/auctionResults/AuctionResults";
 
 function App() {
   return (
-      
       <div className="App">
         <Router>
           <Routes>
@@ -40,7 +38,6 @@ function App() {
           </Routes>
         </Router>
       </div>
-      
   );
 }
 
