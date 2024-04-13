@@ -14,19 +14,14 @@ public class TopRatedImp implements TopRatedService {
     @Override
     public List<TopRatedReportModel> getTopRatedReport() {
         List<TopRatedReportModel> topRatedReport = new ArrayList<>();
-        String query = "WITH rated_items AS (SELECT i.item_name, "  + //
-                "                                   ROUND(avg(r.number_of_stars), 1) AS avg_rating, "  + //
-                "                                   COUNT(r.*) AS rating_count "  + //
-                "                            FROM Item i "  + //
-                "                            JOIN Rating r ON i.item_id = r.item_id "  + //
-                "                            GROUP BY 1) "  + //
-                "SELECT i.item_name AS itemname, "  + //
-                "ri.avg_rating AS avg_rating, "  + //
-                "ri.rating_count AS ratingcount "  + //
-                "FROM Item i "  + //
-                "JOIN rated_items ri ON ri.item_name = i.item_name "  + //
-                "ORDER BY 2 DESC, 1 "  + //
-                "LIMIT 10;";
+        String query = "SELECT i.item_name, " + //
+                "       ROUND(avg(r.number_of_stars), 1) AS avg_rating, " + //
+                "       COUNT(r.*)                       AS rating_count " + //
+                "FROM Item i " + //
+                "         JOIN Rating r ON i.item_id = r.item_id " + //
+                "GROUP BY 1 " + //
+                "ORDER BY 2 DESC, 1 " + //
+                "LIMIT 10";
 
         Connection connection = null;
         ResultSet resultSet = null;
@@ -38,7 +33,7 @@ public class TopRatedImp implements TopRatedService {
             resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
-                topRatedReport.add(new TopRatedReportModel(resultSet.getString("itemname"), resultSet.getDouble("avg_rating"), resultSet.getInt("ratingcount")));
+                topRatedReport.add(new TopRatedReportModel(resultSet.getString("item_name"), resultSet.getDouble("avg_rating"), resultSet.getInt("rating_count")));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
