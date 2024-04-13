@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 
 function ViewItem() {
-    const {state: {auctionId: auctionId, username: username, isAdmin: isAdmin, userRole: userRole}} = useLocation();
+    const {state: {auctionId: auctionId}} = useLocation();
     const [auctionData, setAuctionData] = useState({});
     const nav = useNavigate();
     const [errors, setErrors] = useState({});
@@ -80,7 +80,8 @@ function ViewItem() {
     };
 
     const close = () => {
-        nav('/dashboard', {state: {username: username, isAdmin: isAdmin, userRole: userRole}});
+        nav('/dashboard')
+        // nav('/dashboard', {state: {username: username, isAdmin: isAdmin, userRole: userRole}});
     };
 
     const getItNow = () => {

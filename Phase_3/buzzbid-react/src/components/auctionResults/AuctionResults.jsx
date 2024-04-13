@@ -1,11 +1,8 @@
-import { useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState} from "react";
+import {useNavigate, Link} from "react-router-dom";
 import axios from "axios";
 import {formatDate} from "../helperFunctions/helperFunctions";
 import "./AuctionResults.css"
-import OpenModalButton from "../OpenModalButton";
-import DeleteRatingModal from "../ItemRating/DeleteRatingModal";
-import ItemResults from "./ItemResults";
 
 const AuctionResults = () => {
     const navigate = useNavigate();
@@ -30,9 +27,9 @@ const AuctionResults = () => {
         if (!userJsonString) navigate("/login");
     }, [userJsonString, navigate]);
 
-    useEffect(() => {
-        console.log("Auction results changed:", auctionResults);
-    }, [auctionResults]);
+    // useEffect(() => {
+    //     console.log("Auction results changed:", auctionResults);
+    // }, [auctionResults]);
 
     return (
         <div className="auction-result-container">
@@ -52,15 +49,9 @@ const AuctionResults = () => {
                     <tr key={auctionResult.itemId}>
                         <td>{auctionResult.itemId}</td>
                         <td className="item-name">
-                            <OpenModalButton
-                            buttonText={auctionResult.itemName}
-                            modalComponent={<ItemResults
-                                auctionId={auctionResult.auctionId}
-                                username={currentUser.username}
-                                isAdmin={currentUser.isAdmin}
-                                userRole={currentUser.userRole}
-                                itemId={auctionResult.itemId}
-                            />}/>
+                            <Link to="/viewItem" state={{auctionId: auctionResult.auctionId}}>
+                                {auctionResult.itemName}
+                            </Link>
                         </td>
                         <td>{auctionResult.salePrice || "-"}</td>
                         <td className="winner">{auctionResult.winner || "-"}</td>
