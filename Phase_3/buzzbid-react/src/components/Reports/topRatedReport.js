@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import axios from "axios";
+import '../../css/style.css';
 
 function TopRatedReport() {
     const [topRatedReport, setRatedReport] = useState(null);
@@ -29,7 +30,7 @@ function TopRatedReport() {
     }
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center vh-100 bg">
             <MDBContainer className="border rounded-lg">
                 <fieldset>
                     <legend>Top Rated Items</legend>

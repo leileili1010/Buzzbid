@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow, MDBTextArea} from "mdb-react-ui-kit";
 import axios from "axios";
+import '../css/style.css';
 
 function ListItem() {
     const[inputs, setInputs] = useState({
@@ -120,8 +121,9 @@ function ListItem() {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center vh-100 bg">
             <div className="border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
+                <h2>New Item for Auction</h2>
                 <form onSubmit={submitForm}>
                     <MDBContainer className="p-3">
                         <MDBRow>
@@ -241,13 +243,13 @@ function ListItem() {
                             </MDBCol>
                         </MDBRow>
                         <br/>
-                        <MDBRow>
-                            <MDBCol md="6">
+                        <MDBRow className="item-btns">
+                            <MDBCol md="4">
                                 <MDBBtn className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}>
                                     List My Item
                                 </MDBBtn>
                             </MDBCol>
-                            <MDBCol md="6">
+                            <MDBCol md="4">
                                 <MDBBtn type="button" className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
                                         onClick={e => cancel(e)}>
                                 Cancel

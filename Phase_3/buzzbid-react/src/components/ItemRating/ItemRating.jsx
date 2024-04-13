@@ -1,6 +1,5 @@
-import {NavLink} from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useSelector, useDispatch} from "react-redux";
 import {useParams, useNavigate} from "react-router-dom";
 import {thunkGetRatings} from "../../redux/rating";
 import {thunkGetItemWithAvgRating} from "../../redux/item";
@@ -10,6 +9,8 @@ import OpenModalButton from "../OpenModalButton";
 import DeleteRatingModal from "./DeleteRatingModal";
 import {thunkGetAuctionResults} from "../../redux/auction";
 import RateItem from "./RateItem";
+import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
+import '../../css/style.css';
 
 const ItemRating = () => {
     const dispatch = useDispatch();
@@ -21,10 +22,10 @@ const ItemRating = () => {
     const userJsonString = localStorage.getItem('user');
     const currentUser = JSON.parse(userJsonString);
     const auctionResult = useSelector(state => state.auction.auctionResults[itemId]);
-    const [addRating, setAddRating] =useState(0);
+    const [addRating, setAddRating] = useState(0);
     const isWinner = auctionResult?.winner === currentUser.username;
-    // console.log("========================isWinner?", isWinner)
     let ifRated = false;
+    const nav = useNavigate();
 
     for (let rating of ratings) {
         if (rating?.username === currentUser.username) {
@@ -32,7 +33,6 @@ const ItemRating = () => {
             break;
         }
     }
-    // console.log("=====================ifRated??", ifRated)
 
     let averageRating;
     if (parseInt(item?.avgRating) > 1) {
@@ -59,52 +59,76 @@ const ItemRating = () => {
         dispatch(thunkGetAuctionResults());
     }, [dispatch, itemId]);
 
+    const close = () => {
+        nav(-1)
+    };
+
+
     return (
-        <div className="item-rating-container">
-            <h2>Item Rating</h2>
-            <table className="item-rating-item">
-                <tbody>
-                <tr>
-                    <td className="table-title">Item ID</td>
-                    <td>{item?.itemId}</td>
-                </tr>
-                <tr>
-                    <td className="table-title">Item Name</td>
-                    <td>{item?.itemName}</td>
-                </tr>
-                <tr>
-                    <td className="table-title">Average Rating</td>
-                    <td>{averageRating}</td>
-                </tr>
-                </tbody>
-            </table>
-            <div className="comment-rating-container">
-                {ratings.map((rating, index) =>
-                    <div key={index} className="ratings">
-                        <div className="user-star">
-                            <div className="user-details">
-                                <div><i className="fa-solid fa-user" id="user-icon"></i></div>
-                                <p>{rating?.username}</p>
+        <div className="d-flex justify-content-center align-items-center vh-100 bg">
+            <div className="border rounded-lg p-4 item-rating-container" style={{width: '900px', height: 'auto'}}>
+                <h2>Item Rating</h2>
+                <MDBContainer className="p-3">
+                    <MDBRow>
+                        <MDBCol md="12">
+                            <table className="item-rating-item">
+                                <tbody>
+                                <tr>
+                                    <td className="table-title">Item ID</td>
+                                    <td>{item?.itemId}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-title">Item Name</td>
+                                    <td>{item?.itemName}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-title">Average Rating</td>
+                                    <td>{averageRating}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div className="comment-rating-container">
+                                {ratings.map((rating, index) =>
+                                    <div key={index} className="ratings">
+                                        <div className="user-star">
+                                            <div className="user-details">
+                                                <div><i className="fa-solid fa-user" id="user-icon"></i></div>
+                                                <p>{rating?.username}</p>
+                                            </div>
+                                            <div className="stars">
+                                                {generateStars(rating)}
+                                            </div>
+                                        </div>
+                                        <p className="rating-time">{formatDate(rating?.ratingTime)}</p>
+                                        <p className="rating-comment">{rating?.comment}</p>
+                                        {(rating?.username == currentUser.username || currentUser.isAdmin) &&
+                                            < OpenModalButton
+                                                buttonText="Delete"
+                                                modalComponent={<DeleteRatingModal ratingId={rating?.ratingId}/>}
+                                            />
+                                        }
+                                    </div>
+                                )}
                             </div>
-                            <div className="stars">
-                                {generateStars(rating)}
-                            </div>
-                        </div>
-                        <p className="rating-time">{formatDate(rating?.ratingTime)}</p>
-                        <p className="rating-comment">{rating?.comment}</p>
-                        {(rating?.username == currentUser.username || currentUser.isAdmin) &&
-                            < OpenModalButton
-                                buttonText="Delete"
-                                modalComponent={<DeleteRatingModal ratingId={rating?.ratingId} />}
-                            />
-                        }
-                    </div>
-                )}
+                            {(isWinner && !ifRated) && < OpenModalButton
+                                buttonText="Rate This Item"
+                                modalComponent={<RateItem username={currentUser.username} itemId={itemId}
+                                                          setAddRating={setAddRating}/>}
+                            />}
+                        </MDBCol>
+                    </MDBRow>
+                    <MDBRow>
+                        <MDBCol md="4"></MDBCol>
+                        <MDBCol md="4"></MDBCol>
+                        <MDBCol md="4">
+                            <MDBBtn type="button" className="mb-4 d-block btn-primary"
+                                    style={{height: '50px', width: '100%'}}
+                                    onClick={e => close(e)}>Close
+                            </MDBBtn>
+                        </MDBCol>
+                    </MDBRow>
+                </MDBContainer>
             </div>
-            {(isWinner && !ifRated) && < OpenModalButton
-                buttonText="Rate This Item"
-                modalComponent={<RateItem username={currentUser.username} itemId={itemId} setAddRating={setAddRating} />}
-            />}
         </div>
     )
 }

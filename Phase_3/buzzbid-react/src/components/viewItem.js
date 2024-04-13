@@ -11,6 +11,7 @@ import {
     MDBModalContent, MDBModalHeader, MDBModalTitle, MDBTextArea, MDBModalFooter
 } from "mdb-react-ui-kit";
 import axios from "axios";
+import '../css/style.css';
 
 function ViewItem() {
     const {state: {auctionId: auctionId}} = useLocation();
@@ -80,8 +81,7 @@ function ViewItem() {
     };
 
     const close = () => {
-        nav('/dashboard')
-        // nav('/dashboard', {state: {username: username, isAdmin: isAdmin, userRole: userRole}});
+        nav(-1)
     };
 
     const getItNow = () => {
@@ -135,8 +135,9 @@ function ViewItem() {
     const toggleCancelModal = () => setCancelModal(!cancelModal);
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center vh-100 bg">
             <div className="border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
+                <h2>{auctionData.auctionEnded ? 'Item Results' : 'Item For Sale'}</h2>
                 <MDBContainer className="p-3">
                     <MDBRow>
                         <MDBCol md="4">
@@ -222,15 +223,16 @@ function ViewItem() {
                             <strong>{auctionData.cancelledTime ? auctionData.cancelledTime : auctionData.auctionEndTime}</strong>
                         </MDBCol>
                     </MDBRow>
+                    <br/>
                     <MDBRow>
                         <MDBCol md="12">
                             <fieldset>
                                 <MDBRow>
-                                    <MDBCol md="8"></MDBCol>
                                     <MDBCol md="4">
-                                        <strong>Latest Bids</strong>
+                                        <h3>{auctionData.auctionEnded ? 'Bid History' : 'Latest Bids'}</h3>
                                     </MDBCol>
                                 </MDBRow>
+                                <hr/>
                                 <MDBRow>
                                     <MDBCol md="4">
                                         <strong>Bid Amount</strong>
@@ -310,7 +312,7 @@ function ViewItem() {
                             </fieldset>
                         </MDBCol>
                     </MDBRow>
-                    <br/>
+                    <hr/>
                     {currentUser.username !== auctionData.username && !auctionData.auctionEnded && <MDBRow>
                         <MDBCol md="4">
                             <strong>Your Bid</strong>
@@ -325,7 +327,7 @@ function ViewItem() {
                         </MDBCol>
                     </MDBRow>}
                     <br/>
-                    <MDBRow>
+                    <MDBRow className="item-btns">
                         <MDBCol md="4">
                             <MDBBtn type="button" className="mb-4 d-block btn-primary"
                                     style={{height: '50px', width: '100%'}}

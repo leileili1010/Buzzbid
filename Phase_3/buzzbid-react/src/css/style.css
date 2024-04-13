@@ -1,0 +1,8 @@
+.item-btns {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.bg {
+    background-color: #f9f9f9;
+}

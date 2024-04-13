@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import axios from "axios";
+import '../../css/style.css';
 
 function AuctionStaticsReport() {
     const [auctionStatistics, setAuctionStatics] = useState(null);
@@ -37,7 +38,7 @@ function AuctionStaticsReport() {
     }
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center vh-100 bg">
             <MDBContainer className="border rounded-lg" style={{width: '800px', height: "auto"}}>
                 <fieldset>
                     <legend>Auction Statics</legend>

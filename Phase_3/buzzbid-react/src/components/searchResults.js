@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
+import '../css/style.css';
 
 function SearchResults() {
     const {state: {searchResults : searchResults}} = useLocation();
@@ -19,8 +20,9 @@ function SearchResults() {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="border rounded-lg p-4" style={{width: '1100px', height: 'auto'}}>
+        <div className="d-flex justify-content-center align-items-center vh-100 bg">
+            <div className="border rounded-lg p-4" style={{width: '1000px', height: 'auto'}}>
+                <h2>Search Results</h2>
                 <MDBContainer className="p-3">
                     <MDBRow>
                         <MDBCol md="1">
@@ -45,7 +47,7 @@ function SearchResults() {
                     {searchResults && searchResults.map(s => (
                         <MDBRow>
                             <MDBCol md="1">
-                                {s.auctionId}
+                                {s.itemId}
                             </MDBCol>
                             <MDBCol md="2">
                                <Link to="/viewItem" state={{auctionId: s.auctionId}}>

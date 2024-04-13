@@ -164,7 +164,8 @@ public class AuctionServiceImpl implements AuctionService {
                 "                               WHERE a.auction_end_time > now() " + //
                 "                               AND a.cancelled_timestamp IS NULL " +//
                 "                               ORDER BY 1, 2 DESC) " + //
-                " SELECT a.auction_id, " + //
+                " SELECT i.item_id, " +
+                "        a.auction_id, " + //
                 "        i.item_name, " + //
                 "        c.bid_amount, " + //
                 "        c.username, " + //
@@ -204,8 +205,9 @@ public class AuctionServiceImpl implements AuctionService {
             stmt.setBigDecimal(10, searchModel.getMaxPrice());
             stmt.setBigDecimal(11, searchModel.getMaxPrice());
             stmt.setString(12, StringUtils.isNotBlank(searchModel.getCondition())
-                    ? Condition.getByLabel(searchModel.getCondition()).getLabel() : null);
-            stmt.setString(13, Condition.getByLabel(searchModel.getCondition()).getLabel());
+                    ? Condition.valueOf(searchModel.getCondition()).getLabel() : null);
+            stmt.setString(13, StringUtils.isNotBlank(searchModel.getCondition())
+                    ? Condition.valueOf(searchModel.getCondition()).getLabel() : null);
 
             rs = stmt.executeQuery();
 
@@ -213,7 +215,7 @@ public class AuctionServiceImpl implements AuctionService {
                 while (rs.next()){
                     // get the item that meets the search criteria; if we have it, get the attributes from item
                     AuctionModel model = new AuctionModel();
-
+                    model.setItemId(rs.getInt("item_id"));
                     model.setAuctionId(rs.getInt("auction_id"));
                     model.setItemName(rs.getString("item_name"));
 

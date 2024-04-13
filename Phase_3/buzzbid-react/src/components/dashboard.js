@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import buzzLogo from "../images/buzz.png";
+import '../css/style.css';
 
 function Dashboard() {
     const nav = useNavigate();
@@ -20,7 +21,7 @@ function Dashboard() {
     }, [userJsonString, nav]);
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center vh-100 bg">
             <div className="d-flex bg-body-tertiary mb-3 text-center" style={{width: 'auto', height: "auto"}}>
                 <MDBContainer className="border rounded-lg p-4">
                     <MDBRow>
@@ -56,10 +57,13 @@ function Dashboard() {
                             <Link to="/cancelledreport">Cancelled Auction Details</Link><br/>
                         </MDBCol>}
                     </MDBRow>
+                    <br/>
                     <MDBRow>
-                        <MDBCol md="12">
+                        <MDBCol md="3"></MDBCol>
+                        <MDBCol md="6">
                             <div className="text-center">
-                                <MDBBtn type="button" className="btn btn-primary mt-3" onClick={handleLogout}>Log Out</MDBBtn>
+                                <MDBBtn type="button" className="mb-4 d-block btn-primary"
+                                        style={{height: '50px', width: '100%'}} onClick={handleLogout}>Log Out</MDBBtn>
                             </div>
                         </MDBCol>
                     </MDBRow>
