@@ -3,8 +3,8 @@ import {useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import axios from "axios";
 
-function CategoryReport() {
-    const [categoryReport, setCategoryReport] = useState(null);
+function CancelledReport() {
+    const [cancelledReport, setCancelledReport] = useState(null);
     const nav = useNavigate();
     const done = () => {
         nav('/dashboard');
@@ -18,62 +18,57 @@ function CategoryReport() {
         }
     }, [userJsonString, nav]);
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:8081/report/category_report');
+                const response = await axios.get('http://localhost:8081/report/cancelled_report');
                 const data = response.data;
-                setCategoryReport(data);
+                setCancelledReport(data);
             } catch (error) {
-                console.error('Error fetching category report:', error);
+                console.error('Error fetching user report:', error);
             }
         };
 
         fetchData();
     }, []);
 
-    if (!categoryReport) {
+    if (!cancelledReport) {
         return <div>Loading...</div>;
     }
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
-            <MDBContainer className="border rounded-lg">
+            <MDBContainer className="border rounded-lg" style={{width: '2000px', height: "auto"}}>
                 <fieldset>
-                    <legend>Category Report</legend>
+                    <legend>Cancelled Auction Details</legend>
                     <MDBRow className="justify-content-center">
-                        <MDBCol md="2">
-                            <strong>Category</strong>
+                        <MDBCol md="3">
+                            <strong>ID</strong>
                         </MDBCol>
-                        <MDBCol md="2">
-                            <strong>Total Items</strong>
+                        <MDBCol md="3">
+                            <strong>Listed by</strong>
                         </MDBCol>
-                        <MDBCol md="2">
-                            <strong>Min Price</strong>
+                        <MDBCol md="3">
+                            <strong>Cancelled Date</strong>
                         </MDBCol>
-                        <MDBCol md="2">
-                            <strong>Max Price</strong>
-                        </MDBCol>
-                        <MDBCol md="2">
-                            <strong>Average Price</strong>
+                        <MDBCol md="3">
+                            <strong>Reason</strong>
                         </MDBCol>
                     </MDBRow>
-                    {categoryReport && categoryReport.map(b => (
+                    {cancelledReport && cancelledReport.map(b => (
                         <MDBRow className="justify-content-center">
-                            <MDBCol md="2">
-                                {b.category || '-'}
+                            <MDBCol md="3">
+                                {b.itemID}
                             </MDBCol>
-                            <MDBCol md="2">
-                                {b.totalItems || '-'}
+                            <MDBCol md="3">
+                                {b.listedBy}
                             </MDBCol>
-                            <MDBCol md="2">
-                                {b.minPrice || '-'}
+                            <MDBCol md="3">
+                                {b.cancelledDate}
                             </MDBCol>
-                            <MDBCol md="2">
-                                {b.maxPrice || '-'}
-                            </MDBCol>
-                            <MDBCol md="2">
-                                {b.avgPrice || '-'}
+                            <MDBCol md="3">
+                                {b.reason}
                             </MDBCol>
                         </MDBRow>
                     ))}
@@ -90,4 +85,4 @@ function CategoryReport() {
     )
 }
 
-export default CategoryReport;
+export default CancelledReport;

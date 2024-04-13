@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow, MDBTextArea} from "mdb-react-ui-kit";
 import axios from "axios";
 
 function ListItem() {
-    const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
     const[inputs, setInputs] = useState({
         itemName: '',
         description: '',
@@ -19,6 +18,14 @@ function ListItem() {
     const[categories, setCategories] = useState([]);
     const[errors, setErrors] = useState({});
     const nav = useNavigate();
+    const userJsonString = localStorage.getItem('user');
+    const currentUser = JSON.parse(userJsonString);
+
+    useEffect(() => {
+        if (!userJsonString) {
+            nav("/login");
+        }
+    }, [userJsonString, nav]);
 
     useEffect(() => {
         async function getCategories() {
@@ -78,7 +85,7 @@ function ListItem() {
     };
 
     const cancel = () => {
-      nav('/dashboard', {state : {username: username, isAdmin : isAdmin, userRole: userRole}});
+      nav('/dashboard');
     };
 
     const submitForm = (e) => {
@@ -101,12 +108,12 @@ function ListItem() {
             getItNowPrice: inputs.getItNowPrice,
             auctionLength: inputs.auctionLength,
             isReturnable: inputs.isReturnable,
-            username: username
+            username: currentUser.username
         };
 
         axios.post('http://localhost:8081/auction/listAuction', data)
             .then((response) => {
-                nav('/viewItem', {state: {auctionId: response.data, username: username, isAdmin: isAdmin, userRole: userRole}});
+                nav('/viewItem', {state: {auctionId: response.data}});
             }).catch(function(error) {
 
         });

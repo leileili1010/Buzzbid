@@ -10,23 +10,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopRatedImp implements  TopRatedService {
+public class TopRatedImp implements TopRatedService {
     @Override
     public List<TopRatedReportModel> getTopRatedReport() {
         List<TopRatedReportModel> topRatedReport = new ArrayList<>();
-
-        String query = "WITH rated_items AS (SELECT i.item_name,\n" +
-                "ROUND(avg(r.number_of_stars), 1) AS avg_rating,\n" +
-                "COUNT(r.*) AS rating_count\n" +
-                "FROM Item i\n" +
-                "JOIN Rating r ON i.item_id = r.item_id\n" +
-                "GROUP BY 1)\n" +
-                "SELECT i.item_name AS itemname,\n" +
-                "ri.avg_rating AS avg_rating,\n" +
-                "ri.rating_count AS ratingcount\n" +
-                "FROM Item i\n" +
-                "JOIN rated_items ri ON ri.item_name = i.item_name\n" +
-                "ORDER BY 2 DESC, 1\n" +
+        String query = "WITH rated_items AS (SELECT i.item_name, "  + //
+                "                                   ROUND(avg(r.number_of_stars), 1) AS avg_rating, "  + //
+                "                                   COUNT(r.*) AS rating_count "  + //
+                "                            FROM Item i "  + //
+                "                            JOIN Rating r ON i.item_id = r.item_id "  + //
+                "                            GROUP BY 1) "  + //
+                "SELECT i.item_name AS itemname, "  + //
+                "ri.avg_rating AS avg_rating, "  + //
+                "ri.rating_count AS ratingcount "  + //
+                "FROM Item i "  + //
+                "JOIN rated_items ri ON ri.item_name = i.item_name "  + //
+                "ORDER BY 2 DESC, 1 "  + //
                 "LIMIT 10;";
 
         Connection connection = null;
@@ -39,9 +38,7 @@ public class TopRatedImp implements  TopRatedService {
             resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
-                topRatedReport.add(new TopRatedReportModel(resultSet.getString("itemname"),resultSet.getDouble("avg_rating"),resultSet.getInt("ratingcount")));
-
-
+                topRatedReport.add(new TopRatedReportModel(resultSet.getString("itemname"), resultSet.getDouble("avg_rating"), resultSet.getInt("ratingcount")));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -55,15 +52,11 @@ public class TopRatedImp implements  TopRatedService {
                     resultSet.close();
                 }
 
-    } catch (SQLException e) {
+            } catch (SQLException e) {
 
             }
         }
 
         return topRatedReport;
-
     }
-
-
-
 }

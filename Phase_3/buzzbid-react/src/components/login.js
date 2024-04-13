@@ -1,10 +1,8 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import {MDBContainer, MDBInput, MDBBtn, MDBCol, MDBRow} from 'mdb-react-ui-kit';
 import buzzLogo from '../images/buzz.png';
-import {setUser} from "../redux/session";
-import { useDispatch } from "react-redux";
 
 function Login() {
     const[username, setUsername] = useState('');
@@ -13,7 +11,15 @@ function Login() {
     const[userRole, setUserRole] = useState('');
     const[error, setError] = useState('');
     const nav = useNavigate();
-    const dispatch = useDispatch();
+    const userJsonString = localStorage.getItem('user');
+    const currentUser = JSON.parse(userJsonString);
+
+    useEffect(() => {
+        if (userJsonString) {
+            nav("/dashboard");
+        }
+    }, [userJsonString, nav]);
+
     const handleLogin = async() => {
       try {
           if (!username || !password) {
@@ -30,7 +36,7 @@ function Login() {
 
               localStorage.setItem('token', JSON.stringify(response.data.token))
               localStorage.setItem('user', JSON.stringify({username: username, isAdmin : adminResponse, userRole: roleResponse}));
-              nav('/dashboard', {state : {username: username, isAdmin : adminResponse, userRole: roleResponse}});
+              nav('/dashboard');
           }
       } catch (error) {
           setError('Invalid username or password. Please try again.');

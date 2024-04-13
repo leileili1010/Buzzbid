@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 import "./SearchItem.css";
 import axios from "axios";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const SearchItem = () => {
-    const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
     const[inputs, setInputs] = useState({
         keyword: '',
         minPrice: '',
@@ -15,6 +14,14 @@ const SearchItem = () => {
     const[errors, setErrors] = useState({});
     const[categories, setCategories] = useState([]);
     const nav = useNavigate();
+    const userJsonString = localStorage.getItem('user');
+    const currentUser = JSON.parse(userJsonString);
+
+    useEffect(() => {
+        if (!userJsonString) {
+            nav("/login");
+        }
+    }, [userJsonString, nav]);
 
     useEffect(() => {
         async function getCategories() {
@@ -59,7 +66,7 @@ const SearchItem = () => {
     };
 
     const cancel = () => {
-        nav('/dashboard', {state : {username: username, isAdmin : isAdmin, userRole: userRole}});
+        nav('/dashboard');
     };
 
     const submitForm = (e) => {
@@ -84,7 +91,7 @@ const SearchItem = () => {
             .then((response) => {
                 let searchResults = response.data;
 
-                nav('/searchResults', {state: {searchResults: searchResults, username: username, isAdmin: isAdmin, userRole: userRole}});
+                nav('/searchResults', {state: {searchResults: searchResults}});
             }).catch(function(error) {
 
         });

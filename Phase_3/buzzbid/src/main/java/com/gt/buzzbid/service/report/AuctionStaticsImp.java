@@ -1,7 +1,6 @@
 package com.gt.buzzbid.service.report;
 
 import com.gt.buzzbid.model.AuctionStaticsReportModel;
-import com.gt.buzzbid.model.TopRatedReportModel;
 import com.gt.buzzbid.service.db.DatabaseService;
 
 import java.sql.Connection;
@@ -11,45 +10,45 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuctionStaticsImp implements AuctionStaticsService{
+public class AuctionStaticsImp implements AuctionStaticsService {
     @Override
     public List<AuctionStaticsReportModel> getAuctionStaticsReport() {
         List<AuctionStaticsReportModel> auctionStaticsReportModels = new ArrayList<>();
         AuctionStaticsReportModel AuctionStaticsReportModel = new AuctionStaticsReportModel();
 
-        String query1 = "SELECT COUNT(*) AS active_auctions\n" +
-                "FROM Auction\n" +
+        String query1 = "SELECT COUNT(*) AS active_auctions "  + //
+                "FROM Auction "  + //
                 "WHERE auction_end_time > now();";
 
-        String query2 = "SELECT COUNT(*) AS finished\n" +
-                "FROM Auction\n" +
-                "WHERE cancelled_by IS NULL\n" +
+        String query2 = "SELECT COUNT(*) AS finished "  + //
+                "FROM Auction "  + //
+                "WHERE cancelled_by IS NULL "  + //
                 "AND auction_end_time < now();";
 
-        String query3 = "SELECT COUNT(a.*) AS won\n" +
-                "FROM Auction a\n" +
-                "WHERE a.cancelled_by IS NULL\n" +
-                "AND a.auction_end_time < now()\n" +
-                "AND EXISTS (SELECT 1\n" +
-                "FROM Bid b\n" +
-                "WHERE b.auction_id = a.auction_id\n" +
-                "AND (b.bid_amount > a.min_sale_price\n" +
-                "OR b.bid_amount = a.get_it_now_price));";
+        String query3 = "SELECT COUNT(a.*) AS won "  + //
+                "FROM Auction a "  + //
+                "WHERE a.cancelled_by IS NULL "  + //
+                "AND a.auction_end_time < now() "  + //
+                "AND EXISTS (SELECT 1 "  + //
+                "            FROM Bid b "  + //
+                "            WHERE b.auction_id = a.auction_id "  + //
+                "            AND (b.bid_amount > a.min_sale_price "  + //
+                "                   OR b.bid_amount = a.get_it_now_price));";
 
-        String query4= "SELECT COUNT(*) AS cancelled\n" +
-                "FROM Auction\n" +
+        String query4 = "SELECT COUNT(*) AS cancelled "  + //
+                "FROM Auction "  + //
                 "WHERE cancelled_by IS NOT NULL;";
 
-        String query5= "SELECT COUNT(*) AS itemrated\n" +
-                "FROM Item i WHERE EXISTS (SELECT 1\n" +
-                "FROM Rating r\n" +
-                "WHERE i.item_id = r.item_id);";
+        String query5 = "SELECT COUNT(*) AS itemrated "  + //
+                "FROM Item i WHERE EXISTS (SELECT 1 "  + //
+                "                          FROM Rating r "  + //
+                "                          WHERE i.item_id = r.item_id);";
 
-        String query6= "SELECT COUNT(*) AS itemnotrated\n" +
-                "FROM Item i\n" +
-                "WHERE NOT EXISTS (SELECT 1\n" +
-                "FROM Rating r\n" +
-                "WHERE i.item_id = r.item_id);";
+        String query6 = "SELECT COUNT(*) AS itemnotrated "  + //
+                "FROM Item i "  + //
+                "WHERE NOT EXISTS (SELECT 1 "  + //
+                "                  FROM Rating r "  + //
+                "                  WHERE i.item_id = r.item_id);";
 
         Connection connection = null;
         ResultSet resultSet1 = null;
@@ -75,27 +74,26 @@ public class AuctionStaticsImp implements AuctionStaticsService{
             resultSet5 = stmt5.executeQuery();
             resultSet6 = stmt6.executeQuery();
 
-            while (resultSet1.next()){
+            while (resultSet1.next()) {
                 AuctionStaticsReportModel.activeAuction = resultSet1.getInt("active_auctions");
-            }while (resultSet2.next()){
+            }
+            while (resultSet2.next()) {
                 AuctionStaticsReportModel.finishedAuction = resultSet2.getInt("finished");
-            }while (resultSet3.next()){
+            }
+            while (resultSet3.next()) {
                 AuctionStaticsReportModel.wonAuction = resultSet3.getInt("won");
-            }while (resultSet4.next()){
+            }
+            while (resultSet4.next()) {
                 AuctionStaticsReportModel.cancelledAuction = resultSet4.getInt("cancelled");
-            }while (resultSet5.next()){
+            }
+            while (resultSet5.next()) {
                 AuctionStaticsReportModel.ratedItems = resultSet5.getInt("itemrated");
-            }while (resultSet6.next()){
+            }
+            while (resultSet6.next()) {
                 AuctionStaticsReportModel.notRatedItems = resultSet6.getInt("itemnotrated");
             }
             auctionStaticsReportModels.add(AuctionStaticsReportModel);
-
-
-
-
-
-
-                    } catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             try {
@@ -106,15 +104,11 @@ public class AuctionStaticsImp implements AuctionStaticsService{
                 if (resultSet1 != null) {
                     resultSet1.close();
                 }
-
             } catch (SQLException e) {
 
             }
         }
 
         return auctionStaticsReportModels;
-
     }
-
 }
-

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-import {MDBContainer, MDBInput, MDBBtn} from "mdb-react-ui-kit";
+import {MDBBtn, MDBContainer, MDBInput} from "mdb-react-ui-kit";
 
 function Register() {
     const[username, setUsername] = useState('');
@@ -23,7 +23,9 @@ function Register() {
                    username, password, firstName, lastName
                 });
 
-                nav('/dashboard', {state : {username: username}});
+                localStorage.setItem('token', JSON.stringify(response.data.token))
+                localStorage.setItem('user', JSON.stringify({username: username, isAdmin : false, userRole: ''}));
+                nav('/dashboard');
             }
         } catch (error) {
             setError(error.response ? error.response.data.message : error.message);
@@ -56,12 +58,12 @@ function Register() {
                               value={confirmPassword}
                               onChange={(e) => setConfirmPassword(e.target.value)}/>
                     {error && <p className="text-danger">{error}</p>}
-                    <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
+                    <MDBBtn className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
                             onClick={handleRegistration}>Register
-                    </button>
-                    <button className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
+                    </MDBBtn>
+                    <MDBBtn className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
                             onClick={returnToLogin}>Cancel
-                    </button>
+                    </MDBBtn>
                     <div className="text-center">
                         <p>Already Registered? <a href="/login">Log in</a></p>
                     </div>

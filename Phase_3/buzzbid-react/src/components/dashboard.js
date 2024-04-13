@@ -1,18 +1,23 @@
-import React from 'react';
-import {Link, useLocation, useNavigate} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import buzzLogo from "../images/buzz.png";
-import {removeUser} from "../redux/session";
-import { useDispatch } from "react-redux";
 
 function Dashboard() {
     const nav = useNavigate();
-    const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
-    const dispatch = useDispatch();
+    const userJsonString = localStorage.getItem('user');
+    const currentUser = JSON.parse(userJsonString);
+
     const handleLogout = () => {
         localStorage.clear();
         nav('/');
     };
+
+    useEffect(() => {
+        if (!userJsonString) {
+            nav("/login");
+        }
+    }, [userJsonString, nav]);
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
@@ -30,29 +35,25 @@ function Dashboard() {
                     <MDBRow>
                         <MDBCol md="12">
                             <p className="mb-4 text-center">
-                                Welcome, {username}!<br/>
-                                {userRole && <span>Administrative position: {userRole}</span>}
+                                Welcome, {currentUser.username}!<br/>
+                                {currentUser.userRole && <span>Administrative position: {currentUser.userRole}</span>}
                             </p>
                         </MDBCol>
                     </MDBRow>
                     <MDBRow>
-                        <MDBCol md={isAdmin ? "6" : "12"}>
+                        <MDBCol md={currentUser.isAdmin ? "6" : "12"}>
                             <h3>Auction Options</h3>
-                            <Link to="/searchItem" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Search
-                                for
-                                Items</Link><br/>
-                            <Link to="/listItem" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>List
-                                Item</Link><br/>
-                            <Link to="/auctionresults" state={{username: username, isAdmin: isAdmin, userRole: userRole}}>View
-                                Auction Results</Link>
+                            <Link to="/searchItem">Search for Items</Link><br/>
+                            <Link to="/listItem" >List Item</Link><br/>
+                            <Link to="/auctionresults">View Auction Results</Link>
                         </MDBCol>
-                        {isAdmin && <MDBCol md="6">
+                        {currentUser.isAdmin && <MDBCol md="6">
                             <h3>Reports</h3>
-                            <Link to="/categoryreport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Category Report</Link><br/>
-                            <Link to="/userReport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>User Report</Link><br/>
-                            <Link to="/topratedreport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Top Rated Items Report</Link><br/>
-                            <Link to="/auctionstaticsreport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Auction Statistics</Link><br/>
-                            <Link to="/cancelledreport"state={{username: username, isAdmin: isAdmin, userRole: userRole}}>Cancelled Auction Details</Link><br/>
+                            <Link to="/categoryreport">Category Report</Link><br/>
+                            <Link to="/userReport">User Report</Link><br/>
+                            <Link to="/topratedreport">Top Rated Items Report</Link><br/>
+                            <Link to="/auctionstaticsreport">Auction Statistics</Link><br/>
+                            <Link to="/cancelledreport">Cancelled Auction Details</Link><br/>
                         </MDBCol>}
                     </MDBRow>
                     <MDBRow>

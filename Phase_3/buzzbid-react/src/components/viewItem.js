@@ -22,6 +22,14 @@ function ViewItem() {
     const[cancelModal, setCancelModal] = useState(false);
     const[editedDesc, setEditedDesc] = useState('');
     const[cancelReason, setCancelReason] = useState('');
+    const userJsonString = localStorage.getItem('user');
+    const currentUser = JSON.parse(userJsonString);
+
+    useEffect(() => {
+        if (!userJsonString) {
+            nav("/login");
+        }
+    }, [userJsonString, nav]);
 
     useEffect(() => {
         function getAuctionData() {
@@ -63,7 +71,7 @@ function ViewItem() {
         }
 
         axios.post(`http://localhost:8081/auction/${auctionId}/bid`, {
-            username, bidAmount
+            username: currentUser.username, bidAmount: bidAmount
         }).then((response) => {
             window.location.reload();
         }).catch(function(error) {
@@ -80,7 +88,7 @@ function ViewItem() {
         setBidAmount(bid);
 
         axios.post(`http://localhost:8081/auction/${auctionId}/getItNow`, {
-            username: username, bidAmount: bid
+            username: currentUser.username, bidAmount: bid
         }).then((response) => {
             window.location.reload();
         }).catch(function(error) {
@@ -107,7 +115,7 @@ function ViewItem() {
 
     const cancelAuction = () => {
         axios.post(`http://localhost:8081/auction/${auctionId}/cancel`, {
-           username, cancelReason
+            username: currentUser.username, cancelReason: cancelReason
         }).then((response) => {
             toggleCancelModal();
             setTimeout(function() {
@@ -119,7 +127,7 @@ function ViewItem() {
     };
 
     const viewRating = () => {
-      nav(`/itemrating/${auctionData.itemId}`);
+      nav(`/itemRating/${auctionData.itemId}`);
     };
 
     const toggleEditModal = () => setEditModal(!editModal);
@@ -158,7 +166,7 @@ function ViewItem() {
                         <MDBCol md="4">
                             <strong>{auctionData.description}</strong>
                         </MDBCol>
-                        {username === auctionData.username && !auctionData.auctionEnded && <MDBCol md="4">
+                        {currentUser.username === auctionData.username && !auctionData.auctionEnded && <MDBCol md="4">
                             <MDBBtn type="button" className="mb-4 d-block btn btn-primary mt-3" style={{width: '100%'}}
                                     onClick={toggleEditModal}>
                                 Edit Description
@@ -196,7 +204,7 @@ function ViewItem() {
                         <MDBCol md="4">
                             <strong>{auctionData.getItNowPrice}</strong>
                         </MDBCol>
-                        {username !== auctionData.username && auctionData.getItNowPrice && !auctionData.auctionEnded && <MDBCol md="4">
+                        {currentUser.username !== auctionData.username && auctionData.getItNowPrice && !auctionData.auctionEnded && <MDBCol md="4">
                             <MDBBtn type="button" className="mb-4 d-block btn btn-primary mt-3" style={{width: '100%'}}
                                     onClick={getItNow}>
                                 Get It Now!
@@ -300,7 +308,7 @@ function ViewItem() {
                         </MDBCol>
                     </MDBRow>
                     <br/>
-                    {username !== auctionData.username && !auctionData.auctionEnded && <MDBRow>
+                    {currentUser.username !== auctionData.username && !auctionData.auctionEnded && <MDBRow>
                         <MDBCol md="4">
                             <strong>Your Bid</strong>
                         </MDBCol>
@@ -320,12 +328,12 @@ function ViewItem() {
                                     onClick={e => close(e)}>Close
                             </MDBBtn>
                         </MDBCol>
-                        {isAdmin && !auctionData.auctionEnded && <MDBCol md="4">
+                        {currentUser.isAdmin && !auctionData.auctionEnded && <MDBCol md="4">
                             <MDBBtn type="button" className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
                                     onClick={toggleCancelModal}>Cancel This Auction
                             </MDBBtn>
                         </MDBCol>}
-                        {username !== auctionData.username && !auctionData.auctionEnded && <MDBCol md="4">
+                        {currentUser.username !== auctionData.username && !auctionData.auctionEnded && <MDBCol md="4">
                             <MDBBtn type="button" className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
                                     onClick={bid}>Bid On This Item
                             </MDBBtn>

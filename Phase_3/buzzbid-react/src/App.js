@@ -10,9 +10,9 @@ import ViewItem from "./components/viewItem";
 import CategoryReport from './components/Reports/categoryReport';
 import UserReport from './components/Reports/userReport';
 import SearchResults from "./components/searchResults";
-import TopRatedReport from './components/Reports/topratedreport';
-import AuctionStaticsReport from './components/Reports/auctionstaticsreport';
-import CancelledReport from './components/Reports/cancelledreport';
+import TopRatedReport from './components/Reports/topRatedReport';
+import AuctionStaticsReport from './components/Reports/auctionStaticsReport';
+import CancelledReport from './components/Reports/cancelledReport';
 import {ModalProvider, Modal} from "./context/Modal";
 import AuctionResults from "./components/auctionResults/AuctionResults";
 
@@ -30,13 +30,13 @@ function App() {
             <Route path='/viewItem' element={<ViewItem/>}/>
             <Route path="/searchItem" element={<SearchItem/>}/>
             <Route path="/searchResults" element={<SearchResults/>}/>
-            <Route path="/itemrating/:itemId" element={<ItemRating />}/>
+            <Route path="/itemRating/:itemId" element={<ItemRating />}/>
             <Route path='/categoryReport' element={<CategoryReport/>}/>
             <Route path='/userReport' element={<UserReport/>}/>
-            <Route path='/topratedreport' element={<TopRatedReport/>}/>
-            <Route path='/auctionstaticsreport' element={<AuctionStaticsReport/>}/>
-            <Route path='/cancelledreport' element={<CancelledReport/>}/>
-            <Route path='/auctionresults' element={<AuctionResults/>}/>
+            <Route path='/topRatedReport' element={<TopRatedReport/>}/>
+            <Route path='/auctionStaticsReport' element={<AuctionStaticsReport/>}/>
+            <Route path='/cancelledReport' element={<CancelledReport/>}/>
+            <Route path='/auctionResults' element={<AuctionResults/>}/>
           </Routes>
         </Router>
       </div>

@@ -1,13 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 
 function SearchResults() {
-    const {state: {searchResults : searchResults, username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
+    const {state: {searchResults : searchResults}} = useLocation();
     const nav = useNavigate();
+    const userJsonString = localStorage.getItem('user');
+    const currentUser = JSON.parse(userJsonString);
+
+    useEffect(() => {
+        if (!userJsonString) {
+            nav("/login");
+        }
+    }, [userJsonString, nav]);
 
     const backToSearch = () => {
-        nav('/searchItem', {state : {username: username, isAdmin : isAdmin, userRole: userRole}});
+        nav('/searchItem');
     };
 
     return (
@@ -40,7 +48,7 @@ function SearchResults() {
                                 {s.auctionId}
                             </MDBCol>
                             <MDBCol md="2">
-                               <Link to="/viewItem" state={{auctionId: s.auctionId, username: username, isAdmin: isAdmin, userRole : userRole}}>
+                               <Link to="/viewItem" state={{auctionId: s.auctionId}}>
                                    {s.itemName}
                                </Link>
                             </MDBCol>
