@@ -4,11 +4,13 @@ import { createLogger } from 'redux-logger';
 import ratingReducer from "./rating";
 import itemReducer from "./item";
 import sessionReducer from "./session";
+import auctionReducer from "./auction";
 
 const rootReducer = combineReducers({
     rating: ratingReducer,
     item: itemReducer,
     session: sessionReducer,
+    auction: auctionReducer,
 });
 
 const initialState = {};

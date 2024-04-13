@@ -8,6 +8,8 @@ import "./ItemRating.css";
 import {generateStars, formatDate} from "../helperFunctions/helperFunctions";
 import OpenModalButton from "../OpenModalButton";
 import DeleteRatingModal from "./DeleteRatingModal";
+import {thunkGetAuctionResults} from "../../redux/auction";
+import RateItem from "./RateItem";
 
 const ItemRating = () => {
     const dispatch = useDispatch();
@@ -18,6 +20,19 @@ const ItemRating = () => {
     const ratings = Object.values(ratingsObj);
     const userJsonString = localStorage.getItem('user');
     const currentUser = JSON.parse(userJsonString);
+    const auctionResult = useSelector(state => state.auction.auctionResults[itemId]);
+    const [addRating, setAddRating] =useState(0);
+    const isWinner = auctionResult?.winner === currentUser.username;
+    // console.log("========================isWinner?", isWinner)
+    let ifRated = false;
+
+    for (let rating of ratings) {
+        if (rating?.username === currentUser.username) {
+            ifRated = true;
+            break;
+        }
+    }
+    // console.log("=====================ifRated??", ifRated)
 
     let averageRating;
     if (parseInt(item?.avgRating) > 1) {
@@ -34,10 +49,14 @@ const ItemRating = () => {
 
     useEffect(() => {
         dispatch(thunkGetRatings(itemId));
-    }, [dispatch, itemId]);
+    }, [dispatch, itemId, addRating]);
 
     useEffect(() => {
         dispatch(thunkGetItemWithAvgRating(itemId));
+    }, [dispatch, itemId]);
+
+    useEffect(() => {
+        dispatch(thunkGetAuctionResults());
     }, [dispatch, itemId]);
 
     return (
@@ -82,6 +101,10 @@ const ItemRating = () => {
                     </div>
                 )}
             </div>
+            {(isWinner && !ifRated) && < OpenModalButton
+                buttonText="Rate This Item"
+                modalComponent={<RateItem username={currentUser.username} itemId={itemId} setAddRating={setAddRating} />}
+            />}
         </div>
     )
 }

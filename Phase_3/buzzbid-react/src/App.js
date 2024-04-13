@@ -18,7 +18,7 @@ import AuctionResults from "./components/auctionResults/AuctionResults";
 
 function App() {
   return (
-      <ModalProvider>
+      
       <div className="App">
         <Router>
           <Routes>
@@ -40,8 +40,7 @@ function App() {
           </Routes>
         </Router>
       </div>
-          <Modal />
-      </ModalProvider>
+      
   );
 }
 
