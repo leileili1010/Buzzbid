@@ -15,7 +15,7 @@
 }
 
 .rating-form textarea {
-    width: 100%;
+    width: 560px;
     height: 200px;
     margin-top: 3em;
     border: 1px solid #ccc;
@@ -44,4 +44,8 @@
 
 #star {
     color: #FFD43B
+}
+
+.rating-error {
+    color: red;
 }
