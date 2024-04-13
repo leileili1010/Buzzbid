@@ -9,7 +9,7 @@ const RateItem = ({username,itemId, setAddRating}) => {
     const [comment, setComment] = useState('');
     const [stars, setStars] = useState(0);
     const [errors, setErrors] = useState({});
-console.log("=======================comment and stars", comment, stars)
+// console.log("=======================comment and stars", comment, stars)
 
     const onChange = (num) => {
         setStars(parseInt(num));
