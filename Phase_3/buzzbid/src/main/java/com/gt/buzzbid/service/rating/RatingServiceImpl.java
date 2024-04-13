@@ -5,6 +5,7 @@ import com.gt.buzzbid.entity.Rating;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,6 +134,7 @@ public class RatingServiceImpl implements RatingService {
         }
     }
 
+
     @Override
     public Integer createRating(Rating rating) {
         Integer ratingId = null;
@@ -141,13 +143,14 @@ public class RatingServiceImpl implements RatingService {
         String query = "INSERT INTO Rating(item_id, username, number_of_stars, comment, rating_time) VALUES (?, ?, ?, ?, ?)";
 
         try {
+            LocalDateTime now = LocalDateTime.now();
             conn = DatabaseService.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, rating.getItemId());
             stmt.setString(2, rating.getUsername());
             stmt.setInt(3, rating.getNumberOfStars());
             stmt.setString(4, rating.getComment());
-            stmt.setTimestamp(5, new Timestamp(rating.getRatingTime().getTime()));
+            stmt.setTimestamp(5, Timestamp.valueOf(now));
             stmt.executeUpdate();
 
             rs = stmt.getGeneratedKeys();
@@ -164,17 +167,16 @@ public class RatingServiceImpl implements RatingService {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-
-                if (rs != null) {
-                    try {
-                        rs.close();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
-
         return ratingId;
     }
+
 }
