@@ -17,7 +17,7 @@ import CancelledReport from './components/Reports/cancelledreport';
 
 function App() {
   return (
-      <ModalProvider>
+      
       <div className="App">
         <Router>
           <Routes>
@@ -43,8 +43,7 @@ function App() {
           </Routes>
         </Router>
       </div>
-          <Modal />
-      </ModalProvider>
+      
   );
 }
 export default App;
