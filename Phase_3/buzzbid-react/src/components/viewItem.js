@@ -118,6 +118,10 @@ function ViewItem() {
         });
     };
 
+    const viewRating = () => {
+      nav(`/itemrating/${auctionData.itemId}`);
+    };
+
     const toggleEditModal = () => setEditModal(!editModal);
     const toggleCancelModal = () => setCancelModal(!cancelModal);
 
@@ -129,8 +133,14 @@ function ViewItem() {
                         <MDBCol md="4">
                             <label>Item ID</label>
                         </MDBCol>
-                        <MDBCol md="8">
+                        <MDBCol md="4">
                             <strong>{auctionData.itemId}</strong>
+                        </MDBCol>
+                        <MDBCol md="4">
+                            <MDBBtn type="button" className="mb-4 d-block btn btn-primary mt-3" style={{width: '100%'}}
+                                    onClick={viewRating}>
+                                View Rating
+                            </MDBBtn>
                         </MDBCol>
                     </MDBRow>
                     <MDBRow>
@@ -223,30 +233,42 @@ function ViewItem() {
                                 </MDBRow>
                                 {auctionData.bids && auctionData.bids.map((b, i) => {
                                     if (i == 0 && auctionData.auctionEnded) {
-                                        if (parseFloat(b.bidAmount.substring(1)) >= parseFloat(auctionData.minSalePrice)) {
+                                        if (auctionData.cancelledBy) {
+                                            return  <MDBRow style={{ background: 'red' }}>
+                                                        <MDBCol md="4">
+                                                            {b.bidAmount}
+                                                        </MDBCol>
+                                                        <MDBCol md="4">
+                                                            {b.bidTime}
+                                                        </MDBCol>
+                                                        <MDBCol md="4">
+                                                            {b.username}
+                                                        </MDBCol>
+                                                    </MDBRow>
+                                        } else if (auctionData.minSalePriceMet) {
                                             return  <MDBRow style={{ background: 'green' }}>
-                                                <MDBCol md="4">
-                                                    {b.bidAmount}
-                                                </MDBCol>
-                                                <MDBCol md="4">
-                                                    {b.bidTime}
-                                                </MDBCol>
-                                                <MDBCol md="4">
-                                                    {b.username}
-                                                </MDBCol>
-                                            </MDBRow>
-                                        } else if (parseFloat(b.bidAmount.substring(1)) < parseFloat(auctionData.minSalePrice)) {
+                                                        <MDBCol md="4">
+                                                            {b.bidAmount}
+                                                        </MDBCol>
+                                                        <MDBCol md="4">
+                                                            {b.bidTime}
+                                                        </MDBCol>
+                                                        <MDBCol md="4">
+                                                            {b.username}
+                                                        </MDBCol>
+                                                    </MDBRow>
+                                        } else if (!auctionData.minSalePriceMet) {
                                             return  <MDBRow style={{ background: 'yellow' }}>
-                                                <MDBCol md="4">
-                                                    {b.bidAmount}
-                                                </MDBCol>
-                                                <MDBCol md="4">
-                                                    {b.bidTime}
-                                                </MDBCol>
-                                                <MDBCol md="4">
-                                                    {b.username}
-                                                </MDBCol>
-                                            </MDBRow>
+                                                        <MDBCol md="4">
+                                                            {b.bidAmount}
+                                                        </MDBCol>
+                                                        <MDBCol md="4">
+                                                            {b.bidTime}
+                                                        </MDBCol>
+                                                        <MDBCol md="4">
+                                                            {b.username}
+                                                        </MDBCol>
+                                                    </MDBRow>
                                         } else {
                                             return  <MDBRow>
                                                         <MDBCol md="4">
@@ -338,7 +360,7 @@ function ViewItem() {
                             <MDBModalContent>
                                 <MDBModalHeader>
                                     <MDBModalTitle>Cancel Auction</MDBModalTitle>
-                                    <MDBBtn className='btn-close' color='none' onClick={toggleEditModal}></MDBBtn>
+                                    <MDBBtn className='btn-close' color='none' onClick={toggleCancelModal}></MDBBtn>
                                 </MDBModalHeader>
                                 <MDBModalContent>
                                     <MDBContainer className="p-3">
@@ -351,7 +373,7 @@ function ViewItem() {
                                     </MDBContainer>
                                 </MDBModalContent>
                                 <MDBModalFooter>
-                                    <MDBBtn color="secondary" onClick={toggleEditModal}>Close</MDBBtn>
+                                    <MDBBtn color="secondary" onClick={toggleCancelModal}>Close</MDBBtn>
                                     <MDBBtn onClick={cancelAuction}>Cancel Auction</MDBBtn>
                                 </MDBModalFooter>
                             </MDBModalContent>

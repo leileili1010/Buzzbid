@@ -1,5 +1,5 @@
 import { useEffect, useState} from "react";
-import {NavLink, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {formatDate} from "../helperFunctions/helperFunctions";
 import "./AuctionResults.css"
@@ -62,7 +62,7 @@ const AuctionResults = () => {
                                 itemId={auctionResult.itemId}
                             />}/>
                         </td>
-                        <td>{( auctionResult.salePrice > 0 && Number(auctionResult.salePrice).toFixed(2)) || "-"}</td>
+                        <td>{auctionResult.salePrice || "-"}</td>
                         <td className="winner">{auctionResult.winner || "-"}</td>
                         <td className="auction-end-time">{formatDate(auctionResult.auctionEnded)}</td>
                     </tr>

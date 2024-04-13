@@ -14,12 +14,15 @@ import com.gt.buzzbid.service.item.ItemServiceImpl;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -257,7 +260,8 @@ public class AuctionServiceImpl implements AuctionService {
                 "auction_end_time, " + //
                 "get_it_now_price, " + //
                 "starting_bid, " + //
-                "min_sale_price " + //
+                "min_sale_price," +
+                "cancelled_by " + //
                 "FROM Auction " + //
                 "WHERE auction_id = ?";
 
@@ -278,7 +282,7 @@ public class AuctionServiceImpl implements AuctionService {
                 }
 
                 model.setStartingBid("$" + rs.getBigDecimal("starting_bid").toPlainString());
-                model.setMinSalePrice(rs.getString("min_sale_price"));
+                model.setCancelledBy(rs.getString("cancelled_by"));
             }
 
             // get item
@@ -293,6 +297,25 @@ public class AuctionServiceImpl implements AuctionService {
             model.setIsReturnable(String.valueOf(item.isReturnable()));
             model.setUsername(item.getUsername());
             model.setBids(bidService.getBids(auctionId));
+
+            if (model.isAuctionEnded() && !CollectionUtils.isEmpty(model.getBids())) {
+                // set if min sale price was met or exceeded
+                BidModel highestBid = Collections.max(model.getBids(), Comparator.comparing(b -> new BigDecimal(b.getBidAmount().substring(1))));
+                model.setMinSalePriceMet(new BigDecimal(highestBid.getBidAmount().substring(1)).compareTo(rs.getBigDecimal("min_sale_price")) >= 0);
+
+                // add a cancelled model if this auction was cancelled, and remove the last element
+                if (StringUtils.isNotBlank(model.getCancelledBy())) {
+                    BidModel cancelledBid = new BidModel();
+                    cancelledBid.setBidAmount("Cancelled");
+                    cancelledBid.setBidTime(model.getAuctionEndTime());
+                    cancelledBid.setUsername(model.getCancelledBy());
+                    model.getBids().add(0, cancelledBid);
+
+                    if (model.getBids().size() > 4) {
+                        model.getBids().remove(model.getBids().size() - 1);
+                    }
+                }
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
