@@ -21,7 +21,7 @@ public class CancelledAuctionImp implements CancelledAuctionService {
                 "              a.cancel_reason AS reason "  + //
                 "FROM Item i "  + //
                 "JOIN Auction a ON a.item_id = i.item_id "  + //
-                "WHERE a.cancelled_by IS NOT NULL "  + //
+                "WHERE a.cancelled_timestamp IS NOT NULL "  + //
                 "ORDER BY 1 DESC;";
         Connection connection = null;
         ResultSet resultSet = null;

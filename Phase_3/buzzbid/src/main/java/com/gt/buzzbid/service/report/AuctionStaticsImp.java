@@ -22,12 +22,12 @@ public class AuctionStaticsImp implements AuctionStaticsService {
 
         String query2 = "SELECT COUNT(*) AS finished "  + //
                 "FROM Auction "  + //
-                "WHERE cancelled_by IS NULL "  + //
+                "WHERE cancelled_timestamp IS NULL "  + //
                 "AND auction_end_time < now();";
 
         String query3 = "SELECT COUNT(a.*) AS won "  + //
                 "FROM Auction a "  + //
-                "WHERE a.cancelled_by IS NULL "  + //
+                "WHERE a.cancelled_timestamp IS NULL "  + //
                 "AND a.auction_end_time < now() "  + //
                 "AND EXISTS (SELECT 1 "  + //
                 "            FROM Bid b "  + //
@@ -37,7 +37,7 @@ public class AuctionStaticsImp implements AuctionStaticsService {
 
         String query4 = "SELECT COUNT(*) AS cancelled "  + //
                 "FROM Auction "  + //
-                "WHERE cancelled_by IS NOT NULL;";
+                "WHERE cancelled_timestamp IS NOT NULL;";
 
         String query5 = "SELECT COUNT(*) AS itemrated "  + //
                 "FROM Item i WHERE EXISTS (SELECT 1 "  + //

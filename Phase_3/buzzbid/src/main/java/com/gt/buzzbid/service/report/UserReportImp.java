@@ -24,7 +24,7 @@ public class UserReportImp implements UserReportService {
                 "                                  COUNT(*) AS sold_count " + //
                 "                           FROM Item i " + //
                 "                           JOIN Auction a ON i.item_id = a.item_id " + //
-                "                           WHERE a.cancelled_by IS NULL " + //
+                "                           WHERE a.cancelled_timestamp IS NULL " + //
                 "                           AND a.auction_end_time < now() " + //
                 "                           AND EXISTS (SELECT 1 " + //
                 "                                       FROM Bid b " + //
@@ -36,7 +36,7 @@ public class UserReportImp implements UserReportService {
                 "                                 COUNT(a.*) AS won_count " + //
                 "                          FROM Bid b " + //
                 "                          JOIN Auction a ON b.auction_id = a.auction_id " + //
-                "                          WHERE a.cancelled_by IS NULL " + //
+                "                          WHERE a.cancelled_timestamp IS NULL " + //
                 "                          AND a.auction_end_time < now() " + //
                 "                          AND b.username IN (SELECT DISTINCT ON (b1.auction_id) " + //
                 "                                                    b1.username " + //

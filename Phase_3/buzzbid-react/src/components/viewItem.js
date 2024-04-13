@@ -13,15 +13,15 @@ import {
 import axios from "axios";
 
 function ViewItem() {
-    const {state: {auctionId: auctionId, username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
+    const {state: {auctionId: auctionId, username: username, isAdmin: isAdmin, userRole: userRole}} = useLocation();
     const [auctionData, setAuctionData] = useState({});
     const nav = useNavigate();
-    const[errors, setErrors] = useState({});
-    const[bidAmount, setBidAmount] = useState('');
-    const[editModal, setEditModal] = useState(false);
-    const[cancelModal, setCancelModal] = useState(false);
-    const[editedDesc, setEditedDesc] = useState('');
-    const[cancelReason, setCancelReason] = useState('');
+    const [errors, setErrors] = useState({});
+    const [bidAmount, setBidAmount] = useState('');
+    const [editModal, setEditModal] = useState(false);
+    const [cancelModal, setCancelModal] = useState(false);
+    const [editedDesc, setEditedDesc] = useState('');
+    const [cancelReason, setCancelReason] = useState('');
     const userJsonString = localStorage.getItem('user');
     const currentUser = JSON.parse(userJsonString);
 
@@ -33,16 +33,16 @@ function ViewItem() {
 
     useEffect(() => {
         function getAuctionData() {
-                axios.get(`http://localhost:8081/auction/${auctionId}`)
+            axios.get(`http://localhost:8081/auction/${auctionId}`)
                 .then((response) => {
-                   const data = response.data;
-                   setAuctionData(data);
-                }).catch(function(error) {
+                    const data = response.data;
+                    setAuctionData(data);
+                }).catch(function (error) {
 
             });
-       }
+        }
 
-       getAuctionData();
+        getAuctionData();
     }, []);
 
     const validator = (bidAmount) => {
@@ -74,13 +74,13 @@ function ViewItem() {
             username: currentUser.username, bidAmount: bidAmount
         }).then((response) => {
             window.location.reload();
-        }).catch(function(error) {
+        }).catch(function (error) {
 
         });
     };
 
     const close = () => {
-        nav('/dashboard', {state : {username: username, isAdmin : isAdmin, userRole: userRole}});
+        nav('/dashboard', {state: {username: username, isAdmin: isAdmin, userRole: userRole}});
     };
 
     const getItNow = () => {
@@ -91,7 +91,7 @@ function ViewItem() {
             username: currentUser.username, bidAmount: bid
         }).then((response) => {
             window.location.reload();
-        }).catch(function(error) {
+        }).catch(function (error) {
 
         });
     };
@@ -105,10 +105,10 @@ function ViewItem() {
             description: editedDesc
         }).then((response) => {
             toggleEditModal();
-           setTimeout(function() {
-               window.location.reload();
-           }, 1500);
-        }).catch(function(error) {
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        }).catch(function (error) {
 
         });
     };
@@ -118,16 +118,16 @@ function ViewItem() {
             username: currentUser.username, cancelReason: cancelReason
         }).then((response) => {
             toggleCancelModal();
-            setTimeout(function() {
+            setTimeout(function () {
                 window.location.reload();
             }, 1500);
-        }).catch(function(error) {
+        }).catch(function (error) {
 
         });
     };
 
     const viewRating = () => {
-      nav(`/itemRating/${auctionData.itemId}`);
+        nav(`/itemRating/${auctionData.itemId}`);
     };
 
     const toggleEditModal = () => setEditModal(!editModal);
@@ -204,19 +204,21 @@ function ViewItem() {
                         <MDBCol md="4">
                             <strong>{auctionData.getItNowPrice}</strong>
                         </MDBCol>
-                        {currentUser.username !== auctionData.username && auctionData.getItNowPrice && !auctionData.auctionEnded && <MDBCol md="4">
-                            <MDBBtn type="button" className="mb-4 d-block btn btn-primary mt-3" style={{width: '100%'}}
-                                    onClick={getItNow}>
-                                Get It Now!
-                            </MDBBtn>
-                        </MDBCol>}
+                        {currentUser.username !== auctionData.username && auctionData.getItNowPrice && !auctionData.auctionEnded &&
+                            <MDBCol md="4">
+                                <MDBBtn type="button" className="mb-4 d-block btn btn-primary mt-3"
+                                        style={{width: '100%'}}
+                                        onClick={getItNow}>
+                                    Get It Now!
+                                </MDBBtn>
+                            </MDBCol>}
                     </MDBRow>
                     <MDBRow>
                         <MDBCol md="4">
                             <label>Auction Ends</label>
                         </MDBCol>
                         <MDBCol md="8">
-                            <strong>{auctionData.auctionEndTime}</strong>
+                            <strong>{auctionData.cancelledTime ? auctionData.cancelledTime : auctionData.auctionEndTime}</strong>
                         </MDBCol>
                     </MDBRow>
                     <MDBRow>
@@ -241,67 +243,67 @@ function ViewItem() {
                                 </MDBRow>
                                 {auctionData.bids && auctionData.bids.map((b, i) => {
                                     if (i == 0 && auctionData.auctionEnded) {
-                                        if (auctionData.cancelledBy) {
-                                            return  <MDBRow style={{ background: 'red' }}>
-                                                        <MDBCol md="4">
-                                                            {b.bidAmount}
-                                                        </MDBCol>
-                                                        <MDBCol md="4">
-                                                            {b.bidTime}
-                                                        </MDBCol>
-                                                        <MDBCol md="4">
-                                                            {b.username}
-                                                        </MDBCol>
-                                                    </MDBRow>
+                                        if (auctionData.cancelledTime) {
+                                            return <MDBRow style={{background: 'red'}}>
+                                                <MDBCol md="4">
+                                                    {b.bidAmount}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.bidTime}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.username}
+                                                </MDBCol>
+                                            </MDBRow>
                                         } else if (auctionData.minSalePriceMet) {
-                                            return  <MDBRow style={{ background: 'green' }}>
-                                                        <MDBCol md="4">
-                                                            {b.bidAmount}
-                                                        </MDBCol>
-                                                        <MDBCol md="4">
-                                                            {b.bidTime}
-                                                        </MDBCol>
-                                                        <MDBCol md="4">
-                                                            {b.username}
-                                                        </MDBCol>
-                                                    </MDBRow>
+                                            return <MDBRow style={{background: 'green'}}>
+                                                <MDBCol md="4">
+                                                    {b.bidAmount}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.bidTime}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.username}
+                                                </MDBCol>
+                                            </MDBRow>
                                         } else if (!auctionData.minSalePriceMet) {
-                                            return  <MDBRow style={{ background: 'yellow' }}>
-                                                        <MDBCol md="4">
-                                                            {b.bidAmount}
-                                                        </MDBCol>
-                                                        <MDBCol md="4">
-                                                            {b.bidTime}
-                                                        </MDBCol>
-                                                        <MDBCol md="4">
-                                                            {b.username}
-                                                        </MDBCol>
-                                                    </MDBRow>
+                                            return <MDBRow style={{background: 'yellow'}}>
+                                                <MDBCol md="4">
+                                                    {b.bidAmount}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.bidTime}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.username}
+                                                </MDBCol>
+                                            </MDBRow>
                                         } else {
-                                            return  <MDBRow>
-                                                        <MDBCol md="4">
-                                                            {b.bidAmount}
-                                                        </MDBCol>
-                                                        <MDBCol md="4">
-                                                            {b.bidTime}
-                                                        </MDBCol>
-                                                        <MDBCol md="4">
-                                                            {b.username}
-                                                        </MDBCol>
-                                                    </MDBRow>
+                                            return <MDBRow>
+                                                <MDBCol md="4">
+                                                    {b.bidAmount}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.bidTime}
+                                                </MDBCol>
+                                                <MDBCol md="4">
+                                                    {b.username}
+                                                </MDBCol>
+                                            </MDBRow>
                                         }
                                     } else {
-                                        return  <MDBRow>
-                                                    <MDBCol md="4">
-                                                        {b.bidAmount}
-                                                    </MDBCol>
-                                                    <MDBCol md="4">
-                                                        {b.bidTime}
-                                                    </MDBCol>
-                                                    <MDBCol md="4">
-                                                        {b.username}
-                                                    </MDBCol>
-                                                </MDBRow>
+                                        return <MDBRow>
+                                            <MDBCol md="4">
+                                                {b.bidAmount}
+                                            </MDBCol>
+                                            <MDBCol md="4">
+                                                {b.bidTime}
+                                            </MDBCol>
+                                            <MDBCol md="4">
+                                                {b.username}
+                                            </MDBCol>
+                                        </MDBRow>
                                     }
                                 })}
                             </fieldset>
@@ -315,8 +317,8 @@ function ViewItem() {
                         <MDBCol md="4">
                             <MDBInput wrapperClass='mb-4' placeholder='$0.00' id="bid-amount" name="bidAmount"
                                       type='text'
-                                      style={{ border: errors.bidAmount ? "2px solid red" : null }}
-                                      onChange={(e) => setBidAmount(e.target.value)} />
+                                      style={{border: errors.bidAmount ? "2px solid red" : null}}
+                                      onChange={(e) => setBidAmount(e.target.value)}/>
                             <label>(Minimum bid {auctionData.startingBid})</label>
                             {errors.bidAmount ? <p className="error">{errors.bidAmount}</p> : null}
                         </MDBCol>
@@ -324,17 +326,20 @@ function ViewItem() {
                     <br/>
                     <MDBRow>
                         <MDBCol md="4">
-                            <MDBBtn type="button" className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
+                            <MDBBtn type="button" className="mb-4 d-block btn-primary"
+                                    style={{height: '50px', width: '100%'}}
                                     onClick={e => close(e)}>Close
                             </MDBBtn>
                         </MDBCol>
                         {currentUser.isAdmin && !auctionData.auctionEnded && <MDBCol md="4">
-                            <MDBBtn type="button" className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
+                            <MDBBtn type="button" className="mb-4 d-block btn-primary"
+                                    style={{height: '50px', width: '100%'}}
                                     onClick={toggleCancelModal}>Cancel This Auction
                             </MDBBtn>
                         </MDBCol>}
                         {currentUser.username !== auctionData.username && !auctionData.auctionEnded && <MDBCol md="4">
-                            <MDBBtn type="button" className="mb-4 d-block btn-primary" style={{height: '50px', width: '100%'}}
+                            <MDBBtn type="button" className="mb-4 d-block btn-primary"
+                                    style={{height: '50px', width: '100%'}}
                                     onClick={bid}>Bid On This Item
                             </MDBBtn>
                         </MDBCol>}
@@ -350,8 +355,10 @@ function ViewItem() {
                                     <MDBContainer className="p-3">
                                         <MDBRow>
                                             <MDBCol md="12">
-                                                <MDBTextArea wrapperClass='mb-4' placeholder='Item Description' id='edit-description' name="edit_description"
-                                                             type='text' onChange={(e) => setEditedDesc(e.target.value)}/>
+                                                <MDBTextArea wrapperClass='mb-4' placeholder='Item Description'
+                                                             id='edit-description' name="edit_description"
+                                                             type='text'
+                                                             onChange={(e) => setEditedDesc(e.target.value)}/>
                                             </MDBCol>
                                         </MDBRow>
                                     </MDBContainer>
@@ -374,7 +381,8 @@ function ViewItem() {
                                     <MDBContainer className="p-3">
                                         <MDBRow>
                                             <MDBCol md="12">
-                                                <MDBInput wrapperClass='mb-4' placeholder='Cancel reason' id='cancel-reason' name="cancelReason" type='text'
+                                                <MDBInput wrapperClass='mb-4' placeholder='Cancel reason'
+                                                          id='cancel-reason' name="cancelReason" type='text'
                                                           onChange={(e) => setCancelReason(e.target.value)}/>
                                             </MDBCol>
                                         </MDBRow>

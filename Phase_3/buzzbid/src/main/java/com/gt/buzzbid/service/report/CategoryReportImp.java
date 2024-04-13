@@ -21,7 +21,7 @@ public class CategoryReportImp implements CategoryReportService {
                 "ROUND(avg(a.get_it_now_price), 2) as avg_price "  + //
                 "FROM Item i JOIN Category c ON i.category_id = c.category_id "  + //
                 "JOIN Auction a ON i.item_id = a.item_id "  + //
-                "WHERE a.cancelled_by IS NULL "  + //
+                "WHERE a.cancelled_timestamp IS NULL "  + //
                 "GROUP BY c.category "  + //
                 "ORDER BY c.category;";
         Connection connection = null;

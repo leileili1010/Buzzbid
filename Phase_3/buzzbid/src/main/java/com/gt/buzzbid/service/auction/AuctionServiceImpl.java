@@ -1,7 +1,6 @@
 package com.gt.buzzbid.service.auction;
 
 import com.gt.buzzbid.model.AuctionResultModel;
-import com.gt.buzzbid.entity.Bid;
 import com.gt.buzzbid.Condition;
 import com.gt.buzzbid.model.BidModel;
 import com.gt.buzzbid.model.SearchModel;
@@ -110,7 +109,7 @@ public class AuctionServiceImpl implements AuctionService {
         Integer auctionId = null;
         Connection conn = null;
         ResultSet rs = null;
-        String query = "INSERT INTO Auction(item_id, auction_end_time, auction_length, get_it_now_price, min_sale_price, starting_bid, cancel_reason, cancelled_by)" +
+        String query = "INSERT INTO Auction(item_id, auction_end_time, auction_length, get_it_now_price, min_sale_price, starting_bid, cancel_reason, cancelled_timestamp)" +
                 " VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -163,7 +162,7 @@ public class AuctionServiceImpl implements AuctionService {
                 "                               FROM Bid b " + //
                 "                               JOIN Auction a on b.auction_id = a.auction_id " + //
                 "                               WHERE a.auction_end_time > now() " + //
-                "                               AND a.cancelled_by IS NULL " +//
+                "                               AND a.cancelled_timestamp IS NULL " +//
                 "                               ORDER BY 1, 2 DESC) " + //
                 " SELECT a.auction_id, " + //
                 "        i.item_name, " + //
@@ -176,7 +175,7 @@ public class AuctionServiceImpl implements AuctionService {
                 " JOIN Category cat ON i.category_id = cat.category_id " + //
                 " LEFT JOIN current_bidder c ON c.auction_id = a.auction_id " + //
                 " WHERE a.auction_end_time > now() " + //
-                " AND a.cancelled_by IS NULL " + //
+                " AND a.cancelled_timestamp IS NULL " + //
                 " AND (? IS NULL OR i.item_name ~ ? OR i.description ~ ?) " + //
                 " AND (? IS NULL OR cat.category_id = ?) " + //
                 " AND (? IS NULL OR (CASE WHEN c.bid_amount IS NOT NULL THEN c.bid_amount >= ? ELSE a.starting_bid >= ? END)) " + //
@@ -261,7 +260,7 @@ public class AuctionServiceImpl implements AuctionService {
                 "get_it_now_price, " + //
                 "starting_bid, " + //
                 "min_sale_price," +
-                "cancelled_by " + //
+                "cancelled_timestamp " + //
                 "FROM Auction " + //
                 "WHERE auction_id = ?";
 
@@ -275,14 +274,18 @@ public class AuctionServiceImpl implements AuctionService {
             if (rs != null && rs.next()) {
                 model.setItemId(rs.getInt("item_id"));
                 model.setAuctionEndTime(FMT.format(rs.getTimestamp("auction_end_time")));
-                model.setAuctionEnded(rs.getTimestamp("auction_end_time").toLocalDateTime().isBefore(LocalDateTime.now()));
+                model.setAuctionEnded(rs.getTimestamp("auction_end_time").toLocalDateTime().isBefore(LocalDateTime.now())
+                        || rs.getTimestamp("cancelled_timestamp") != null);
 
                 if (rs.getObject("get_it_now_price") != null) {
                     model.setGetItNowPrice("$" + rs.getBigDecimal("get_it_now_price").toPlainString());
                 }
 
                 model.setStartingBid("$" + rs.getBigDecimal("starting_bid").toPlainString());
-                model.setCancelledBy(rs.getString("cancelled_by"));
+
+                if (rs.getTimestamp("cancelled_timestamp") != null) {
+                    model.setCancelledTime(FMT.format(rs.getTimestamp("cancelled_timestamp")));
+                }
             }
 
             // get item
@@ -304,11 +307,11 @@ public class AuctionServiceImpl implements AuctionService {
                 model.setMinSalePriceMet(new BigDecimal(highestBid.getBidAmount().substring(1)).compareTo(rs.getBigDecimal("min_sale_price")) >= 0);
 
                 // add a cancelled model if this auction was cancelled, and remove the last element
-                if (StringUtils.isNotBlank(model.getCancelledBy())) {
+                if (StringUtils.isNotBlank(model.getCancelledTime())) {
                     BidModel cancelledBid = new BidModel();
                     cancelledBid.setBidAmount("Cancelled");
-                    cancelledBid.setBidTime(model.getAuctionEndTime());
-                    cancelledBid.setUsername(model.getCancelledBy());
+                    cancelledBid.setBidTime(model.getCancelledTime());
+                    cancelledBid.setUsername("Administrator");
                     model.getBids().add(0, cancelledBid);
 
                     if (model.getBids().size() > 4) {
@@ -370,15 +373,14 @@ public class AuctionServiceImpl implements AuctionService {
     public void cancelAuction(Integer auctionId, AuctionModel auctionModel) {
         Connection conn = null;
         ResultSet rs = null;
-        String query = "UPDATE Auction SET auction_end_time = ?, cancelled_by = ?, cancel_reason = ? WHERE auction_id = ?";
+        String query = "UPDATE Auction SET cancelled_timestamp = ?, cancel_reason = ? WHERE auction_id = ?";
 
         try {
              conn = DatabaseService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              stmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
              stmt.setString(2, auctionModel.getUsername());
-             stmt.setString(3, auctionModel.getCancelReason());
-             stmt.setInt(4, auctionId);
+             stmt.setInt(3, auctionId);
              stmt.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -444,20 +446,20 @@ public class AuctionServiceImpl implements AuctionService {
                 + "                           WHERE a.auction_end_time < now() "
                 + "                           AND (b.bid_amount >= a.min_sale_price "
                 + "                                 OR b.bid_amount = a.get_it_now_price) "
-                + "                           AND a.cancelled_by IS NULL "
+                + "                           AND a.cancelled_timestamp IS NULL "
                 + "                           ORDER BY 1, 2 DESC) "
                 + "SELECT a.auction_id, "
                 + "         i.item_id, "
                 + "       i.item_name, "
                 + "       (CASE "
-                + "           WHEN a.cancelled_by IS NOT NULL "
+                + "           WHEN a.cancelled_timestamp IS NOT NULL "
                 + "               THEN null "
                 + "           WHEN wb.bid_amount <= a.min_sale_price"
                 + "               THEN null "
                 + "           ELSE wb.bid_amount "
                 + "        END) AS sale_price, "
                 + "       (CASE "
-                + "         WHEN a.cancelled_by IS NOT NULL "
+                + "         WHEN a.cancelled_timestamp IS NOT NULL "
                 + "             THEN 'Cancelled' "
                 + "         WHEN wb.bid_amount < a.min_sale_price "
                 + "             THEN null "
@@ -467,7 +469,7 @@ public class AuctionServiceImpl implements AuctionService {
                 + "FROM Item i "
                 + "JOIN Auction a ON i.item_id = a.item_id "
                 + "LEFT JOIN winning_bids wb ON a.auction_id = wb.auction_id "
-                + "WHERE a.auction_end_time < now() "
+                + "WHERE a.auction_end_time < now() OR a.cancelled_timestamp IS NOT NULL "
                 + "ORDER BY a.auction_end_time DESC;";
 
         try {

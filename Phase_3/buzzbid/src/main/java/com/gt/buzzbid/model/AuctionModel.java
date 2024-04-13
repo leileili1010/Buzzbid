@@ -33,5 +33,5 @@ public class AuctionModel {
     private String cancelReason;
     private String highBidder;
     private String currentBid;
-    private String cancelledBy;
+    private String cancelledTime;
 }
