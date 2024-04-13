@@ -1,18 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useDispatch} from 'react-redux';
+import { useState } from 'react';
 import { useModal } from '../../context/Modal';
-import starRatingInput from "./StarRatingInput";
 import StarRatingInput from "./StarRatingInput";
 import "./RateItem.css";
 import axios from "axios";
 
 const RateItem = ({username,itemId, setAddRating}) => {
-    const dispatch = useDispatch();
     const { closeModal } = useModal();
     const [comment, setComment] = useState('');
     const [stars, setStars] = useState(0);
-    const [disable, setDisable] = useState(true);
     const [errors, setErrors] = useState({});
+console.log("=======================comment and stars", comment, stars)
 
     const onChange = (num) => {
         setStars(parseInt(num));
@@ -23,7 +20,7 @@ const RateItem = ({username,itemId, setAddRating}) => {
         setErrors({});
         const validationErrors = {};
 
-        if (stars === 0) validationErrors.stars = "Star rating is required";
+        if (stars === 0 && !comment) validationErrors.stars = "Please leave a comment for 0 star rating";
 
         if (Object.values(validationErrors).length) {
             setErrors(validationErrors);
