@@ -30,22 +30,22 @@
 .item-name{
     max-width: 350px;
 }
-.item-name button:hover{
+.item-name a:hover{
     text-decoration: underline;
 }
 
-.item-name button{
+.item-name a{
    background-color:transparent;
     padding: 0;
     text-align: start;
 }
 
-.item-name button {
+.item-name a {
     color: black;
     margin-top: 0px;
 }
 
-.item-name button:hover {
+.item-name a:hover {
     color: blue;
 }
 
