@@ -1,16 +1,98 @@
-
-import { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./SearchItem.css";
+import axios from "axios";
+import {useLocation, useNavigate} from "react-router-dom";
+
 const SearchItem = () => {
-    const [keyword, setKeyword] = useState("");
-    const [minPrice, setMinPrice] = useState("");
-    const [maxPrice, setMaxPrice] = useState("");
-    const [condition, setCondition] = useState("");
-    const [category, setCategory] = useState("");
+    const {state: {username: username, isAdmin: isAdmin, userRole : userRole}} = useLocation();
+    const[inputs, setInputs] = useState({
+        keyword: '',
+        minPrice: '',
+        maxPrice: '',
+        condition: '',
+        categoryId: ''
+    });
+    const[errors, setErrors] = useState({});
+    const[categories, setCategories] = useState([]);
+    const nav = useNavigate();
+
+    useEffect(() => {
+        async function getCategories() {
+            const {data} = await axios.get("http://localhost:8081/auction/categories");
+            const results = [];
+
+            data.forEach((value) => {
+                results.push({
+                    key: value.category,
+                    value: value.categoryId,
+                });
+            });
+
+            setCategories([
+                ...results
+            ]);
+        }
+
+        getCategories();
+    }, []);
+
+    const updateValue = (e) => {
+        setInputs({...inputs, [e.target.name]: e.target.value});
+    };
+
+    const validator = (inputs) => {
+        let errors = {};
+
+        if (inputs.minPrice !== '' && isNaN(inputs.minPrice)) {
+            errors.minPrice = 'Min price must be an amount';
+        } else if (parseFloat(inputs.minPrice) <= 0) {
+            errors.minPrice = 'Min sale price must be greater than 0';
+        }
+
+        if (inputs.maxPrice !== '' && (isNaN(inputs.maxPrice))) {
+            errors.maxPrice = 'Max price must be an amount';
+        } else if (parseFloat(inputs.maxPrice) <= 0) {
+            errors.maxPrice = 'Max price must be greater than 0';
+        }
+
+        return errors;
+    };
+
+    const cancel = () => {
+        nav('/dashboard', {state : {username: username, isAdmin : isAdmin, userRole: userRole}});
+    };
+
+    const submitForm = (e) => {
+        e.preventDefault();
+
+        let errors = validator(inputs);
+        setErrors(errors);
+
+        if (Object.keys(errors).length !== 0) {
+            return;
+        }
+
+        const data = {
+            keyword : inputs.keyword,
+            minPrice: inputs.minPrice,
+            maxPrice: inputs.maxPrice,
+            condition: inputs.condition,
+            categoryId: inputs.categoryId,
+        };
+
+        axios.post('http://localhost:8081/auction/searchForItem', data)
+            .then((response) => {
+                let searchResults = response.data;
+
+                nav('/searchResults', {state: {searchResults: searchResults, username: username, isAdmin: isAdmin, userRole: userRole}});
+            }).catch(function(error) {
+
+        });
+    };
 
     return (
         <div>
-            <form className="search-item-form">
+            <form className="search-item-form" onSubmit={submitForm}>
                 <h2>Search Item</h2>
                 <div className="search-item-input">
                     <h4>Keyword</h4>
@@ -18,78 +100,74 @@ const SearchItem = () => {
                         <input
                             type="text"
                             name="keyword"
-                            value={keyword}
-                            onChange={(e) => setKeyword(e.target.value)}
+                            value={inputs.keyword}
+                            onChange={updateValue}
                             placeholder="Enter keyword"
                         />
                     </label>
                 </div>
-
                 <div className="search-item-input">
                     <h4>Category</h4>
                     <label htmlFor="category">
                         <select
-                            name="category"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
+                            name="categoryId"
+                            value={inputs.category}
+                            onChange={updateValue}
                         >
-                            <option disabled value={"placeholder"}>Select a category</option>
-                            <option value="art">Art</option>
-                            <option value="books">Books</option>
-                            <option value="electronics">Electronics</option>
-                            <option value="home & garden">Home & Garden</option>
-                            <option value="supporting goods">Supporting Goods</option>
-                            <option value="toys">Toys</option>
-                            <option value="other">Other</option>
+                            <option value="">Select a category</option>
+                            {categories.map(item => (
+                                <option key={item.value} value={item.value}>{item.key}</option>
+                            ))}
                         </select>
                     </label>
                 </div>
-
                 <div className="search-item-input">
                     <h4>Minimum Price $</h4>
                     <label htmlFor="min-Price">
                         <input
-                            type="number"
-                            name="min-Price"
-                            value={minPrice}
-                            onChange={(e) => setMinPrice(e.target.value)}
-                            placeholder="Minimum Price$"
+                            type="text"
+                            name="minPrice"
+                            value={inputs.minPrice}
+                            onChange={updateValue}
+                            placeholder="$0.00"
+                            style={{ border: errors.minPrice ? "2px solid red" : null }}
                         />
+                        {errors.minPrice ? <p className="error">{errors.minPrice}</p> : null}
                     </label>
                 </div>
-
                 <div className="search-item-input">
                     <h4>Maximum Price $</h4>
                     <label htmlFor="max-price">
                         <input
-                            type="number"
-                            name="max-price"
-                            value={maxPrice}
-                            onChange={(e) => setMaxPrice(e.target.value)}
-                            placeholder="Maximum Price$"
+                            type="text"
+                            name="maxPrice"
+                            value={inputs.maxPrice}
+                            onChange={updateValue}
+                            placeholder="$0.00"
+                            style={{ border: errors.maxPrice ? "2px solid red" : null }}
                         />
+                        {errors.maxPrice ? <p className="error">{errors.maxPrice}</p> : null}
                     </label>
                 </div>
-
                 <div className="search-item-input">
                     <h4>Condition at least</h4>
                     <label htmlFor="condition">
                         <select
                             name="condition"
-                            value={condition}
-                            onChange={(e) => setCondition(e.target.value)}
+                            value={inputs.condition}
+                            onChange={updateValue}
                         >
-                            <option disabled value={"placeholder"}>Select a condition</option>
-                            <option value="New">New</option>
-                            <option value="Very Good">Very Good</option>
-                            <option value="Good">Good</option>
-                            <option value="Fair">Fair</option>
-                            <option value="Poor">Poor</option>
+                            <option value="">Select a condition</option>
+                            <option value="NEW">New</option>
+                            <option value="VERY_GOOD">Very Good</option>
+                            <option value="GOOD">Good</option>
+                            <option value="FAIR">Fair</option>
+                            <option value="POOR">Poor</option>
                         </select>
                     </label>
                 </div>
                 <div className="search-item-btns">
-                    <button>Cancel</button>
+                    <button onClick={e => cancel(e)}>Cancel</button>
                     <button>Search</button>
                 </div>
             </form>

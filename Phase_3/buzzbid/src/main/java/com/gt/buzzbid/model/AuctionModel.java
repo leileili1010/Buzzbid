@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -12,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AuctionModel {
     private Integer itemId;
+    private Integer auctionId;
     private String itemName;
     private String description;
     private Integer categoryId;
@@ -25,7 +27,11 @@ public class AuctionModel {
     private String isReturnable;
     private String username;
     private String auctionEndTime;
-    private List<BidModel> bids;
+    private List<BidModel> bids = new ArrayList<>();
     private boolean auctionEnded;
+    private boolean isMinSalePriceMet;
     private String cancelReason;
+    private String highBidder;
+    private String currentBid;
+    private String cancelledBy;
 }

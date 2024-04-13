@@ -1,7 +1,6 @@
 package com.gt.buzzbid.service.bid;
 
 import com.gt.buzzbid.model.BidModel;
-import com.gt.buzzbid.model.SearchModel;
 import com.gt.buzzbid.service.db.DatabaseService;
 import org.springframework.stereotype.Service;
 
@@ -62,49 +61,13 @@ public class BidServiceImpl implements BidService {
         List<BidModel> bidModels = new ArrayList<>();
         Connection conn = null;
         ResultSet rs = null;
-        String query = "SELECT username, bid_amount, bid_time FROM Bid WHERE auction_id = ? ORDER BY 3 DESC LIMIT 4";
-
-        try {
-            conn = DatabaseService.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, auctionId);
-
-            rs = stmt.executeQuery();
-
-            if (rs != null) {
-                while (rs.next()) {
-                    BidModel bidModel = new BidModel();
-                    bidModel.setUsername(rs.getString("username"));
-                    bidModel.setBidAmount("$" + rs.getBigDecimal("bid_amount").toPlainString());
-                    bidModel.setBidTime(FMT.format(rs.getTimestamp("bid_time")));
-                    bidModels.add(bidModel);
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (rs != null) {
-                    rs.close();
-                }
-            } catch (SQLException e) {
-
-            }
-        }
-
-        return bidModels;
-    }
-
-    @Override
-    public List<BidModel> getBids(Integer auctionId, SearchModel searchModel) {
-        List<BidModel> bidModels = new ArrayList<>();
-        Connection conn = null;
-        ResultSet rs = null;
-        String query = "SELECT username, bid_amount, bid_time FROM Bid WHERE auction_id = ? AND AND cancelled_by IS NULL ORDER BY 1, 2 DESC";
+        String query = "SELECT username, " + //
+                "              bid_amount, " + //
+                "              bid_time " + //
+                "FROM Bid " + //
+                "WHERE auction_id = ? " + //
+                "ORDER BY 2 DESC, 3 DESC " + //
+                "LIMIT 4";
 
         try {
             conn = DatabaseService.getConnection();

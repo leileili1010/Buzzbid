@@ -1,0 +1,47 @@
+.rating-form {
+    max-width: 600px;
+    min-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.rating-form h2 {
+    margin-bottom: 0;
+    display: inline;
+}
+
+.rating-form textarea {
+    width: 100%;
+    height: 200px;
+    margin-top: 3em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    min-height: 100px;
+    margin-bottom: 1em;
+    resize: none
+}
+
+.stars-rating-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.stars-rating-container span {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.empty #star {
+    color: #c8e4f9;
+}
+
+#star {
+    color: #FFD43B
+}
