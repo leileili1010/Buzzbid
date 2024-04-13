@@ -301,10 +301,12 @@ public class AuctionServiceImpl implements AuctionService {
             model.setUsername(item.getUsername());
             model.setBids(bidService.getBids(auctionId));
 
-            if (model.isAuctionEnded() && !CollectionUtils.isEmpty(model.getBids())) {
-                // set if min sale price was met or exceeded
-                BidModel highestBid = Collections.max(model.getBids(), Comparator.comparing(b -> new BigDecimal(b.getBidAmount().substring(1))));
-                model.setMinSalePriceMet(new BigDecimal(highestBid.getBidAmount().substring(1)).compareTo(rs.getBigDecimal("min_sale_price")) >= 0);
+            if (model.isAuctionEnded()) {
+                if (!CollectionUtils.isEmpty(model.getBids())) {
+                    // set if min sale price was met or exceeded
+                    BidModel highestBid = Collections.max(model.getBids(), Comparator.comparing(b -> new BigDecimal(b.getBidAmount().substring(1))));
+                    model.setMinSalePriceMet(new BigDecimal(highestBid.getBidAmount().substring(1)).compareTo(rs.getBigDecimal("min_sale_price")) >= 0);
+                }
 
                 // add a cancelled model if this auction was cancelled, and remove the last element
                 if (StringUtils.isNotBlank(model.getCancelledTime())) {
@@ -454,7 +456,7 @@ public class AuctionServiceImpl implements AuctionService {
                 + "       (CASE "
                 + "           WHEN a.cancelled_timestamp IS NOT NULL "
                 + "               THEN null "
-                + "           WHEN wb.bid_amount <= a.min_sale_price"
+                + "           WHEN wb.bid_amount < a.min_sale_price"
                 + "               THEN null "
                 + "           ELSE wb.bid_amount "
                 + "        END) AS sale_price, "
