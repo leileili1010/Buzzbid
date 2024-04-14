@@ -24,7 +24,7 @@ function SearchResults() {
         <>
             <NavigationBar/>
         <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="bg border rounded-lg p-4">
+            <div className="bg border rounded-lg p-4" style={{width: '1150px'}}>
                 <h2>Search Results</h2>
                 <MDBContainer className="p-3">
                     <MDBRow>
