@@ -33,43 +33,45 @@ function TopRatedReport() {
     return (
         <>
             <NavigationBar/>
-        <div className="d-flex justify-content-center align-items-center vh-100 bg">
-            <MDBContainer className="border rounded-lg">
-                <fieldset>
-                    <legend>Top Rated Items</legend>
-                    <MDBRow className="justify-content-center">
-                        <MDBCol md="3">
-                            <strong>Item Name</strong>
-                        </MDBCol>
-                        <MDBCol md="3">
-                            <strong>Average Rating</strong>
-                        </MDBCol>
-                        <MDBCol md="3">
-                            <strong>Rating Count</strong>
-                        </MDBCol>
-                    </MDBRow>
-                    {topRatedReport && topRatedReport.map(b => (
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="bg border rounded-lg" style={{width: '1200px', height: "auto"}}>
+                <MDBContainer>
+                    <fieldset>
+                        <legend>Top Rated Items</legend>
                         <MDBRow className="justify-content-center">
                             <MDBCol md="3">
-                                {b.itemName}
+                                <strong>Item Name</strong>
                             </MDBCol>
                             <MDBCol md="3">
-                                {b.avgRating}
+                                <strong>Average Rating</strong>
                             </MDBCol>
                             <MDBCol md="3">
-                                {b.ratingCount}
+                                <strong>Rating Count</strong>
                             </MDBCol>
                         </MDBRow>
-                    ))}
-                    <MDBRow className="justify-content-end p-3">
-                        <MDBBtn type="button" className="mb-4 d-block btn-primary"
-                                style={{height: '40px', width: '100px'}}
-                                onClick={e => done(e)}>
-                            Done
-                        </MDBBtn>
-                    </MDBRow>
-                </fieldset>
-            </MDBContainer>
+                        {topRatedReport && topRatedReport.map(b => (
+                            <MDBRow className="justify-content-center">
+                                <MDBCol md="3">
+                                    {b.itemName}
+                                </MDBCol>
+                                <MDBCol md="3">
+                                    {b.avgRating}
+                                </MDBCol>
+                                <MDBCol md="3">
+                                    {b.ratingCount}
+                                </MDBCol>
+                            </MDBRow>
+                        ))}
+                        <MDBRow className="justify-content-end p-3">
+                            <MDBBtn type="button" className="mb-4 d-block btn-primary"
+                                    style={{height: '40px', width: '100px'}}
+                                    onClick={e => done(e)}>
+                                Done
+                            </MDBBtn>
+                        </MDBRow>
+                    </fieldset>
+                </MDBContainer>
+            </div>
         </div>
         </>
     )

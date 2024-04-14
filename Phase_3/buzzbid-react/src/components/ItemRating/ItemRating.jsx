@@ -72,8 +72,8 @@ const ItemRating = () => {
     return (
         <>
             <NavigationBar/>
-        <div className="d-flex justify-content-center align-items-center vh-100 bg">
-            <div className="border rounded-lg p-4 item-rating-container" style={{width: '900px', height: 'auto'}}>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="bg border rounded-lg p-4 item-rating-container" style={{width: '900px', height: 'auto'}}>
                 <h2>Item Rating</h2>
                 <MDBContainer className="p-3">
                     <MDBRow>

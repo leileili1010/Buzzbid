@@ -38,8 +38,8 @@ function Register() {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100 bg">
-            <div className="border rounded-lg p-4" style={{width: '500px', height: 'auto'}}>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="bg border rounded-lg p-4" style={{width: '500px', height: 'auto'}}>
                 <h2 className="mb-4 text-center">Register</h2>
                 <MDBContainer className="p-3">
                     <MDBRow>
