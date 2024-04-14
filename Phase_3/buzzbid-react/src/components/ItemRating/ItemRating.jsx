@@ -8,6 +8,7 @@ import {generateStars, formatDate} from "../helperFunctions/helperFunctions";
 import OpenModalButton from "../OpenModalButton";
 import DeleteRatingModal from "./DeleteRatingModal";
 import {thunkGetAuctionResults} from "../../redux/auction";
+import {returnInitialItem} from "../../redux/item";
 import {returnInitialRating} from "../../redux/rating";
 import RateItem from "./RateItem";
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
@@ -59,6 +60,9 @@ const ItemRating = () => {
 
     useEffect(() => {
         dispatch(thunkGetItemWithAvgRating(itemId));
+        return () => {
+            dispatch(returnInitialItem());
+        }
     }, [dispatch, itemId, addRating, deleteRating]);
 
     useEffect(() => {
