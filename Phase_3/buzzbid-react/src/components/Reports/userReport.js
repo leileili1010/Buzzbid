@@ -38,61 +38,63 @@ function UserReport() {
     }
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100 bg">
-            <MDBContainer className="border rounded-lg" style={{width: '2000px', height: "auto"}}>
-                <fieldset>
-                    <legend>User Report</legend>
-                    <MDBRow className="justify-content-center">
-                        <MDBCol md="2">
-                            <strong>User name</strong>
-                        </MDBCol>
-                        <MDBCol md="2">
-                            <strong>Listed</strong>
-                        </MDBCol>
-                        <MDBCol md="2">
-                            <strong>Sold</strong>
-                        </MDBCol>
-                        <MDBCol md="2">
-                            <strong>Won</strong>
-                        </MDBCol>
-                        <MDBCol md="2">
-                            <strong>Rated</strong>
-                        </MDBCol>
-                        <MDBCol md="2">
-                            <strong style={{fontSize: 16}}>Most Frequent Condition</strong>
-                        </MDBCol>
-                    </MDBRow>
-                    {userReport && userReport.map(b => (
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="bg border rounded-lg" style={{width: '1200px', height: "auto"}}>
+                <MDBContainer>
+                    <fieldset>
+                        <legend>User Report</legend>
                         <MDBRow className="justify-content-center">
                             <MDBCol md="2">
-                                {b.userName}
+                                <strong>User name</strong>
                             </MDBCol>
                             <MDBCol md="2">
-                                {b.listed}
+                                <strong>Listed</strong>
                             </MDBCol>
                             <MDBCol md="2">
-                                {b.sold}
+                                <strong>Sold</strong>
                             </MDBCol>
                             <MDBCol md="2">
-                                {b.won}
+                                <strong>Won</strong>
                             </MDBCol>
                             <MDBCol md="2">
-                                {b.rated}
+                                <strong>Rated</strong>
                             </MDBCol>
                             <MDBCol md="2">
-                                {b.mostFreCondition}
+                                <strong style={{fontSize: 16}}>Most Frequent Condition</strong>
                             </MDBCol>
                         </MDBRow>
-                    ))}
-                    <MDBRow className="justify-content-end p-3">
-                        <MDBBtn type="button" className="mb-4 d-block btn-primary"
-                                style={{height: '40px', width: '100px'}}
-                                onClick={e => done(e)}>
-                            Done
-                        </MDBBtn>
-                    </MDBRow>
-                </fieldset>
-            </MDBContainer>
+                        {userReport && userReport.map(b => (
+                            <MDBRow className="justify-content-center">
+                                <MDBCol md="2">
+                                    {b.userName}
+                                </MDBCol>
+                                <MDBCol md="2">
+                                    {b.listed}
+                                </MDBCol>
+                                <MDBCol md="2">
+                                    {b.sold}
+                                </MDBCol>
+                                <MDBCol md="2">
+                                    {b.won}
+                                </MDBCol>
+                                <MDBCol md="2">
+                                    {b.rated}
+                                </MDBCol>
+                                <MDBCol md="2">
+                                    {b.mostFreCondition}
+                                </MDBCol>
+                            </MDBRow>
+                        ))}
+                        <MDBRow className="justify-content-end p-3">
+                            <MDBBtn type="button" className="mb-4 d-block btn-primary"
+                                    style={{height: '40px', width: '100px'}}
+                                    onClick={e => done(e)}>
+                                Done
+                            </MDBBtn>
+                        </MDBRow>
+                    </fieldset>
+                </MDBContainer>
+            </div>
         </div>
     )
 }

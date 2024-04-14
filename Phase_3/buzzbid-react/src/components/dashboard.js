@@ -21,8 +21,8 @@ function Dashboard() {
     }, [userJsonString, nav]);
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100 bg">
-            <div className="d-flex bg-body-tertiary mb-3 text-center" style={{width: 'auto', height: "auto"}}>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="bg d-flex bg-body-tertiary mb-3 text-center" style={{width: 'auto', height: "auto"}}>
                 <MDBContainer className="border rounded-lg p-4">
                     <MDBRow>
                         <MDBCol md="6">

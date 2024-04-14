@@ -121,8 +121,8 @@ function ListItem() {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100 bg">
-            <div className="border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="bg border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
                 <h2>New Item for Auction</h2>
                 <form onSubmit={submitForm}>
                     <MDBContainer className="p-3">

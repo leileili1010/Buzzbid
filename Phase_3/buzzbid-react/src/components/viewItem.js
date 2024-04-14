@@ -135,8 +135,8 @@ function ViewItem() {
     const toggleCancelModal = () => setCancelModal(!cancelModal);
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100 bg">
-            <div className="border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="bg border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
                 <h2>{auctionData.auctionEnded ? 'Item Results' : 'Item For Sale'}</h2>
                 <MDBContainer className="p-3">
                     <MDBRow>
