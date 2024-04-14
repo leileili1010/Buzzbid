@@ -1,0 +1,87 @@
+.Nav-bar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: darkkhaki;
+    padding: 10px 20px;
+    color: #333;
+}
+
+.Nav-bar-container .logo img {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.Nav-bar-container .logo {
+    display: flex;
+    align-items: center;
+}
+
+.Nav-bar-container .logo h1 {
+    display: inline;
+    color: #333;
+    font-weight: bolder;
+}
+
+.Nav-bar-container .nav-links p,
+.Nav-bar-container .profile p {
+    color: #333;
+    margin: 0 10px;
+}
+
+.Nav-bar-container .nav-links {
+    display: flex;
+}
+
+.Nav-bar-container .nav-links a {
+    text-decoration: none;
+    color: #d4af37;
+    font-size: 18px;
+}
+
+.Nav-bar-container .nav-links a:hover {
+    color: #333;
+}
+
+.Nav-bar-container .profile {
+    display: flex;
+    align-items: center;
+}
+
+.Nav-bar-container .profile p {
+    margin: 0;
+    font-size: 18px;
+}
+
+#user-icon {
+    color: #333;
+}
+
+.Nav-bar-container .nav-links a {
+    text-decoration: none;
+    color: #d4af37;
+    font-size: 18px;
+    transition: transform 0.2s ease, font-weight 0.2s ease;
+}
+
+.Nav-bar-container .nav-links a:hover {
+    color: #333;
+    text-decoration: underline;
+    transform: scale(1.05);
+    font-weight: bold;
+}
+
+.Nav-bar-container .logo a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.Nav-bar-container .logo a:hover {
+    color: #d4af37;
+    transform: scale(1.07);
+    font-weight: bold;
+}
+
+
+
