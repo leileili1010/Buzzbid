@@ -325,7 +325,7 @@ function ViewItem() {
                                       type='text'
                                       style={{border: errors.bidAmount ? "2px solid red" : null}}
                                       onChange={(e) => setBidAmount(e.target.value)}/>
-                            <label>(Minimum bid {auctionData.startingBid})</label>
+                            <label>(Minimum bid {auctionData.minimumBid})</label>
                             {errors.bidAmount ? <p className="error">{errors.bidAmount}</p> : null}
                         </MDBCol>
                     </MDBRow>}

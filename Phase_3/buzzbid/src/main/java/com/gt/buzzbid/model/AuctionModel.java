@@ -34,4 +34,5 @@ public class AuctionModel {
     private String highBidder;
     private String currentBid;
     private String cancelledTime;
+    private String minimumBid;
 }

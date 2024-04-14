@@ -303,6 +303,18 @@ public class AuctionServiceImpl implements AuctionService {
             model.setUsername(item.getUsername());
             model.setBids(bidService.getBids(auctionId));
 
+            BigDecimal minBid = rs.getBigDecimal("starting_bid");
+
+            if (!CollectionUtils.isEmpty(model.getBids())) {
+                BidModel highestBid = Collections.max(model.getBids(), Comparator.comparing(b -> new BigDecimal(b.getBidAmount().substring(1))));
+
+                if (highestBid != null) {
+                    minBid = new BigDecimal(highestBid.getBidAmount().substring(1)).add(new BigDecimal("1"));
+                }
+            }
+
+            model.setMinimumBid("$" + minBid.toPlainString());
+
             if (model.isAuctionEnded()) {
                 if (!CollectionUtils.isEmpty(model.getBids())) {
                     // set if min sale price was met or exceeded
