@@ -2,13 +2,17 @@ import { useDispatch } from "react-redux";
 import { useModal} from "../../context/Modal";
 import {thunkDeleteRating} from "../../redux/rating";
 import "./DeleteRatingModal.css"
-const DeleteRatingModal = ({ratingId}) => {
+import {thunkGetItemWithAvgRating} from "../../redux/item";
+
+const DeleteRatingModal = ({ratingId, setDeleteRating, itemId}) => {
     const dispatch = useDispatch()
     const { closeModal } = useModal()
 
     const handleDelete = async (e) => {
         e.preventDefault()
         dispatch(thunkDeleteRating(ratingId))
+        dispatch(thunkGetItemWithAvgRating(itemId))
+        setDeleteRating(prev => prev + 1)
         closeModal()
     }
 

@@ -8,6 +8,7 @@ import {generateStars, formatDate} from "../helperFunctions/helperFunctions";
 import OpenModalButton from "../OpenModalButton";
 import DeleteRatingModal from "./DeleteRatingModal";
 import {thunkGetAuctionResults} from "../../redux/auction";
+import {returnInitialRating} from "../../redux/rating";
 import RateItem from "./RateItem";
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import NavigationBar from "../NavigationBar/NavigationBar";
@@ -24,6 +25,7 @@ const ItemRating = () => {
     const currentUser = JSON.parse(userJsonString);
     const auctionResult = useSelector(state => state.auction.auctionResults[itemId]);
     const [addRating, setAddRating] = useState(0);
+    const [deleteRating, setDeleteRating] = useState(0)
     const isWinner = auctionResult?.winner === currentUser.username;
     let ifRated = false;
     const nav = useNavigate();
@@ -50,11 +52,14 @@ const ItemRating = () => {
 
     useEffect(() => {
         dispatch(thunkGetRatings(itemId));
-    }, [dispatch, itemId, addRating]);
+        return () => {
+            dispatch(returnInitialRating())
+        }
+    }, [dispatch, itemId, addRating, deleteRating]);
 
     useEffect(() => {
         dispatch(thunkGetItemWithAvgRating(itemId));
-    }, [dispatch, itemId]);
+    }, [dispatch, itemId, addRating, deleteRating]);
 
     useEffect(() => {
         dispatch(thunkGetAuctionResults());
@@ -106,7 +111,11 @@ const ItemRating = () => {
                                         {(rating?.username == currentUser.username || currentUser.isAdmin) &&
                                             < OpenModalButton
                                                 buttonText="Delete"
-                                                modalComponent={<DeleteRatingModal ratingId={rating?.ratingId}/>}
+                                                modalComponent={<DeleteRatingModal
+                                                    ratingId={rating?.ratingId}
+                                                    setDeleteRating={setDeleteRating}
+                                                    itemId={itemId}
+                                                />}
                                             />
                                         }
                                     </div>
