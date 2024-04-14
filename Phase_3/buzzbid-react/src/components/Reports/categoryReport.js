@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import axios from "axios";
+import NavigationBar from "../NavigationBar/NavigationBar";
 import '../../css/style.css';
 
 function CategoryReport() {
@@ -38,6 +39,8 @@ function CategoryReport() {
     }
 
     return (
+        <>
+            <NavigationBar/>
         <div className="d-flex justify-content-center align-items-center vh-100 bg">
             <MDBContainer className="border rounded-lg">
                 <fieldset>
@@ -88,6 +91,7 @@ function CategoryReport() {
                 </fieldset>
             </MDBContainer>
         </div>
+        </>
     )
 }
 

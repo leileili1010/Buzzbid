@@ -10,6 +10,7 @@ import DeleteRatingModal from "./DeleteRatingModal";
 import {thunkGetAuctionResults} from "../../redux/auction";
 import RateItem from "./RateItem";
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
+import NavigationBar from "../NavigationBar/NavigationBar";
 import '../../css/style.css';
 
 const ItemRating = () => {
@@ -63,8 +64,9 @@ const ItemRating = () => {
         nav(-1)
     };
 
-
     return (
+        <>
+            <NavigationBar/>
         <div className="d-flex justify-content-center align-items-center vh-100 bg">
             <div className="border rounded-lg p-4 item-rating-container" style={{width: '900px', height: 'auto'}}>
                 <h2>Item Rating</h2>
@@ -130,6 +132,7 @@ const ItemRating = () => {
                 </MDBContainer>
             </div>
         </div>
+        </>
     )
 }
 
