@@ -51,7 +51,7 @@ public class RatingController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         // then find all ratings
-        List<Rating> ratings = ratingService.getAllRatingsForItem(itemId);
+        List<Rating> ratings = ratingService.getAllRatingsForItem(item.getItemName());
         return ResponseEntity.ok(ratings);
     }
 
@@ -59,10 +59,10 @@ public class RatingController {
     public ResponseEntity<Map<String, String>> getAverageRating(@PathVariable Integer itemId) {
         Item item = itemService.getItem(itemId);
         if (item == null) {
-            return new ResponseEntity<>(Map.of("avgRating", "Item with ID " + itemId + " does not exist."), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("error", "Item with ID " + itemId + " does not exist."), HttpStatus.NOT_FOUND);
         }
 
-        Double avgRating = ratingService.getAvgRating(itemId);
+        Double avgRating = ratingService.getAvgRating(item.getItemName());
         Map<String, String> response = new HashMap<>();
 
         // Check if avgRating is null, meaning there are no ratings

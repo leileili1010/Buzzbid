@@ -74,9 +74,9 @@ const ItemRating = () => {
     };
 
     return (
-        <>
+        <div className="item-rating-page">
             <NavigationBar/>
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center">
             <div className="bg border rounded-lg p-4 item-rating-container" style={{width: '900px', height: 'auto'}}>
                 <h2>Item Rating</h2>
                 <MDBContainer className="p-3">
@@ -145,7 +145,7 @@ const ItemRating = () => {
                 </MDBContainer>
             </div>
         </div>
-        </>
+        </div>
     )
 }
 

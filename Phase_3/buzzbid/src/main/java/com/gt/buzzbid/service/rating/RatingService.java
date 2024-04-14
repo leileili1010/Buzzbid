@@ -9,7 +9,11 @@ public interface RatingService {
 
     List<Rating> getAllRatingsForItem(Integer itemId);
 
+    List<Rating> getAllRatingsForItem(String itemName);
+
     Double getAvgRating(Integer itemId);
+
+    Double getAvgRating(String itemName);
 
     void deleteRating(Integer ratingId);
 
