@@ -13,4 +13,5 @@ public class AuthResponse {
     private String userRole;
     private boolean success;
     private boolean isAdmin;
+    private String name;
 }

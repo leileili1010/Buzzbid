@@ -28,7 +28,7 @@ const NavigationBar = () => {
 
             <div className="profile">
                 <div><i className="fa-solid fa-user" id="user-icon"></i></div>
-                <p>Hello, {currentUser?.username}</p>
+                <p>Hello, {currentUser?.name}</p>
             </div>
         </div>
     )

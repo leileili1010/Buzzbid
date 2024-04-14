@@ -8,12 +8,9 @@ import '../css/style.css';
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [userRole, setUserRole] = useState('');
     const [error, setError] = useState('');
     const nav = useNavigate();
     const userJsonString = localStorage.getItem('user');
-    const currentUser = JSON.parse(userJsonString);
 
     useEffect(() => {
         if (userJsonString) {
@@ -30,17 +27,14 @@ function Login() {
                     username, password
                 });
 
-                let adminResponse = response.data.admin;
-                let roleResponse = response.data.userRole;
-                setIsAdmin(adminResponse);
-                setUserRole(roleResponse);
-
                 localStorage.setItem('token', JSON.stringify(response.data.token))
                 localStorage.setItem('user', JSON.stringify({
                     username: username,
-                    isAdmin: adminResponse,
-                    userRole: roleResponse
+                    name: response.data.name,
+                    isAdmin: response.data.admin,
+                    userRole: response.data.userRole
                 }));
+
                 nav('/dashboard');
             }
         } catch (error) {

@@ -83,6 +83,9 @@ public class UserController {
         response.setAdmin(authModel.getAuthorities() != null
                 && authModel.getAuthorities().stream().anyMatch(a -> StringUtils.isNotEmpty( a.getAuthority())));
 
+        User user = userServiceImpl.getUserByName(((UserDetails) authModel.getPrincipal()).getUsername());
+        response.setName(String.join(" ", user.getFirstName(), user.getLastName()));
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -39,7 +39,7 @@ function Dashboard() {
                     <MDBRow>
                         <MDBCol md="12">
                             <p className="mb-4 text-center">
-                                Welcome, {currentUser.username}!<br/>
+                                Welcome, {currentUser.name}!<br/>
                                 {currentUser.userRole && <span>Administrative position: {currentUser.userRole}</span>}
                             </p>
                         </MDBCol>
