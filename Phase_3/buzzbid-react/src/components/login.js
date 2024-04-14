@@ -48,6 +48,16 @@ function Login() {
         }
     };
 
+    const setDemoUser = () => {
+        setUsername("jgreen");
+        setPassword("1234");
+    }
+
+    const setDemoAdminUser = () => {
+        setUsername("mred");
+        setPassword("12345");
+    }
+
     return (
         <div className="d-flex justify-content-center align-items-center vh-100 bg">
             <div className="border rounded-lg p-4" style={{width: 'auto', height: 'auto'}}>
@@ -104,10 +114,20 @@ function Login() {
                             <div className="text-center">
                                 <p>Not registered? <a href="/register">Register</a></p>
                             </div>
+                            <div className="text-center">
+                                <div onClick={setDemoUser} className="demo-user"
+                                     style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }}
+                                >Demo User</div>
+                                <div onClick={setDemoAdminUser} className="demo-user"
+                                     style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }}
+                                >Demo AdminUser</div>
+                            </div>
                         </MDBCol>
                     </MDBRow>
                 </MDBContainer>
+
             </div>
+
         </div>
     );
 }
