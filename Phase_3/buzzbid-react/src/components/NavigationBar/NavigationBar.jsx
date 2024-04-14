@@ -20,6 +20,7 @@ const NavigationBar = () => {
             </div>
 
             <div className="nav-links">
+                <Link to="/dashboard"><p>Home</p></Link>
                 <Link to="/searchItem"><p>Search for Items</p></Link>
                 <Link to="/listItem"><p>List Item</p></Link>
                 <Link to="/auctionresults"><p>Auction Results</p></Link>
