@@ -58,6 +58,8 @@ function ViewItem() {
             errors.bidAmount = 'Bid amount must be greater than the current high bid';
         } else if (parseFloat(bidAmount) < parseFloat(auctionData.startingBid.substring(1))) {
             errors.bidAmount = 'Bid must be greater than the minimum bid';
+        } else if (!bidAmount.match(/^(\d*\.{0,1}\d{0,2}$)/)) {
+            errors.bidAmount = 'Bid can only be up to two decimal places';
         }
 
         return errors;

@@ -64,12 +64,25 @@ function ListItem() {
           errors.startingBid = 'Starting bid amount must be an amount';
       } else if (parseFloat(inputs.startingBid) <= 0) {
           errors.startingBid = 'Starting bid must be greater than 0';
+      } else {
+          let amt = inputs.startingBid.substring(1);
+
+          if (!amt.match(/^(\d*\.{0,1}\d{0,2}$)/)) {
+              errors.startingBid = 'Starting bid can only be up to two decimal places';
+          }
       }
+
 
       if (inputs.minSalePrice === '' || isNaN(inputs.minSalePrice)) {
           errors.minSalePrice = 'Min sale price must be an amount';
       } else if (parseFloat(inputs.minSalePrice) <= 0) {
           errors.minSalePrice = 'Min sale price must be greater than 0';
+      } else {
+          let amt = inputs.minSalePrice.substring(1);
+
+          if (!amt.match(/^(\d*\.{0,1}\d{0,2}$)/)) {
+              errors.minSalePrice = 'Min sale price can only be up to two decimal places';
+          }
       }
 
       if (inputs.getItNowPrice !== '' && (isNaN(inputs.getItNowPrice))) {
@@ -77,6 +90,12 @@ function ListItem() {
       } else if (inputs.getItNowPrice !== '' && parseFloat(inputs.getItNowPrice) <= parseFloat(inputs.minSalePrice)
           && parseFloat(inputs.getItNowPrice) <= parseFloat(inputs.startingBid)) {
           errors.getItNowPrice = 'Get It Now price must be greater than the minimum sale price and the starting bid'
+      } else {
+          let amt = inputs.getItNowPrice.substring(1);
+
+          if (!amt.match(/^(\d*\.{0,1}\d{0,2}$)/)) {
+              errors.getItNowPrice = 'Get It Now price can only be up to two decimal places';
+          }
       }
 
       return errors;
