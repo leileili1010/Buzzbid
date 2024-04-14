@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import buzzLogo from "../images/buzz.png";
 import '../css/style.css';
+import NavigationBar from "./NavigationBar/NavigationBar";
 
 function Dashboard() {
     const nav = useNavigate();
@@ -21,6 +22,8 @@ function Dashboard() {
     }, [userJsonString, nav]);
 
     return (
+        <>
+        <NavigationBar/>
         <div className="d-flex justify-content-center align-items-center vh-100">
             <div className="bg d-flex bg-body-tertiary mb-3 text-center" style={{width: 'auto', height: "auto"}}>
                 <MDBContainer className="border rounded-lg p-4">
@@ -70,6 +73,7 @@ function Dashboard() {
                 </MDBContainer>
             </div>
         </div>
+        </>
     );
 }
 

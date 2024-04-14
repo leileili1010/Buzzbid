@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow, MDBTextArea} from "mdb-react-ui-kit";
 import axios from "axios";
 import '../css/style.css';
+import NavigationBar from "./NavigationBar/NavigationBar";
 
 function ListItem() {
     const[inputs, setInputs] = useState({
@@ -121,6 +122,8 @@ function ListItem() {
     };
 
     return (
+        <>
+        <NavigationBar/>
         <div className="d-flex justify-content-center align-items-center vh-100">
             <div className="bg border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
                 <h2>New Item for Auction</h2>
@@ -260,6 +263,7 @@ function ListItem() {
                 </form>
             </div>
         </div>
+        </>
     );
 }
 

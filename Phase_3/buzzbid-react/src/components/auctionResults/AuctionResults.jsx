@@ -5,7 +5,7 @@ import {formatDate} from "../helperFunctions/helperFunctions";
 import "./AuctionResults.css"
 import '../../css/style.css';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
-
+import NavigationBar from "../NavigationBar/NavigationBar";
 const AuctionResults = () => {
     const navigate = useNavigate();
     const [auctionResults, setAuctionResults] = useState([]);
@@ -35,6 +35,8 @@ const AuctionResults = () => {
     };
 
     return (
+        <>
+        <NavigationBar/>
         <div className="d-flex justify-content-center align-items-center vh-100">
             <div className="bg border auction-result-container rounded-lg p-4" style={{width: '1500px', height: '800px'}}>
                 <MDBContainer className="p-3">
@@ -82,6 +84,7 @@ const AuctionResults = () => {
                 </MDBContainer>
             </div>
         </div>
+        </>
     )
 }
 

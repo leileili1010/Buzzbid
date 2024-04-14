@@ -4,7 +4,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
 import '../../css/style.css';
-
+import NavigationBar from "../NavigationBar/NavigationBar";
 const SearchItem = () => {
     const[inputs, setInputs] = useState({
         keyword: '',
@@ -100,6 +100,8 @@ const SearchItem = () => {
     };
 
     return (
+        <>
+        <NavigationBar/>
         <div className="d-flex justify-content-center align-items-center vh-100 bg">
             <div className="border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
                 <h2>Search Item</h2>
@@ -213,6 +215,7 @@ const SearchItem = () => {
                 </form>
             </div>
         </div>
+        </>
     )
 }
 
