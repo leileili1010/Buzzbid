@@ -39,18 +39,24 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public List<Rating> getAllRatingsForItem(Integer itemId) {
+        return null;
+    }
+
+    @Override
+    public List<Rating> getAllRatingsForItem(String itemName) {
         List<Rating> ratings = new ArrayList<>();
         Connection conn = null;
         ResultSet rs = null;
-        String query = "SELECT rating_id, item_id, username, number_of_stars, comment, rating_time FROM Rating " +
-                "WHERE item_id = ? " +
-                "ORDER BY rating_time DESC";
+        String query = "SELECT r.rating_id, r.item_id, r.username, r.number_of_stars, r.comment, r.rating_time FROM Rating r " +
+                "JOIN Item i ON r.item_id = i.item_id " +
+                "WHERE i.item_name = ? " +
+                "ORDER BY r.rating_time DESC";
 
 
         try {
             conn = DatabaseService.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, itemId);
+            stmt.setString(1, itemName);
 
             rs = stmt.executeQuery();
 
@@ -90,12 +96,20 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public Double getAvgRating(Integer itemId) {
+        return null;
+    }
+
+    @Override
+    public Double getAvgRating(String itemName) {
         Double avgRating = null;
-        String query = "SELECT ROUND(AVG(number_of_stars),2) as avg_rating FROM Rating WHERE item_id = ?";
+        String query = "SELECT ROUND(AVG(number_of_stars),2) as avg_rating FROM Rating r " +
+                "JOIN Item i ON r.item_id = i.item_id " +
+                "WHERE i.item_name = ?";
+
         try (Connection conn = DatabaseService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, itemId);
+            stmt.setString(1, itemName);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     double value = rs.getDouble("avg_rating");
@@ -105,7 +119,7 @@ public class RatingServiceImpl implements RatingService {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving average rating for item ID: " + itemId, e);
+            throw new RuntimeException("Error retrieving average rating for item ID: " + itemName, e);
         }
         return avgRating;
     }
