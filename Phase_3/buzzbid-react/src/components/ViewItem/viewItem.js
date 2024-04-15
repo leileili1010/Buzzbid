@@ -11,8 +11,9 @@ import {
     MDBModalContent, MDBModalHeader, MDBModalTitle, MDBTextArea, MDBModalFooter
 } from "mdb-react-ui-kit";
 import axios from "axios";
-import NavigationBar from "./NavigationBar/NavigationBar";
-import '../css/style.css';
+import NavigationBar from "../NavigationBar/NavigationBar";
+import '../../css/style.css';
+import "./viewItem.css"
 
 function ViewItem() {
     const {state: {auctionId: auctionId}} = useLocation();
@@ -138,9 +139,9 @@ function ViewItem() {
     const toggleCancelModal = () => setCancelModal(!cancelModal);
 
     return (
-        <>
+        <div className="view-item-page">
             <NavigationBar/>
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center view-item">
             <div className="bg border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
                 <h2>{auctionData.auctionEnded ? 'Item Results' : 'Item For Sale'}</h2>
                 <MDBContainer className="p-3">
@@ -416,7 +417,7 @@ function ViewItem() {
                 </MDBContainer>
             </div>
         </div>
-        </>
+        </div>
     );
 }
 

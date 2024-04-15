@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBRow} from "mdb-react-ui-kit";
-import '../css/style.css';
-import NavigationBar from "./NavigationBar/NavigationBar";
+import '../../css/style.css';
+import NavigationBar from "../NavigationBar/NavigationBar";
+import "./SearchResults.css"
 
 function SearchResults() {
     const {state: {searchResults : searchResults}} = useLocation();
@@ -21,9 +22,9 @@ function SearchResults() {
     };
 
     return (
-        <>
+        <div className="search-results-page">
             <NavigationBar/>
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center search-results">
             <div className="bg border rounded-lg p-4" style={{width: '1150px'}}>
                 <h2>Search Results</h2>
                 <MDBContainer className="p-3">
@@ -84,7 +85,7 @@ function SearchResults() {
                 </MDBContainer>
             </div>
         </div>
-        </>
+        </div>
     );
 }
 
