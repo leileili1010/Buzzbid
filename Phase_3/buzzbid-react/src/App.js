@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Login from './components/login';
 import Register from './components/register';
 import Dashboard from "./components/dashboard";
-import ListItem from "./components/listItem";
+import ListItem from "./components/ListItem/listItem";
 import SearchItem from "./components/SearchItem/SearchItem";
 import ItemRating from "./components/ItemRating/ItemRating";
 import ViewItem from "./components/ViewItem/viewItem";

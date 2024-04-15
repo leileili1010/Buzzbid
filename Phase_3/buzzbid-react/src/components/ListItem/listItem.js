@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow, MDBTextArea} from "mdb-react-ui-kit";
 import axios from "axios";
-import '../css/style.css';
-import NavigationBar from "./NavigationBar/NavigationBar";
+import '../../css/style.css';
+import NavigationBar from "../NavigationBar/NavigationBar";
+import "./listItem.css";
 
 function ListItem() {
     const[inputs, setInputs] = useState({
@@ -141,9 +142,9 @@ function ListItem() {
     };
 
     return (
-        <>
+        <div className="list-item-page">
         <NavigationBar/>
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center list-item">
             <div className="bg border rounded-lg p-4" style={{width: '700px', height: 'auto'}}>
                 <h2>New Item for Auction</h2>
                 <form onSubmit={submitForm}>
@@ -282,7 +283,7 @@ function ListItem() {
                 </form>
             </div>
         </div>
-        </>
+        </div>
     );
 }
 
