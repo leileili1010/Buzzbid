@@ -1,0 +1,9 @@
+.search-results-page {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+.search-results {
+    margin-bottom: 35px;
+}

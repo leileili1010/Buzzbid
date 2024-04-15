@@ -4,6 +4,12 @@
     max-width: max-content;
 }
 
+.auction-result-page {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
 .auction-result-container table {
     width: 100%;
     border-collapse: collapse;

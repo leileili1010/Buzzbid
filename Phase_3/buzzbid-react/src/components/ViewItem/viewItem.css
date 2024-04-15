@@ -1,0 +1,9 @@
+.view-item-page {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+.view-item {
+    margin-bottom: 35px;
+}
