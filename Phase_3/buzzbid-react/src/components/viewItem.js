@@ -54,10 +54,10 @@ function ViewItem() {
             errors.bidAmount = 'Bid must be an amount';
         } else if (auctionData.getItNowPrice !== null && parseFloat(bidAmount) >= parseFloat(auctionData.getItNowPrice.substring(1))) {
             errors.bidAmount = 'Bid must be less than Get It Now price. Please use Get It Now instead.'
-        } else if (auctionData.bids.length && parseFloat(bidAmount) <= parseFloat(auctionData.bids[0].bidAmount.substring(1))) {
-            errors.bidAmount = 'Bid amount must be greater than the current high bid';
         } else if (parseFloat(bidAmount) < parseFloat(auctionData.startingBid.substring(1))) {
             errors.bidAmount = 'Bid must be greater than the minimum bid';
+        }  else if (auctionData.minimumBid !== null && parseFloat(bidAmount) < parseFloat(auctionData.minimumBid.substring(1))) {
+            errors.bidAmount = 'Bid amount must be greater than the current high bid';
         } else if (!bidAmount.match(/^(\d*\.{0,1}\d{0,2}$)/)) {
             errors.bidAmount = 'Bid can only be up to two decimal places';
         }
@@ -220,6 +220,16 @@ function ViewItem() {
                                 </MDBBtn>
                             </MDBCol>}
                     </MDBRow>
+                    {currentUser.username === auctionData.username &&
+                        <MDBRow>
+                            <MDBCol md="4">
+                                <label>Minimum Sale Price</label>
+                            </MDBCol>
+                            <MDBCol md="8">
+                                <strong>{auctionData.minSalePrice}</strong>
+                            </MDBCol>
+                        </MDBRow>
+                    }
                     <MDBRow>
                         <MDBCol md="4">
                             <label>Auction Ends</label>

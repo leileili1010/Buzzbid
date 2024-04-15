@@ -25,7 +25,13 @@ function Register() {
                 });
 
                 localStorage.setItem('token', JSON.stringify(response.data.token))
-                localStorage.setItem('user', JSON.stringify({username: username, isAdmin : false, userRole: ''}));
+                localStorage.setItem('user', JSON.stringify({
+                    username: username,
+                    name: response.data.name,
+                    isAdmin : false,
+                    userRole: ''
+                }));
+
                 nav('/dashboard');
             }
         } catch (error) {

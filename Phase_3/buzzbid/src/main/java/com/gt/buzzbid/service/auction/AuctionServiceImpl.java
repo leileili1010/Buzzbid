@@ -288,6 +288,8 @@ public class AuctionServiceImpl implements AuctionService {
                 if (rs.getTimestamp("cancelled_timestamp") != null) {
                     model.setCancelledTime(FMT.format(rs.getTimestamp("cancelled_timestamp")));
                 }
+
+                model.setMinSalePrice("$" + rs.getString("min_sale_price"));
             }
 
             // get item
@@ -395,7 +397,7 @@ public class AuctionServiceImpl implements AuctionService {
              conn = DatabaseService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              stmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-             stmt.setString(2, auctionModel.getUsername());
+             stmt.setString(2, auctionModel.getCancelReason());
              stmt.setInt(3, auctionId);
              stmt.executeUpdate();
         } catch (Exception e) {
