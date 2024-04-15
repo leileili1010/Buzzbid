@@ -37,8 +37,8 @@ const AuctionResults = () => {
     return (
         <div className="auction-result-page">
         <NavigationBar/>
-        <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="auction-result-container rounded-lg p-4" style={{width: '1500px', height: '800px'}}>
+        <div className="d-flex justify-content-center align-items-center">
+            <div className="bg auction-result-container border rounded-lg p-4">
                 <MDBContainer className="p-3">
                     <MDBRow>
                         <MDBCol md="12">
