@@ -40,55 +40,55 @@ function CancelledReport() {
     }
 
     return (
-        <>
+        <div className="outer-container">
             <NavigationBar/>
-        <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="bg border rounded-lg" style={{width: '1250px', height: "auto"}}>
-                <MDBContainer>
-                    <fieldset>
-                        <legend>Cancelled Auction Details</legend>
-                        <MDBRow className="justify-content-center">
-                            <MDBCol md="3">
-                                <strong>ID</strong>
-                            </MDBCol>
-                            <MDBCol md="3">
-                                <strong>Listed by</strong>
-                            </MDBCol>
-                            <MDBCol md="3">
-                                <strong>Cancelled Date</strong>
-                            </MDBCol>
-                            <MDBCol md="3">
-                                <strong>Reason</strong>
-                            </MDBCol>
-                        </MDBRow>
-                        {cancelledReport && cancelledReport.map(b => (
+            <div className="d-flex justify-content-center align-items-center">
+                <div className="bg border rounded-lg" style={{width: '1250px'}}>
+                    <MDBContainer>
+                        <fieldset>
+                            <legend>Cancelled Auction Details</legend>
                             <MDBRow className="justify-content-center">
                                 <MDBCol md="3">
-                                    {b.itemID}
+                                    <strong>ID</strong>
                                 </MDBCol>
                                 <MDBCol md="3">
-                                    {b.listedBy}
+                                    <strong>Listed by</strong>
                                 </MDBCol>
                                 <MDBCol md="3">
-                                    {b.cancelledDate}
+                                    <strong>Cancelled Date</strong>
                                 </MDBCol>
                                 <MDBCol md="3">
-                                    {b.reason}
+                                    <strong>Reason</strong>
                                 </MDBCol>
                             </MDBRow>
-                        ))}
-                        <MDBRow className="justify-content-end p-3">
-                            <MDBBtn type="button" className="mb-4 d-block btn-primary"
-                                    style={{height: '40px', width: '100px'}}
-                                    onClick={e => done(e)}>
-                                Done
-                            </MDBBtn>
-                        </MDBRow>
-                    </fieldset>
-                </MDBContainer>
+                            {cancelledReport && cancelledReport.map(b => (
+                                <MDBRow className="justify-content-center">
+                                    <MDBCol md="3">
+                                        {b.itemID}
+                                    </MDBCol>
+                                    <MDBCol md="3">
+                                        {b.listedBy}
+                                    </MDBCol>
+                                    <MDBCol md="3">
+                                        {b.cancelledDate}
+                                    </MDBCol>
+                                    <MDBCol md="3">
+                                        {b.reason}
+                                    </MDBCol>
+                                </MDBRow>
+                            ))}
+                            <MDBRow className="justify-content-end p-3">
+                                <MDBBtn type="button" className="mb-4 d-block btn-primary"
+                                        style={{height: '40px', width: '100px'}}
+                                        onClick={e => done(e)}>
+                                    Done
+                                </MDBBtn>
+                            </MDBRow>
+                        </fieldset>
+                    </MDBContainer>
+                </div>
             </div>
         </div>
-        </>
     )
 }
 

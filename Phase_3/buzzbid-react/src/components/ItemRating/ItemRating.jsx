@@ -76,75 +76,76 @@ const ItemRating = () => {
     return (
         <div className="item-rating-page">
             <NavigationBar/>
-        <div className="d-flex justify-content-center align-items-center">
-            <div className="bg border rounded-lg p-4 item-rating-container" style={{width: '900px', height: 'auto'}}>
-                <h2>Item Rating</h2>
-                <MDBContainer className="p-3">
-                    <MDBRow>
-                        <MDBCol md="12">
-                            <table className="item-rating-item">
-                                <tbody>
-                                <tr>
-                                    <td className="table-title">Item ID</td>
-                                    <td>{item?.itemId}</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-title">Item Name</td>
-                                    <td>{item?.itemName}</td>
-                                </tr>
-                                <tr>
-                                    <td className="table-title">Average Rating</td>
-                                    <td>{averageRating}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div className="comment-rating-container">
-                                {ratings.map((rating, index) =>
-                                    <div key={index} className="ratings">
-                                        <div className="user-star">
-                                            <div className="user-details">
-                                                <div><i className="fa-solid fa-user" id="user-icon"></i></div>
-                                                <p>{rating?.username}</p>
+            <div className="d-flex justify-content-center align-items-center">
+                <div className="bg border rounded-lg p-4 item-rating-container"
+                     style={{width: '900px', height: 'auto'}}>
+                    <h2>Item Rating</h2>
+                    <MDBContainer className="p-3">
+                        <MDBRow>
+                            <MDBCol md="12">
+                                <table className="item-rating-item">
+                                    <tbody>
+                                    <tr>
+                                        <td className="table-title">Item ID</td>
+                                        <td>{item?.itemId}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="table-title">Item Name</td>
+                                        <td>{item?.itemName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="table-title">Average Rating</td>
+                                        <td>{averageRating}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div className="comment-rating-container">
+                                    {ratings.map((rating, index) =>
+                                        <div key={index} className="ratings">
+                                            <div className="user-star">
+                                                <div className="user-details">
+                                                    <div><i className="fa-solid fa-user" id="user-icon"></i></div>
+                                                    <p>{rating?.username}</p>
+                                                </div>
+                                                <div className="stars">
+                                                    {generateStars(rating)}
+                                                </div>
                                             </div>
-                                            <div className="stars">
-                                                {generateStars(rating)}
-                                            </div>
+                                            <p className="rating-time">{formatDate(rating?.ratingTime)}</p>
+                                            <p className="rating-comment">{rating?.comment}</p>
+                                            {(rating?.username == currentUser.username || currentUser.isAdmin) &&
+                                                < OpenModalButton
+                                                    buttonText="Delete"
+                                                    modalComponent={<DeleteRatingModal
+                                                        ratingId={rating?.ratingId}
+                                                        setDeleteRating={setDeleteRating}
+                                                        itemId={itemId}
+                                                    />}
+                                                />
+                                            }
                                         </div>
-                                        <p className="rating-time">{formatDate(rating?.ratingTime)}</p>
-                                        <p className="rating-comment">{rating?.comment}</p>
-                                        {(rating?.username == currentUser.username || currentUser.isAdmin) &&
-                                            < OpenModalButton
-                                                buttonText="Delete"
-                                                modalComponent={<DeleteRatingModal
-                                                    ratingId={rating?.ratingId}
-                                                    setDeleteRating={setDeleteRating}
-                                                    itemId={itemId}
-                                                />}
-                                            />
-                                        }
-                                    </div>
-                                )}
-                            </div>
-                            {(isWinner && !ifRated) && < OpenModalButton
-                                buttonText="Rate This Item"
-                                modalComponent={<RateItem username={currentUser.username} itemId={itemId}
-                                                          setAddRating={setAddRating}/>}
-                            />}
-                        </MDBCol>
-                    </MDBRow>
-                    <MDBRow>
-                        <MDBCol md="4"></MDBCol>
-                        <MDBCol md="4"></MDBCol>
-                        <MDBCol md="4">
-                            <MDBBtn type="button" className="mb-4 d-block btn-primary"
-                                    style={{height: '50px', width: '100%'}}
-                                    onClick={e => close(e)}>Close
-                            </MDBBtn>
-                        </MDBCol>
-                    </MDBRow>
-                </MDBContainer>
+                                    )}
+                                </div>
+                                {(isWinner && !ifRated) && < OpenModalButton
+                                    buttonText="Rate This Item"
+                                    modalComponent={<RateItem username={currentUser.username} itemId={itemId}
+                                                              setAddRating={setAddRating}/>}
+                                />}
+                            </MDBCol>
+                        </MDBRow>
+                        <MDBRow>
+                            <MDBCol md="4"></MDBCol>
+                            <MDBCol md="4"></MDBCol>
+                            <MDBCol md="4">
+                                <MDBBtn type="button" className="mb-4 d-block btn-primary"
+                                        style={{height: '50px', width: '100%'}}
+                                        onClick={e => close(e)}>Close
+                                </MDBBtn>
+                            </MDBCol>
+                        </MDBRow>
+                    </MDBContainer>
+                </div>
             </div>
-        </div>
         </div>
     )
 }

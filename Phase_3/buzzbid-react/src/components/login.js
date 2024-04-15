@@ -110,18 +110,18 @@ function Login() {
                             </div>
                             <div className="text-center">
                                 <div onClick={setDemoUser} className="demo-user"
-                                     style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }}
-                                >Demo User</div>
+                                     style={{cursor: 'pointer', color: '#007bff', textDecoration: 'underline'}}
+                                >Demo User
+                                </div>
                                 <div onClick={setDemoAdminUser} className="demo-user"
-                                     style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }}
-                                >Demo AdminUser</div>
+                                     style={{cursor: 'pointer', color: '#007bff', textDecoration: 'underline'}}
+                                >Demo AdminUser
+                                </div>
                             </div>
                         </MDBCol>
                     </MDBRow>
                 </MDBContainer>
-
             </div>
-
         </div>
     );
 }

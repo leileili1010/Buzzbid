@@ -5,15 +5,15 @@ import {MDBBtn, MDBCol, MDBContainer, MDBInput, MDBRow} from "mdb-react-ui-kit";
 import '../css/style.css';
 
 function Register() {
-    const[username, setUsername] = useState('');
-    const[password, setPassword] = useState('');
-    const[confirmPassword, setConfirmPassword] = useState('');
-    const[firstName, setFirstName] = useState('');
-    const[lastName, setLastName] = useState('');
-    const[error, setError] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [error, setError] = useState('');
     const nav = useNavigate();
 
-    const handleRegistration = async() => {
+    const handleRegistration = async () => {
         try {
             if (!username || !password || !confirmPassword || !firstName || !lastName) {
                 setError('Please enter all fields.');
@@ -21,14 +21,14 @@ function Register() {
                 setError('Passwords do not match.')
             } else {
                 const response = await axios.post("http://localhost:8081/auth/register", {
-                   username, password, firstName, lastName
+                    username, password, firstName, lastName
                 });
 
                 localStorage.setItem('token', JSON.stringify(response.data.token))
                 localStorage.setItem('user', JSON.stringify({
                     username: username,
                     name: response.data.name,
-                    isAdmin : false,
+                    isAdmin: false,
                     userRole: ''
                 }));
 
@@ -53,7 +53,8 @@ function Register() {
                             <label>First Name</label>
                         </MDBCol>
                         <MDBCol md="8">
-                            <MDBInput wrapperClass='mb-4' placeholder='First Name' id='first-name' value={firstName} type='text'
+                            <MDBInput wrapperClass='mb-4' placeholder='First Name' id='first-name' value={firstName}
+                                      type='text'
                                       onChange={(e) => setFirstName(e.target.value)}/>
                         </MDBCol>
                     </MDBRow>
@@ -62,7 +63,8 @@ function Register() {
                             <label>Last Name</label>
                         </MDBCol>
                         <MDBCol md="8">
-                            <MDBInput wrapperClass='mb-4' placeholder='Last Name' id='last-name' value={lastName} type='text'
+                            <MDBInput wrapperClass='mb-4' placeholder='Last Name' id='last-name' value={lastName}
+                                      type='text'
                                       onChange={(e) => setLastName(e.target.value)}/>
                         </MDBCol>
                     </MDBRow>
@@ -71,7 +73,8 @@ function Register() {
                             <label>Username</label>
                         </MDBCol>
                         <MDBCol md="8">
-                            <MDBInput wrapperClass='mb-4' placeholder='Username' id='username' value={username} type='email'
+                            <MDBInput wrapperClass='mb-4' placeholder='Username' id='username' value={username}
+                                      type='email'
                                       onChange={(e) => setUsername(e.target.value)}/>
                         </MDBCol>
                     </MDBRow>
@@ -80,7 +83,8 @@ function Register() {
                             <label>Password</label>
                         </MDBCol>
                         <MDBCol md="8">
-                            <MDBInput wrapperClass='mb-4' placeholder='Password' id='password' type='password' value={password}
+                            <MDBInput wrapperClass='mb-4' placeholder='Password' id='password' type='password'
+                                      value={password}
                                       onChange={(e) => setPassword(e.target.value)}/>
                         </MDBCol>
                     </MDBRow>
@@ -89,7 +93,8 @@ function Register() {
                             <label>Confirm Password</label>
                         </MDBCol>
                         <MDBCol md="8">
-                            <MDBInput wrapperClass='mb-4' placeholder='Confirm password' id='confirm-password' type='password'
+                            <MDBInput wrapperClass='mb-4' placeholder='Confirm password' id='confirm-password'
+                                      type='password'
                                       value={confirmPassword}
                                       onChange={(e) => setConfirmPassword(e.target.value)}/>
                         </MDBCol>

@@ -1,15 +1,14 @@
-import { useState } from 'react';
-import { useModal } from '../../context/Modal';
+import {useState} from 'react';
+import {useModal} from '../../context/Modal';
 import StarRatingInput from "./StarRatingInput";
 import "./RateItem.css";
 import axios from "axios";
 
-const RateItem = ({username,itemId, setAddRating}) => {
-    const { closeModal } = useModal();
+const RateItem = ({username, itemId, setAddRating}) => {
+    const {closeModal} = useModal();
     const [comment, setComment] = useState('');
     const [stars, setStars] = useState(0);
     const [errors, setErrors] = useState({});
-// console.log("=======================comment and stars", comment, stars)
 
     const onChange = (num) => {
         setStars(parseInt(num));
@@ -36,9 +35,9 @@ const RateItem = ({username,itemId, setAddRating}) => {
 
         axios.post('http://localhost:8081/rating/create', newRating)
             .then((response) => {
-                setAddRating(prev => prev+1);
+                setAddRating(prev => prev + 1);
                 closeModal();
-            }).catch(function(error) {
+            }).catch(function (error) {
 
         });
 
