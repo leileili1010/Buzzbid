@@ -1,3 +1,0 @@
-01/28/2024 Meeting
-1. Submit own EER and IFD into corresponding folder in team's github.
-2. Meeting at PST 6:00pm every Sunday
