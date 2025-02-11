@@ -1,4 +1,0 @@
-https://docs.google.com/document/d/10CfjNLXFzVULLTuis0AsjoMxieO3AsNd6FP1Cltrt0s/edit?usp=sharing
-
-
-I started adding SQL queries in the abstract code in this Google Doc. 
